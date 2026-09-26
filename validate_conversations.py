@@ -134,7 +134,8 @@ def is_valid_conversation(entry: dict) -> tuple[bool, str, str]:
             False,
             f"turn {second_last_idx+1}: second-to-last tutor turn state must "
             f"be 'Synthesis', got '{second_last_tutor['state']}'",
-            "second-to-last tutor turn not Synthesis",
+            f"second-to-last tutor turn state must "
+            f"be 'Synthesis', got '{second_last_tutor['state']}'",
         )
 
     return True, "", ""
