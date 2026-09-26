@@ -1,13 +1,27 @@
 import os
 import json
+import logging
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+
+# ── Logging setup ──────────────────────────────────────────────────────
+LOG_FORMAT = "%(asctime)s  %(levelname)s  %(message)s"
+
+logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
+
+log = logging.getLogger(__name__)
 
 # ── Paths ──────────────────────────────────────────────────────────────
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIRECTORY = os.path.join(SCRIPT_DIR, "data")
 SIMILARITY_THRESHOLD = 0.90
+
+file_handler = logging.FileHandler(
+    os.path.join(SCRIPT_DIR, "similarity.log"), mode="a", encoding="utf-8"
+)
+file_handler.setFormatter(logging.Formatter(LOG_FORMAT))
+log.addHandler(file_handler)
 
 
 def extract_text_from_convo(convo):
@@ -35,7 +49,7 @@ def get_all_json_files(data_dir):
 
 def run_fast_similarity(data_dir, threshold=0.90):
     all_files = get_all_json_files(data_dir)
-    print(f"Found {len(all_files)} files. Loading conversations into memory...")
+    log.info("Found %d files. Loading conversations into memory...", len(all_files))
 
     entries = []
 
@@ -59,27 +73,26 @@ def run_fast_similarity(data_dir, threshold=0.90):
                                     'text': text
                                 })
         except Exception:
-            # Skip unreadable files or broken json
-            pass
+            log.warning("Skipping unreadable file: %s", file_path)
 
     num_entries = len(entries)
-    print(f"Loaded {num_entries} conversation entries.")
+    log.info("Loaded %d conversation entries.", num_entries)
 
     if num_entries < 2:
-        print("Not enough entries to compare.")
+        log.info("Not enough entries to compare.")
         return
 
-    print("Vector embedding all conversations simultaneously...")
+    log.info("Vector embedding all conversations simultaneously...")
     texts = [entry['text'] for entry in entries]
     vectorizer = TfidfVectorizer(stop_words='english')
     # 2. Fit TF-IDF on all documents at once
     tfidf_matrix = vectorizer.fit_transform(texts)
 
-    print("Calculating full cosine similarity matrix...")
+    log.info("Calculating full cosine similarity matrix...")
     # 3. Calculate all pairwise similarities mathematically at once
     similarity_matrix = cosine_similarity(tfidf_matrix)
 
-    print(f"\n--- Finding pairs with similarity >= {threshold} ---")
+    log.info("Finding pairs with similarity >= %s", threshold)
     found_pairs = 0
 
     # 4. Iterate over the upper triangle of the matrix to extract results
@@ -90,13 +103,13 @@ def run_fast_similarity(data_dir, threshold=0.90):
                 loc1 = f"{entries[i]['folder']}/{entries[i]['filename']} (index {entries[i]['index']})"
                 loc2 = f"{entries[j]['folder']}/{entries[j]['filename']} (index {entries[j]['index']})"
 
-                print(f"Similarity: {sim:.4f}")
-                print(f"  Pair 1: {loc1}")
-                print(f"  Pair 2: {loc2}")
-                print("-" * 50)
+                log.warning(
+                    "Similarity: %.4f  Pair 1: %s  Pair 2: %s",
+                    sim, loc1, loc2,
+                )
                 found_pairs += 1
 
-    print(f"Total similar pairs found: {found_pairs}")
+    log.info("Total similar pairs found: %d", found_pairs)
 
 
 if __name__ == "__main__":
