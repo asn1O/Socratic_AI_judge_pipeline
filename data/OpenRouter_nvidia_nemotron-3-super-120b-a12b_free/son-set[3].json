@@ -1,0 +1,1427 @@
+[
+  {
+    "config": {
+      "socratic_level": "low",
+      "student_level": "intermediate",
+      "hint_frequency": "low",
+      "mistake_frequency": "high",
+      "verbosity": "low",
+      "difficulty": "hard"
+    },
+    "domain": "statistics_and_data",
+    "topic": "Mean, median, mode",
+    "problem": "Find a set of five integers that has a mean of 12, a median of 11, and a mode of 10.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think the total sum is 5*12=60 because mean is 12."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student correctly computed total sum from mean, showing understanding of mean but not yet applying median or mode.",
+        "state": "Diagnosis",
+        "response": "You're right about the sum being 60. How would you use the median and mode to find the five numbers?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I think the numbers must be symmetric around 11, so 9,9,11,13,13."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student incorrectly assumed symmetry around median, indicating a need to clarify what median actually tells us.",
+        "state": "Support",
+        "response": "The median only tells us the middle number is 11; it doesn't require symmetry. What is the third number?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "I guess they don't have to be symmetric, but the numbers should still be evenly spread on each side."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student persists with a symmetry-related misconception about equal spread, so we shift focus to the mode definition.",
+        "state": "Support",
+        "response": "Let's set aside symmetry. The mode being 10 means 10 appears more often than any other number. How many times must 10 appear?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "I think 10 has to appear at least three times to be the mode."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student believes the mode requires at least three occurrences, showing confusion about mode definition; we clarify the minimal requirement.",
+        "state": "Support",
+        "response": "Mode just needs to beat any other count. With one 11, 10 can appear twice. What do we have?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "So we could have two 10s, one 11, and we need two more numbers."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student has identified two 10s and one 11 but hasn't yet used the total sum to constrain the remaining numbers.",
+        "state": "Support",
+        "response": "Total sum is 60. Two 10s and one 11 add to 31. What must the last two numbers sum to?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "The last two numbers must add to 60-31=29."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student determined the required sum for the last two numbers, indicating readiness to articulate the overall reasoning.",
+        "state": "Synthesis",
+        "response": "In your own words, explain how the mean, median, and mode together lead to the possible sets of numbers."
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "Mean sum 60, median middle 11, mode two 10s, no other repeats, last two differ, ≥11, sum 29."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student successfully explained how mean, median, and mode combine to determine the number set, showing mastery.",
+        "state": "Closing",
+        "response": "Nice work! You've got it. Want to try another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "low",
+      "student_level": "beginner",
+      "hint_frequency": "low",
+      "mistake_frequency": "high",
+      "verbosity": "medium",
+      "difficulty": "hard"
+    },
+    "domain": "computer_science_light",
+    "topic": "Big-O intuition via analogies",
+    "problem": "Consider the following pseudocode:\n\nfor i = 1 to n:\n    for j = 1 to n / i:\n        // constant-time operation\n\nWhat is the Big-O time complexity of this algorithm as a function of n?",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think the algorithm is O(n) because there are just two loops, one inside the other, so it should be linear time overall."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "The student offered an O(n) answer based on seeing two loops, showing they haven't considered how the inner loop's bound changes.",
+        "state": "Diagnosis",
+        "response": "Can you walk me through the steps you took to figure out the time complexity, explaining what you noticed about the loops?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I think it's O(n squared) because the outer loop runs n times and for each iteration the inner loop also runs n times, so multiply to get n times n."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "The student assumes the inner loop runs n times each iteration, missing the varying bound; a hint to examine specific i values can shift their thinking.",
+        "state": "Support",
+        "response": "Consider how many times the inner loop actually runs when i equals 1, then when i equals 2, and think about whether it changes with i."
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "I still think it's O(n squared) because even if the inner loop runs fewer times, on average it's about n over 2, so we still get n times n over 2 which is still n squared."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "The student persists with an average‑case argument; asking for exact counts for small i will confront the misconception.",
+        "state": "Diagnosis",
+        "response": "Tell me the exact number of inner‑loop iterations for i = 1, i = 2, and i = 3, assuming n is a positive integer and we take the floor of n divided by i."
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "For i equals 1 the inner loop runs n times; for i equals 2 it runs n divided by 2 times; for i equals 3 it runs n divided by 3 times."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "The student can see the pattern for first few values but hasn't connected it to a total sum; prompting them to add the counts guides them toward the series.",
+        "state": "Support",
+        "response": "Now try adding up those counts for every i from 1 up to n, and see what pattern emerges as n gets larger."
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "So the total work is n plus n/2 plus n/3 plus … plus n/n, which is n times (1 + 1/2 + 1/3 + … + 1/n). I’m not sure how that simplifies."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "The student has correctly formed the harmonic‑series sum but needs to articulate its growth rate; asking them to explain in their own words encourages internalization.",
+        "state": "Synthesis",
+        "response": "In your own words, what does this sum tell you about how the running time grows as n increases, especially ignoring constant factors and lower‑order terms?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "The sum is n times the harmonic series, which grows like n log n, so the algorithm runs in O(n log n) time; constants and smaller terms don’t matter in Big-O."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "The student has successfully articulated the Big‑O rule for this algorithm, indicating mastery; we can wrap up warmly.",
+        "state": "Closing",
+        "response": "Nice work! You've grasped the core idea of Big‑O using that analogy. Want to try another problem?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "high",
+      "student_level": "advanced",
+      "hint_frequency": "medium",
+      "mistake_frequency": "low",
+      "verbosity": "low",
+      "difficulty": "medium"
+    },
+    "domain": "logic_and_puzzles",
+    "topic": "Blood relations",
+    "problem": "In a family, there are seven persons: A, B, C, D, E, F, and G. The following facts are known:\n1) A is the father of B.\n2) B is the sister of C.\n3) C is the mother of D.\n4) D is the father of E.\n5) E is the sister of F.\n6) F is the mother of G.\nHow is A related to G?",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "A is father of B; B is sister of C, so A is father of C."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student correctly inferred that A is father of both B and C, showing they understand sibling inference. Need to see if they can extend this to the next generation.",
+        "state": "Diagnosis",
+        "response": "How does knowing A is father of C help you relate A to D?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "Since C is mother of D, A is one generation above D, so A is grandfather of D."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student correctly concluded A is grandfather of D, demonstrating they can follow a parent‑child link. Now we guide them to consider D's offspring.",
+        "state": "Support",
+        "response": "What can you say about A's relation to D's children, given that D is father of E and F?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "A is the great-grandfather of E and F."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student correctly identified A as great‑grandfather of E and F, showing they can propagate the relation two steps further. Next we link to G via F.",
+        "state": "Diagnosis",
+        "response": "How does F being a parent of G affect A's relation to G?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "Since F is mother of G, A is the great-great-grandfather of G."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student arrived at the correct answer, A is great‑great‑grandfather of G. To deepen understanding, we prompt them to articulate the pattern.",
+        "state": "Support",
+        "response": "Can you describe the pattern you used to move from one generation to the next?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "Each parent‑child link steps us down one generation; I counted four links from A to G."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student described the generational step pattern in their own words, indicating readiness to synthesize the principle.",
+        "state": "Synthesis",
+        "response": "In your own words, what rule did we apply to determine the relationship?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "We traced the chain of parent‑child relationships, adding one generation for each link, so A is four generations above G."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly explained the concept; conversation wraps up.",
+        "state": "Closing",
+        "response": "Nice work! Want to try another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "low",
+      "student_level": "advanced",
+      "hint_frequency": "low",
+      "mistake_frequency": "low",
+      "verbosity": "high",
+      "difficulty": "hard"
+    },
+    "domain": "ethics_and_critical_thinking",
+    "topic": "Logical fallacies",
+    "problem": "A city council member argues: 'We should not fund the new public park because if we do, then we will have to raise taxes, and raising taxes will cause businesses to leave the city, which will lead to higher unemployment. Therefore, funding the park will cause higher unemployment.' Identify the logical fallacy in this argument, explain why it is a fallacy, and discuss whether the argument would still be fallacious if the premise about businesses leaving were removed.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I'm not entirely sure, but it seems like a false cause fallacy because they claim that building the park will directly cause higher taxes and then businesses leaving, but they don't show any evidence that those steps actually follow; I'm focusing on the lack of proof for each link."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student expressed uncertainty about false cause, focusing on lack of evidence for each causal link; we need to see if they are attending to the argument's chain structure.",
+        "state": "Diagnosis",
+        "response": "I hear you saying it's a false cause because they link funding to unemployment without direct evidence. Can you walk me through what makes you think it's a false cause rather than another type of fallacy, and what other aspects of the argument you might have missed?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I was thinking it might be a false cause because each step looks like an unsupported cause‑effect relationship, but I'm not sure if that's the whole story; maybe the way the statements are chained together matters more than each individual link, and whether the arguer provides any justification for moving from one step to the next."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student noted they were thinking false cause but remained unsure about the whole story; a hint about the chain may help them see the broader pattern.",
+        "state": "Support",
+        "response": "The argument seems to rely on a chain of 'if-then' predictions; notice how each step depends on the previous one, building a sequence that leads from a modest action to a severe outcome. What do you think happens if we examine that chain more closely?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "Now I see it's a series of conditional statements: if we fund the park, then taxes go up; if taxes go up, then businesses leave; if businesses leave, then unemployment rises. I'm not sure if that changes the fallacy type, because the links still seem unsupported."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student observed the series of conditionals but remained unsure how that affects the fallacy type; probing their view of likelihood will guide them toward recognizing a slippery slope.",
+        "state": "Diagnosis",
+        "response": "You mentioned the chain; let's see if each link is presented as certain or just probable, and whether any evidence supports those probabilities. How does the argument treat the likelihood of each step, and what would happen if we considered alternative outcomes or questioned the necessity of each step?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "Each step is presented as if it will definitely happen: they say funding the park will lead to higher taxes, which will definitely cause businesses to leave, which will definitely cause higher unemployment. There's no mention of chances or alternatives, making the outcome seem inevitable without proof."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student recognized that each link is presented as certain without justification, matching the slippery slope pattern; now we ask them to articulate why this is a slippery slope in their own words.",
+        "state": "Synthesis",
+        "response": "A slippery slope occurs when someone claims that a modest first step inevitably leads to an extreme outcome without showing the steps are likely or providing evidence for each link. In your own words, why does this chain of unsupported predictions make the argument a slippery slope, and what would be needed to avoid that fallacy?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "Because the arguer assumes that building the park will definitely set off a chain reaction leading to serious harm, but they never provide any evidence that each step is likely to happen. That's exactly a slippery slope: a small step leading to a big bad outcome without proof."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student correctly identified the slippery slope; now we need to examine how altering a premise affects the argument, probing whether the fallacy persists or changes.",
+        "state": "Diagnosis",
+        "response": "Removing a premise can break the chain of reasoning, turning a linked sequence into a disjointed set of claims. Now, if we remove the premise about businesses leaving, how does that affect the chain? Does the argument still rely on an unsupported sequence, or does it lose its slippery‑slope character altogether?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "If we take out the 'businesses leave' step, we have: fund park → higher taxes → higher unemployment. The link from higher taxes to higher unemployment isn't directly supported; the chain is incomplete, so the argument doesn't really follow, and the conclusion seems to rest on a missing link that the arguer never justifies."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student sees that removing a premise breaks the chain and suspects the argument may no longer be a slippery slope; we ask them to specify what fallacy, if any, remains.",
+        "state": "Synthesis",
+        "response": "When a chain of causal claims is broken, the argument may no longer be a slippery slope because the progressive linkage is lost. Can you explain what kind of fallacy remains, if any, when the chain is broken, and why that distinction matters for evaluating the argument?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "Without the intermediate step, the argument jumps from higher taxes straight to higher unemployment with no justification, which looks like a non sequitur—the conclusion doesn't follow from the premises. So it's not a slippery slope anymore; it's a non sequitur because the reasoning gap is bigger than a simple unsupported chain."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly explained the slippery slope concept and how altering premises changes the fallacy type, meeting the learning goal.",
+        "state": "Closing",
+        "response": "Nice work breaking that down! Want to try another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "medium",
+      "student_level": "beginner",
+      "hint_frequency": "medium",
+      "mistake_frequency": "high",
+      "verbosity": "high",
+      "difficulty": "easy"
+    },
+    "domain": "economics_and_finance",
+    "topic": "Simple vs compound interest",
+    "problem": "Suppose you invest $1,000 at an annual interest rate of 5% for 3 years. Calculate the final amount using simple interest and using compound interest compounded annually.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I know interest is something you earn on your money, but I’m not sure how to calculate it for simple versus compound. I think you just take the percentage and multiply by the years, but I get confused when the interest gets added back in."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student shows partial understanding but mixes up formulas; need to elicit their current thinking about simple interest.",
+        "state": "Diagnosis",
+        "response": "Can you walk me through exactly how you would compute the amount after 3 years if the interest were simple, describing each step and where you feel uncertain? Please include the numbers you would use and explain what operation you think corresponds to simple interest today."
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "For simple interest I think you use the formula A equals P times (1 plus r) to the t, so I’d compute 1,000 times 1.05 to the third power. That gives me about 1,157.60, so I’d say the final amount is $1,157.60. I remember seeing that formula somewhere, but I’m not completely sure if it’s for simple or compound."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student incorrectly applied compound formula to simple interest; need to hint at the meaning of simple interest.",
+        "state": "Support",
+        "response": "Simple interest means you earn interest only on the original principal, not on any interest already earned, so the interest amount is the same each year. Based on that, what would the yearly interest be for a $1,000 principal at a 5% rate, and how would you use that to find the total after three years?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "Okay, so the yearly interest is 5% of $1,000, which is $50. Over three years that’s $150 total interest, so the final amount would be $1,000 plus $150, equaling $1,150. I think that’s how simple interest works because you don’t earn interest on the interest already paid."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student now correctly describes simple interest; ready to explore their thinking on compound interest.",
+        "state": "Diagnosis",
+        "response": "Now let’s think about compound interest. Could you explain how you would compute the amount after each year if the interest earned each year is added to the principal and then earns interest in the following years? Please walk me through the calculation step by step, showing what numbers you would use for each year."
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "I think compound interest works the same way as simple interest for this problem because the rate is low and the time is short, so I’d just add $50 each year again, giving $1,150. I don’t see why the interest would change because I think the principal stays the same each year."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student asserted compound interest equals simple interest; need to hint at compounding mechanism.",
+        "state": "Support",
+        "response": "With compound interest, after the first year you earn interest on the initial principal, and that interest is added to the principal so that in the second year you earn interest on the new, larger amount. To see how this works, what would the amount be after the first year at a 5% rate on $1,000, and how would you use that to find the amount after the second year?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "After the first year, I’d have $1,000 plus 5% of $1,000, which is $50, so $1,050. In the second year, I earn 5% of $1,050, which is $52.50, making the total $1,102.50. In the third year, 5% of $1,102.50 is $55.13, so the final amount is about $1,157.63."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly computed both simple and compound interest amounts; need to prompt them to articulate the conceptual difference in their own words.",
+        "state": "Synthesis",
+        "response": "Based on what we’ve discussed, can you explain in your own words how simple interest and compound interest differ, and why the results are not the same after three years? Please describe the key idea behind each type of interest and where the extra amount in compound interest comes from."
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "Sure, simple interest means you just add the same percentage of the original amount each year, while compound interest means you add the percentage of the original amount each year plus a little extra because you also earn interest on the interest, but I think the extra is just the interest from the first year added again. I’m not totally sure, but that’s how I see it."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student’s explanation still conflates the interest-on-interest idea; need to give a hint that guides them toward the correct distinction.",
+        "state": "Support",
+        "response": "The key difference is that with compound interest, each year’s interest is calculated on the balance that includes all previously earned interest, not just the original principal. How would you describe that idea in your own words to show why compound interest yields more than simple interest over multiple years, perhaps by mentioning the interest-on-interest effect?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "Sure, simple interest means you earn interest only on the original principal, so you add the same amount each year. With compound interest, each year you earn interest on the total amount you have at the start of that year, which includes interest from previous years, so the interest grows each year and you end up with more than simple interest after more than one year."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly explained the rule in their own words; concept understood, ready to wrap up.",
+        "state": "Closing",
+        "response": "I’m really glad you stuck with it and worked through the confusion; you now see the clear difference between simple and compound interest. Would you like to try another problem to practice? It’s normal to mix them up at first, but you’ve overcome that hurdle nicely."
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "medium",
+      "student_level": "advanced",
+      "hint_frequency": "low",
+      "mistake_frequency": "high",
+      "verbosity": "low",
+      "difficulty": "hard"
+    },
+    "domain": "biology",
+    "topic": "Punnett squares / genetics",
+    "problem": "In Drosophila, the gene for eye color is X‑linked: red (W) is dominant to white (w). The gene for wing shape is autosomal: normal wings (N) are dominant to vestigial (n). A cross is made between a female heterozygous for both traits (X^W X^w Nn) and a male that is white‑eyed, vestigial‑winged (X^w Y nn). What are the expected phenotypic ratios among male and female offspring?",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think all kids will be red-eyed with normal wings because the dominant alleles hide the recessive ones."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student claims all offspring show dominant phenotype, missing segregation and sex-linkage.",
+        "state": "Diagnosis",
+        "response": "Can you explain how you arrived at that?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "Mom always passes the dominant W and N; dad passes recessive w and n, so every child gets WN."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student says mom always gives dominant alleles and dad always gives recessive, showing a misunderstanding of allele segregation.",
+        "state": "Diagnosis",
+        "response": "What do you think you should do next to figure out the offspring phenotypes?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "I’d make a separate Punnett square for each trait and then combine the results."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student plans separate Punnett squares but hasn't considered wing‑gene combos; need a hint to examine them.",
+        "state": "Support",
+        "response": "Let's look at the wing shape gene—what combinations can the parents produce for that trait?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "Wing: mom N/n, dad n → Nn or nn. Eye: mom W/w, dad w → daughters Ww/ww, sons wY."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student has wing combos correct but eye‑color reasoning flawed (dad gives w to all); ask them to predict phenotypes.",
+        "state": "Support",
+        "response": "Considering what we’ve discussed, what phenotypes might you expect for the offspring?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "Half are daughters, half sons. Each sex: 1/4 red‑normal, 1/4 red‑vestigial, 1/4 white‑normal, 1/4 white‑vestigial."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly given phenotypic ratios; now need them to articulate the underlying rule in their own words.",
+        "state": "Synthesis",
+        "response": "Now, in your own words, what rule explains how these traits are inherited together?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "Eye color is X‑linked: sons get mom’s X, daughters get one X from each parent. Wing gene assorts independently."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly explained the rule; conversation wraps up.",
+        "state": "Closing",
+        "response": "Nice, that's exactly it! Want to try another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "medium",
+      "student_level": "advanced",
+      "hint_frequency": "high",
+      "mistake_frequency": "high",
+      "verbosity": "medium",
+      "difficulty": "medium"
+    },
+    "domain": "quantitative_aptitude",
+    "topic": "Percentages",
+    "problem": "A town's population increased by 15% in the first year and then decreased by 10% in the second year. After these two years, the population is 207,000. What was the population at the beginning of the first year?",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think I should go backwards: first take away the 10% drop from 207,000, then take away the 15% rise. So 207,000 minus 10% is 186,300, then minus 15% of that is 158,355. Therefore the original population was 158,355."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student gave a specific numeric answer based on subtracting percentages, showing they think reversing a percentage change uses subtraction. Need to uncover their reasoning.",
+        "state": "Diagnosis",
+        "response": "Can you walk me through how you decided to subtract those percentages?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I figured that to undo a decrease, you subtract the same percentage, and to undo an increase, you also subtract that percentage."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student believes undoing a percentage change uses subtraction regardless of increase/decrease, indicating a misconception about inverse operations. Need to hint at correct inverse.",
+        "state": "Support",
+        "response": "A 10% decrease means the value becomes 90% of what it was; to get back to the original, what operation would you use on that 90% value?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "You would add 10% to it, because adding cancels the subtraction."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student thinks adding the same percentage reverses a decrease, which is incorrect; need to clarify the multiplicative inverse.",
+        "state": "Support",
+        "response": "If a number is 90% of the original, how do you recover the original number?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "You divide by 0.90. So 207,000 divided by 0.90 equals 230,000, which would be the population after the first year."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student correctly reversed the 10% decrease by division; now need to address the 15% increase reversal.",
+        "state": "Support",
+        "response": "A 15% increase makes the number 115% of the original; to go backwards, what should you do with the 115% value?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "You subtract 15% from it, because that undoes the increase."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student again tries to subtract the percentage to reverse an increase, showing persistent misconception about inverse operations. Need to guide them to division.",
+        "state": "Support",
+        "response": "If a value is 115% of the original, how do you find the original number?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "You divide by 1.15. So 230,000 divided by 1.15 equals 200,000. That must be the original population."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly computed the original by reversing each step individually. Now we can probe their understanding of the overall effect to see if they still think percentages add.",
+        "state": "Support",
+        "response": "When you apply a 15% increase followed by a 10% decrease, the overall change is found by multiplying the factors. What is the combined factor for these two changes?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "You just add the percentages: +15% and –10% gives a net +5% increase, so the combined factor is 1.05."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student reveals the additive misconception about net percent change, which needs correction. Need to hint at multiplicative combination.",
+        "state": "Support",
+        "response": "Actually, a 15% increase multiplies by 1.15 and a 10% decrease multiplies by 0.90; multiplying those gives the true overall factor. What do you get when you multiply 1.15 and 0.90?"
+      },
+      {
+        "turn": 15,
+        "speaker": "student",
+        "text": "1.15 × 0.90 = 1.035, so the overall increase is 3.5%. To get the original, divide 207,000 by 1.035 = 200,000. To reverse successive percent changes, divide by (1 ± percent/100) for each step, or divide the final amount by the product of the forward factors."
+      },
+      {
+        "turn": 16,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly explained the rule for reversing successive percentage changes in their own words, indicating mastery.",
+        "state": "Closing",
+        "response": "Nice, you've got it! Want to try another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "medium",
+      "student_level": "advanced",
+      "hint_frequency": "low",
+      "mistake_frequency": "medium",
+      "verbosity": "medium",
+      "difficulty": "hard"
+    },
+    "domain": "biology",
+    "topic": "Food chains and ecosystems",
+    "problem": "In a coastal marine ecosystem, phytoplankton produce 20,000 kcal of energy per square meter per year. Energy transfers between trophic levels with an average efficiency of 10%. A persistent pollutant biomagnifies with a factor of 5 at each trophic level, starting at a concentration of 0.02 ppm in phytoplankton. The trophic levels are: phytoplankton (primary producers), zooplankton (primary consumers), small fish (secondary consumers), large fish (tertiary consumers), seabirds (quaternary consumers).  (a) Calculate the energy available to seabirds.  (b) Calculate the pollutant concentration in seabirds.  (c) If the small fish population were removed, forcing seabirds to feed directly on zooplankton, how would the energy available to seabirds and the pollutant concentration change? Explain your reasoning.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think the energy available to seabirds is 20,000 kcal multiplied by 0.1 for each trophic level, but I added the percentages: 10% per level times 4 levels gives 40%, so 20,000 * 0.4 = 8,000 kcal."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "The student applied an additive approach to energy transfer, indicating a misunderstanding of how efficiency compounds across levels. I need to elicit their current thinking to diagnose the misconception.",
+        "state": "Diagnosis",
+        "response": "How did you approach calculating the energy available to seabirds?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I'm not sure if it's 8,000 kcal or 2 kcal; I tried multiplying each step and got 2, but I'm not confident."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "The student is uncertain between two possible energy values, showing they recognize the conflict but aren't sure which operation is correct. I'll guide them to consider what a 10% efficiency means mathematically.",
+        "state": "Support",
+        "response": "Think about what 10% efficiency means in practice. What operation would you use to go from one level's energy to the next?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "Each level you multiply by 0.1, so after four levels it's 20,000 * (0.1)^4 = 20,000 * 0.0001 = 2 kcal."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "The student correctly calculated the energy available to seabirds, showing they've grasped the compounding efficiency concept. Now I need to see how they approach the pollutant biomagnification problem.",
+        "state": "Diagnosis",
+        "response": "How would you calculate the pollutant concentration in seabirds given the biomagnification factor?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "I think the pollutant concentration in seabirds is 0.02 ppm times 5 = 0.1 ppm, because the factor is 5 per level but I think you only apply it once."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "The student applied the biomagnification factor only once, revealing a misunderstanding of how the factor accumulates across multiple trophic levels. I'll probe their reasoning to uncover the source of this error.",
+        "state": "Support",
+        "response": "Consider how a biomagnification factor of 5 would affect concentration as you move up each level. What would you expect to happen to the pollutant amount step by step?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "I'm not sure if I should multiply by 5 each level or just once."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "The student is unsure whether to apply the biomagnification factor once or repeatedly, indicating they're close to grasping the concept but need clarification on repeated application.",
+        "state": "Diagnosis",
+        "response": "If the pollutant biomagnifies by a factor of 5 at each trophic level, what would happen to the concentration after each step?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "You multiply by 5 for each trophic level: 0.02 * 5^4 = 0.02 * 625 = 12.5 ppm."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "The student has correctly solved both the energy and pollutant calculations, demonstrating competence with the quantitative steps. I'll now prompt them to articulate the underlying principles in their own words to internalize the concept.",
+        "state": "Synthesis",
+        "response": "Think about how energy and pollutants change as you move up the food chain. Can you explain in your own words how transfer efficiency and biomagnification work?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "Energy transfer efficiency means you multiply the energy at each step by 0.1, so after four steps you get 20,000*(0.1)^4 = 2 kcal. Biomagnification means you multiply the pollutant concentration by 5 at each step, so after four steps you get 0.02*5^4 = 12.5 ppm. If you removed a level, you'd have fewer steps, so energy would be higher and pollutant lower."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "The student has successfully explained the concepts of energy transfer efficiency and biomagnification in their own words, showing mastery of the material. The conversation can wrap up warmly.",
+        "state": "Closing",
+        "response": "Nice work! Ready for another problem?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "low",
+      "student_level": "advanced",
+      "hint_frequency": "medium",
+      "mistake_frequency": "low",
+      "verbosity": "low",
+      "difficulty": "medium"
+    },
+    "domain": "physics",
+    "topic": "Projectile motion basics",
+    "problem": "A ball is launched from ground level with an initial speed of 20 m/s at an angle of 30° above the horizontal. Determine the time of flight before it lands.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I know I need the vertical velocity, but I'm unsure how to find the time."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student identifies need for vertical component but is unsure about time calculation; need to elicit their approach.",
+        "state": "Diagnosis",
+        "response": "How would you start solving for the time using the vertical motion?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I think I should use y = v0y t - 0.5 g t^2 and set y=0."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student proposed correct equation; they need a hint to solve it.",
+        "state": "Support",
+        "response": "Think about what solving that equation for t looks like."
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "It gives t=0 or t = 2 v0y / g."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student derived the formula correctly; now need them to explain reasoning behind it.",
+        "state": "Synthesis",
+        "response": "Can you explain why the time of flight is given by 2*v0y/g?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "Because it takes v0y/g to go up and the same to come down, total 2v0y/g."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student explained the symmetry concept; now need them to compute numeric value.",
+        "state": "Support",
+        "response": "Now compute the vertical component using the launch angle."
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "v0y = 10 m/s, so time = 2*10/9.8 ≈ 2.04 s."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student calculated time; check if they consider any other factors.",
+        "state": "Diagnosis",
+        "response": "Does the launch angle affect the time in any other way?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "Only the vertical component matters; horizontal doesn't change time."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student affirmed that only vertical component matters; need to reinforce concept before closing.",
+        "state": "Support",
+        "response": "What part of the velocity influences the time?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "Only the vertical component matters; horizontal doesn't change time."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly explained the rule in their own words; conversation is complete.",
+        "state": "Closing",
+        "response": "Nice, you've got it! Want to try another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "low",
+      "student_level": "advanced",
+      "hint_frequency": "high",
+      "mistake_frequency": "high",
+      "verbosity": "medium",
+      "difficulty": "hard"
+    },
+    "domain": "biology",
+    "topic": "Punnett squares / genetics",
+    "problem": "In a plant, the gene for pigment synthesis (A) is linked to the gene for pigment intensity (B) with a recombination frequency of 20%. Allele A (pigment) is dominant to a (no pigment), and B (dark) is dominant to b (light), but B only shows its effect when at least one A allele is present (aa results in white flowers regardless of B). A true‑breeding dark plant (AABB) is crossed with a true‑breeding white plant (aabb). The F1 are self‑fertilized. What proportion of the F2 offspring will exhibit the light‑pigment phenotype?",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think the genes assort independently, so the classic 9:3:4 ratio applies. Light pigment is A_bb, which is 3/16 of the progeny."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student claimed independent assortment, ignoring the linkage information; need to elicit their thinking about why they dismissed linkage.",
+        "state": "Diagnosis",
+        "response": "You assumed independent assortment; recall that linked genes produce parental gametes more often than recombinants. What made you think linkage doesn't matter here?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I thought the genes were on different chromosomes, so I assumed each parental gamete type occurs 50% of the time and didn't factor in recombination."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student assumes equal 50% parental gametes, missing the effect of recombination frequency on gamete distribution.",
+        "state": "Support",
+        "response": "When genes are linked, the parental gametes are more frequent than recombinants; the recombination frequency tells you the proportion of crossovers."
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "I think the parental gametes each make up 80% of the total, and the two recombinant types each 10%."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student gave incorrect gamete frequencies; they need the correct formula linking recombination frequency to parental and recombinant gamete proportions.",
+        "state": "Support",
+        "response": "The parental gametes each occur at (1 − r)/2, and each recombinant at r/2. With r = 0.20, that’s 0.40 for each parental and 0.10 for each recombinant."
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "To get a white dwarf, I need both a and b alleles, so I multiplied the chance of getting an a allele (0.5) by the chance of getting a b allele (0.5) to get 0.25."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student incorrectly treats allele inheritance as independent when calculating the probability of aa bb; need to clarify that both alleles must come from the same ab gamete.",
+        "state": "Support",
+        "response": "To be aa bb, both gametes must carry a and b together, i.e., both must be the ab gamete. So the probability is (frequency of ab)^2, not the product of separate allele frequencies."
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "I think the light phenotype only comes from getting two Ab gametes, so its probability is (0.1)^2 = 0.01."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student’s calculation for the light phenotype is too narrow; they need to consider all ways to obtain bb and then exclude aa bb.",
+        "state": "Synthesis",
+        "response": "Think about how to get the bb genotype from the gamete pool, and then subtract the aa bb case. Explain how you would combine the gamete frequencies with the epistatic rule to find the fraction of light‑pigment plants."
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "Gamete frequencies: AB 0.4, ab 0.4, Ab 0.1, aB 0.1. bb chance = (0.4+0.1)^2 = 0.5^2 = 0.25. aa bb needs both ab gametes: 0.4^2 = 0.16. Light = A_bb = bb - aa bb = 0.25 - 0.16 = 0.09 = 9/100."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly explained how to derive the light‑pigment proportion using linkage and epistasis, indicating mastery of the concept.",
+        "state": "Closing",
+        "response": "Nice work! You've clearly linked the gamete frequencies to the epistatic rule. Feel free to try another problem whenever you're ready."
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "low",
+      "student_level": "advanced",
+      "hint_frequency": "low",
+      "mistake_frequency": "medium",
+      "verbosity": "high",
+      "difficulty": "hard"
+    },
+    "domain": "history_and_social_studies",
+    "topic": "Timeline reasoning",
+    "problem": "A historian has four events with the following approximate dates: the completion of the Parthenon (432 BCE), the death of Alexander the Great (323 BCE), the founding of the Library of Alexandria (283 BCE), and the Battle of Cannae (216 BCE). Three statements relate these events:\n\n1. The Parthenon was completed 100 years before Alexander’s death.\n2. The Library of Alexandria was founded 40 years after Alexander’s death.\n3. The Battle of Cannae occurred 67 years after the founding of the Library.\n\nOne of these statements is incorrect. Identify which statement is false and then place the four events in correct chronological order from earliest to latest.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I looked at the three statements and tried to match them to the dates. The Library of Alexandria is said to have been founded in 283 BCE, and Alexander died in 323 BCE. If the Library was founded 283 BCE and Alexander died 323 BCE, that means the Library came about 40 years before his death, not after. So statement 2, which says the Library was founded 40 years after Alexander's death, must be false. I haven't checked the others yet."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "The student has expressed a definite but incorrect belief about the direction of time between the Library founding and Alexander's death, revealing a misunderstanding of how to compute intervals when both dates are BCE. This calls for a diagnostic question to elicit their reasoning process.",
+        "state": "Diagnosis",
+        "response": "You mentioned that you think statement 2 is false because you believe the Library was built before Alexander died; can you explain how you calculated the years between those two events to see if the 40-year claim fits? Please walk me through your thinking step by step."
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "Oh, I see where I went wrong - I subtracted the years the wrong way. Alexander died in 323 BCE and the Library opened in 283 BCE, so that's actually 40 years after his death, making statement 2 correct. Now looking at statement 1, the Parthenon was finished in 432 BCE and Alexander died in 323 BCE; that's a difference of exactly 100 years, so statement 1 must be the true one, and therefore the false statement has to be either 2 or 3."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "The student has now corrected their first mistake but introduced a second explicit error, claiming that the Parthenon–Alexander interval is exactly 100 years. This misconception needs a minimal hint to redirect their attention to the correct subtraction method for BCE dates.",
+        "state": "Support",
+        "response": "Remember that when both dates are BCE, the larger number actually represents the earlier year, so to find the interval you subtract the smaller number from the larger one; try applying that to the Parthenon and Alexander's dates and see what you get. and then compare the result to the claimed 100 years."
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "Thanks for the hint. I redid the calculation: 432 BCE minus 323 BCE equals 109 years, not 100, so statement 1 is actually false. Since statements 2 and 3 both match their claimed intervals (323-283 = 40 and 283-216 = 67), the only false statement is statement 1. That means the correct chronological order is Parthenon (432 BCE), Alexander's death (323 BCE), Library founding (283 BCE), and Battle of Cannae (216 BCE)."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "The student has now identified the false statement and given the correct order, showing they have overcome both earlier mistakes. To deepen their understanding, I ask them to articulate the explicit steps they used, which will reveal whether they have internalized the rule.",
+        "state": "Diagnosis",
+        "response": "You've just walked through the math and concluded that statement 1 doesn't fit; can you describe the exact steps you took to compare each claim with the dates, and why you felt confident that statements 2 and 3 were correct? Please give a detailed explanation as if you were teaching a friend."
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "Sure. For each statement I took the two years given, identified which was the earlier (the larger BCE number), subtracted the later year from the earlier to get the span, and then compared that span to the number claimed in the statement. If they matched, the statement was consistent; if not, it was inconsistent. Applying this, statement 1 gave 432-323 = 109, which does not equal the claimed 100, so it's inconsistent; statement 2 gave 323-283 = 40, matching the claim; statement 3 gave 283-216 = 67, also matching. Hence only statement 1 is false."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "The student has clearly described a correct procedure for checking the three statements. This indicates they are ready to generalize the method into a rule. I ask them to formulate the general rule in their own words, moving toward synthesis.",
+        "state": "Diagnosis",
+        "response": "You've described a clear procedure that works for all three statements; based on that, what would you say is the general rule for checking whether a claim about years between two historical events is accurate? Please explain it in your own words, as if you were teaching the method to someone new."
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "I'd look at the two dates, decide which event came first, then subtract the later date's number from the earlier date's number to get the span, and finally check whether that span matches the number given in the statement. If it matches, the statement is true; if not, it's false."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "The student has articulated a correct rule for BCE-only cases but has not yet addressed potential complications when dates cross the BCE/CE boundary. A diagnostic probe will elicit whether they recognize the need for adjustment, while still keeping the focus on self‑explanation.",
+        "state": "Diagnosis",
+        "response": "That's a solid description; does this approach also work when one date is BCE and the other is CE, or do you need to adjust anything to get the right span? Please explain why or why not, and give a quick example if you can."
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "When both dates are BCE, the method works exactly as I said: find the earlier (larger BCE), subtract the later from the earlier, and compare. If one date is BCE and the other CE, you need to adjust for the lack of a year zero—for instance, you can add the absolute values of the two years and then subtract one to get the correct span."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "The student has now explained how to handle both BCE‑BCE and BCE‑CE cases, showing a complete grasp of the underlying principle. I prompt them to state the rule concisely in their own words, which will serve as the synthesis turn where they internalize the concept.",
+        "state": "Synthesis",
+        "response": "You've just spelled out the rule clearly for BCE dates; now, in your own words, state the exact rule you would use to verify any claim about the time span between two events, as if you were writing it down for a study guide."
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "To check a claim about how many years lie between two historical events, first determine which event happened earlier; if both dates are BCE, the earlier one has the larger BCE number. Subtract the later date's number from the earlier date's number to get the span. Then compare that span to the number given in the claim—if they're equal, the claim is true; otherwise it's false."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "The student has successfully explained the rule for verifying timeline claims in their own words, demonstrating mastery of the concept. The conversation can now close with a brief, encouraging wrap‑up.",
+        "state": "Closing",
+        "response": "Nice work! You've clearly explained how to verify timeline claims. Want to try another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "high",
+      "student_level": "intermediate",
+      "hint_frequency": "medium",
+      "mistake_frequency": "low",
+      "verbosity": "high",
+      "difficulty": "medium"
+    },
+    "domain": "quantitative_aptitude",
+    "topic": "Ratio and proportion",
+    "problem": "A mixture contains alcohol and water in the ratio 4:3. If 5 liters of water is added, the ratio becomes 4:5. Find the original quantity of alcohol.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think the original amounts are 4x alcohol and 3x water. After adding 5 liters of water, water becomes 3x+5, and the ratio is 4:(3x+5) = 4:5. I'm not sure how to solve for x."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student set up unknowns but stuck on forming equation; need to see their approach.",
+        "state": "Diagnosis",
+        "response": "Could you walk me through how you translated the ratio details into an algebraic expression? I’m interested in seeing how you represented the original alcohol and water quantities with a variable, and how you incorporated the added water to form the proportion you intended to solve."
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I wrote 4/(3x+5) = 4/5, then cross-multiplying gives 4*5 = 4*(3x+5) => 20 = 12x+20 => 12x = 0 => x=0. That doesn’t make sense."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student made error omitting x in alcohol term; need to hint to check alcohol representation.",
+        "state": "Support",
+        "response": "When you look at the ratio 4:3, what does the '4' actually stand for in terms of the alcohol quantity? And similarly, what does the '3' represent for water before we add anything? Think about how these parts relate to a common multiplier that scales the ratio to actual liters."
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "Alright, the alcohol amount should be 4x, not just 4. So the equation is 4x/(3x+5) = 4/5. Cross-multiplying: 5*4x = 4*(3x+5) => 20x = 12x + 20 => 8x = 20 => x = 20/8 = 2.5. Therefore, the original alcohol is 4x = 4*2.5 = 10 liters."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student obtained answer; need to verify they checked correctness.",
+        "state": "Diagnosis",
+        "response": "Now that you have a value for x, could you substitute it back into the expressions for alcohol and water, then check whether the new ratio after adding 5 liters of water truly becomes 4:5? Take a moment to compute the actual amounts and see if they simplify to the expected ratio."
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "If x = 2.5, then alcohol = 4*2.5 = 10 liters, original water = 3*2.5 = 7.5 liters. After adding 5 liters, water = 7.5 + 5 = 12.5 liters. The ratio of alcohol to water is 10:12.5, which simplifies to dividing both by 2.5 gives 4:5, matching the new ratio."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student verified answer; now we can deepen understanding of multiplier concept.",
+        "state": "Support",
+        "response": "You mentioned using a common multiplier x; could you explain what this multiplier signifies in the context of ratios, and how changing the amount of water added would affect the value of x while keeping the alcohol amount unchanged? Think about whether x would increase, decrease, or stay the same, and why."
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "The multiplier x tells us how many times the basic ratio parts are repeated to get the actual amounts. If we add more water, the water part grows while alcohol stays the same, so x must stay the same for alcohol but the water part becomes 3x+added, changing the ratio."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student explained multiplier; now need them to articulate the rule/steps in own words.",
+        "state": "Synthesis",
+        "response": "Now that we’ve worked through the problem, could you summarize the step‑by‑step method you used to solve ratio‑change problems like this one, explaining each part in your own words as if you were teaching a classmate? Feel free to mention how you set up the variable, formed the equation, solved for the multiplier, and found the final quantity."
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "To solve these problems, I first assign a variable to the common multiplier so each part of the ratio becomes a multiple of that variable. I set up an equation using the given ratio after the change, cross‑multiply to find the multiplier, and then multiply back to get the original quantity asked for."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly explained the concept; conversation wraps up.",
+        "state": "Closing",
+        "response": "You've done a great job breaking down the problem, setting up the variable, checking your work, and explaining the method clearly. Keep practicing these steps, and feel free to ask if you'd like another challenge."
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "low",
+      "student_level": "beginner",
+      "hint_frequency": "medium",
+      "mistake_frequency": "high",
+      "verbosity": "low",
+      "difficulty": "easy"
+    },
+    "domain": "economics_and_finance",
+    "topic": "Supply and demand",
+    "problem": "Suppose the market for coffee has demand Qd = 100 - 2P and supply Qs = 20 + 3P. Find the equilibrium price and quantity.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I'm not sure how to find equilibrium price and quantity."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student shows uncertainty about starting point; need to elicit their understanding of equilibrium.",
+        "state": "Diagnosis",
+        "response": "What does equilibrium mean in a market?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I think we set supply equal to zero to find the price."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student incorrectly believes setting supply to zero yields equilibrium; need to clarify equilibrium concept.",
+        "state": "Support",
+        "response": "Equilibrium is where quantity supplied equals quantity demanded."
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "Oh, maybe I set demand equal to zero: 100 - 2P = 0."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student repeats the zero‑setting misconception, now with demand; need to restate the equilibrium condition.",
+        "state": "Support",
+        "response": "To find equilibrium, set the two quantities equal: Qd = Qs."
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "So 100 - 2P = 20 + 3P."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly set up the equilibrium equation; now guide them to solve for P.",
+        "state": "Support",
+        "response": "Now solve for P by getting P on one side."
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "I subtract 20 from both sides and get 80 = P."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student made an algebraic error when subtracting 20; need to check their step.",
+        "state": "Diagnosis",
+        "response": "If we subtract 20 from both sides, what does the left side become?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "It becomes 80 - 2P = 3P."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has a correct intermediate expression; next step is to isolate P.",
+        "state": "Support",
+        "response": "Add 2P to both sides, then divide by 5 to get P, then plug back to find Q."
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "Price is 16, quantity is 68."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student has reached the correct numeric answer; now prompt them to articulate the method in their own words.",
+        "state": "Synthesis",
+        "response": "In your own words, explain how we found equilibrium price and quantity."
+      },
+      {
+        "turn": 15,
+        "speaker": "student",
+        "text": "We set demand equal to supply, solved for price, then used that price to get quantity."
+      },
+      {
+        "turn": 16,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly explained the rule; conversation is complete.",
+        "state": "Closing",
+        "response": "Nice, you've got it! Want to try another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "medium",
+      "student_level": "advanced",
+      "hint_frequency": "high",
+      "mistake_frequency": "medium",
+      "verbosity": "medium",
+      "difficulty": "hard"
+    },
+    "domain": "computer_science_light",
+    "topic": "Binary number conversion",
+    "problem": "Represent the decimal number -5 in an 8-bit two's complement binary form, and then find the decimal value of the binary number you obtained if it were interpreted as an unsigned 8-bit integer.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think -5 in 8-bit two's complement is just the sign bit plus magnitude: 1 followed by the binary of 5, which is 0000101, so the whole thing is 10000101."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "The student gave a sign‑magnitude answer, indicating they conflated that representation with two's complement; I need to uncover their reasoning to address the misconception.",
+        "state": "Diagnosis",
+        "response": "Can you explain how you arrived at the idea that using just the sign bit plus the magnitude yields the correct two's complement representation for -5?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I take the magnitude 5, write it as 00000101, flip all bits to get 11111010, and I think that's the two's complement."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "The student omitted the final '+1' step after inverting bits, showing a partial grasp of the two's complement algorithm; I hint at the missing step to prompt correction.",
+        "state": "Support",
+        "response": "Remember, after inverting the bits you must add 1 to complete the two's complement step. What do you get when you add 1 to 11111010?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "Adding 1 to 11111010 gives 11111011, so that should be the two's complement of -5."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "The student now has the correct two's complement pattern; to reinforce understanding of representation, I ask them to interpret the same bits as an unsigned integer.",
+        "state": "Support",
+        "response": "To read an unsigned binary, each bit stands for a power of two starting from the right. What is the sum for 11111011?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "128+64+32+16+8+0+2+1 equals 251, so the unsigned value is 251."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "The student correctly computed the unsigned value; I now check whether they recognize the additive inverse property of two's complement by asking about the sum of a number and its complement.",
+        "state": "Diagnosis",
+        "response": "If you add the binary representation of -5 in two's complement to the binary representation of +5, what result should you expect, ignoring any overflow bit that extends beyond the eighth position?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "Adding 11111011 (which is -5) to 00000101 (+5) gives 1 00000000; dropping the overflow bit leaves 0, so they cancel out."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "The student demonstrated that a number and its two's complement sum to zero, indicating solid grasp; I prompt them to articulate the conversion rule in their own words to internalize the concept.",
+        "state": "Support",
+        "response": "In your own words, how would you describe the process for converting a negative decimal number to its two's complement binary form?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "To get the two's complement of a negative number, first write the absolute value in binary using the needed bits, then flip every bit, and finally add one to the result."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "The student has successfully explained the two's complement conversion rule, showing mastery; I wrap up the session warmly.",
+        "state": "Closing",
+        "response": "Nice, you've got it! Want to try another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "medium",
+      "student_level": "intermediate",
+      "hint_frequency": "medium",
+      "mistake_frequency": "medium",
+      "verbosity": "high",
+      "difficulty": "hard"
+    },
+    "domain": "history_and_social_studies",
+    "topic": "Cause-and-effect in historical events",
+    "problem": "Explain the causal chain linking the Seven Years' War (1756-1763) to the outbreak of the American Revolutionary War in 1775. Identify at least three intermediate steps and describe how each step contributed to the next.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think the Seven Years' War caused the American Revolution because Britain needed to pay off war debts, so they imposed taxes on the colonies almost immediately, and the colonists, furious about being taxed without representation, declared independence right away. That seems like the most direct cause."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student asserted an immediate link between taxation and independence, indicating a misunderstanding of the timeline; need to elicit their reasoning about intermediate steps.",
+        "state": "Diagnosis",
+        "response": "You mentioned that the war's debt led to immediate taxation and that the colonists declared independence right away; I'm curious about how you think the timeline unfolded between the war's end in 1763 and the actual declaration of independence in 1776—what events or steps do you imagine happened in between?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I believe that once the Stamp Act was passed, the colonies immediately united to form the Continental Congress, and they began fighting the British almost right away. I think there wasn't much delay between the act and the outbreak of hostilities; the Stamp Act seems to be the spark that directly led to the war."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student claimed immediate war after the Stamp Act, overlooking years of colonial protest and British response; need to provide a hint about intervening events.",
+        "state": "Support",
+        "response": "It's true that the Stamp Act provoked strong colonial protest, but there were several years of debate, boycotts, and British responses before fighting broke out, including the Townshend Acts, the Boston Massacre, and the Tea Party. Can you describe how each of those events contributed to the growing tension and what happened after the Tea Party that moved the colonies closer to war?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "I recall that after the Stamp Act there were protests like the Stamp Act Congress, then the Townshend Acts led to more boycotts, the Boston Massacre in 1770 raised tensions, and the Tea Party in 1773 prompted the Coercive Acts. I think these steps built up to war, but I'm not sure how exactly they led to the fighting."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student listed several pre-war events but seemed uncertain about how they led to actual fighting; need to hint at the Coercive Acts and First Continental Congress as immediate precursors.",
+        "state": "Support",
+        "response": "You mentioned the Coercive Acts—those were Britain's response to the Tea Party and led directly to the First Continental Congress in 1774. What do you think happened after the Congress that moved the colonies toward actual combat, such as militia preparations or British military actions?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "After the First Continental Congress, the colonies agreed to boycott British goods and began stockpiling weapons and forming militias. Britain, seeing this as rebellion, decided to seize the colonial arsenal at Concord, which led to the battles of Lexington and Concord in April 1775—those clashes are generally considered the start of the Revolutionary War."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student has outlined a plausible chain of events but needs to articulate the full causal link; appropriate to check their ability to connect each step.",
+        "state": "Diagnosis",
+        "response": "Based on what you've described so far—starting with the war's debt, moving through taxes, protests, the Coercive Acts, and the First Continental Congress—can you walk me through the full causal chain from the war's conclusion in 1763 to the first battles at Lexington and Concord in 1775, explaining how each step leads to the next?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "Sure. The Seven Years' War left Britain with huge debt, so Parliament imposed taxes like the Stamp Act and Townshend Acts to raise revenue. Colonists protested, boycotted, and occasionally clashed, leading to events such as the Boston Massacre and the Tea Party. Britain responded with the Coercive Acts, which prompted the First Continental Congress to organize resistance and prepare militias. When Britain tried to seize militia supplies at Concord, the battles of Lexington and Concord began the war."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly described the causal chain; now prompt them to express the underlying principle of cause-and-effect in their own words.",
+        "state": "Synthesis",
+        "response": "You've clearly linked the war's financial aftermath to colonial resistance, showing how each British measure—from taxation to protests to legislative responses—sparked a colonial reaction that escalated tensions over a decade. In your own words, what's the core idea for identifying cause-and-effect in historical events?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "The key idea is that you can't just jump from an early event to a later outcome; you need to show how each step leads to the next through clear mechanisms or reactions, like policies causing protests, which then cause further policies, and so on, until you reach the outcome."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has successfully explained the cause-and-effect principle, indicating mastery and readiness to wrap up.",
+        "state": "Closing",
+        "response": "Great job working through that causal chain; you've shown how to trace complex historical events step by step, linking policies, protests, and responses. Keep practicing this kind of analysis, and let me know if you want to tackle another historical cause-and-effect problem. Feel free to share your thoughts on any other event you find interesting."
+      }
+    ]
+  }
+]

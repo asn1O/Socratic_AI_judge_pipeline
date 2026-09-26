@@ -1,0 +1,1451 @@
+[
+  {
+    "config": {
+      "socratic_level": "medium",
+      "student_level": "advanced",
+      "hint_frequency": "low",
+      "mistake_frequency": "medium",
+      "verbosity": "high",
+      "difficulty": "hard"
+    },
+    "domain": "computer_science_light",
+    "topic": "Binary number conversion",
+    "problem": "Convert the 8-bit fixed-point two's complement binary number 10110100 to decimal, where the format uses 4 integer bits and 4 fractional bits.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "Okay, so we have the 8-bit pattern 10110100. The problem says it's a fixed-point two's complement number with four integer bits and four fractional bits. The most significant bit is 1, which in two's complement means the number is negative. I know I need to find the magnitude by doing the two's complement negation: invert all bits and add one. Then I have to interpret the result with the binary point between the fourth and fifth bits. Let me try to work through it step by step."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student has identified sign and overall process but hasn't demonstrated the two's complement steps or fixed-point scaling. Need to elicit their exact procedure.",
+        "state": "Diagnosis",
+        "response": "You've correctly identified the sign and the overall process. Can you walk me through exactly how you would perform the two's complement negation on the full 8-bit pattern, and then how you would apply the fixed-point scaling to get the decimal value? I'm interested in seeing each step you'd take, including how you handle the inversion and addition, and where the binary point fits in that process."
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "Sure. First, I invert every bit of 10110100, which gives me 01001011. Then I think I'm supposed to add one to that inverted pattern, but I'm not entirely sure if that addition applies to the whole 8-bit word or just the integer portion. For now, I'll skip the addition and just split the inverted bits 01001011 into the integer part 0100 and the fractional part 1011. The integer part 0100 is 4 in decimal. The fractional part 1011: the first bit is 1 for one-half, the second is 0 for one-quarter, the third is 1 for one-eighth, the fourth is 1 for one-sixteenth. So that's 0.5 + 0.125 + 0.0625 = 0.6875. So the magnitude would be 4.6875, and with the negative sign the answer is -4.6875."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student correctly inverted bits but omitted the crucial add-one step in two's complement negation. Need to prompt for that step without giving it away.",
+        "state": "Support",
+        "response": "You've done the inversion correctly, but there's a key step in two's complement negation that you missed after inverting. What operation must you perform on the inverted bits to complete the two's complement process? Remember, the goal is to get the positive magnitude of the negative number."
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "Oh, right, I need to add one to the inverted bits. So 01001011 plus 1 equals 01001100. Now I split that into integer 0100 and fractional 1100. The integer part is still 4. For the fractional part 1100, the bits are: first 1 -> 1/2, second 1 -> 1/4, third 0 -> 0, fourth 0 -> 0. That sums to 0.75. So the magnitude is 4.75, making the value -4.75. That seems consistent."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly performed two's complement and fixed-point split, arriving at -4.75. Now need to probe their understanding of why the scaling factor is 2^-4.",
+        "state": "Diagnosis",
+        "response": "You've arrived at -4.75. Can you explain why the scaling factor is 2^-4 and not something else, given the four integer and four fractional bits? Think about how the binary point position determines the weight of the least significant bit."
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "The scaling factor is 2^-4 because there are four fractional bits. But wait, the integer part also uses four bits, so the total bits are eight. Actually the scaling factor is 2^-4 because the binary point is after the fourth bit from the left. But I think the scaling factor should be 2^-3 because the most significant bit is the sign bit and doesn't count as an integer bit? In two's complement fixed-point, the sign bit is part of the integer bits, so we have three integer bits plus a sign bit? That would make the scaling factor 2^-4 still? I'm confused. Let's say the scaling factor is 2^-3, then the value would be -76/8 = -9.5. That seems wrong. But I'm not sure."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student incorrectly thinks the sign bit reduces the integer bit count, leading to wrong scaling factor. Need to clarify the format definition.",
+        "state": "Support",
+        "response": "Let's look at the format again: four integer bits and four fractional bits. The sign bit is the most significant of the integer bits. How many integer bits are there including the sign bit? And how does that determine the position of the binary point?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "There are four integer bits total, including the sign bit. So the binary point is after the fourth bit. That means the least significant bit has weight 2^-4. So scaling factor is 2^-4. My earlier thought about 2^-3 was mistaken. So -4.75 is correct."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student corrected scaling factor. Now need to ensure they understand why two's complement on the whole word works for fixed-point.",
+        "state": "Diagnosis",
+        "response": "Good. Now, why does performing two's complement negation on the whole 8-bit pattern give the correct fixed-point magnitude? Consider how the integer representation and the scaling factor interact. Think about the relationship between the integer two's complement value and the fixed-point scaling."
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "Because the fixed-point representation is just an integer scaled by a power of two. The 8-bit pattern represents the integer -76 in two's complement. Since we have four fractional bits, the scaling factor is 2^-4 = 1/16. So the value is -76 * 1/16 = -4.75. The binary point doesn't move because the scaling factor is constant; we're just interpreting the same bit pattern as an integer and then dividing by 16. The two's complement negation on the integer level automatically accounts for the fractional bits because they're part of the integer representation."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has demonstrated full understanding. Now ask them to articulate the general rule.",
+        "state": "Synthesis",
+        "response": "You've got the core ideas down. In your own words, what's the general rule for converting a fixed-point two's complement binary number to decimal? Try to state it as a clear procedure. I want to hear you summarize the steps without referencing this specific example."
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "The rule is: treat the entire bit pattern as a signed integer in two's complement, compute its decimal value, then multiply by 2 raised to the negative number of fractional bits. Essentially, you interpret the bits as an integer, apply two's complement if the sign bit is 1, and then scale by the fixed-point factor."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly explained the conversion rule in their own words. Conversation can close.",
+        "state": "Closing",
+        "response": "Nice, that's exactly it! You've nailed the conversion process. Ready to try another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "low",
+      "student_level": "beginner",
+      "hint_frequency": "high",
+      "mistake_frequency": "low",
+      "verbosity": "medium",
+      "difficulty": "medium"
+    },
+    "domain": "logic_and_puzzles",
+    "topic": "Blood relations",
+    "problem": "A is the brother of B. C is the daughter of B. D is the father of A. How is C related to D?",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I'm not sure how to start. A is brother of B, C is daughter of B, D is father of A. How is C related to D? I think maybe C is niece? But not sure."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student shows confusion about where to begin and guesses 'niece'. Need to elicit their understanding of sibling and parent relationships.",
+        "state": "Diagnosis",
+        "response": "Let's break it down. First, 'A is the brother of B' means they share the same parents. What does that tell us about D?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "It means they share the same parents."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student correctly identifies that siblings share parents. Now guide them to connect D as father of both A and B.",
+        "state": "Support",
+        "response": "Exactly. Since D is the father of A, D is also the father of B. Now, C is the daughter of B. So what is C to D?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "So C is the granddaughter of D?"
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student arrives at the correct relationship. Confirm and reinforce the generational link.",
+        "state": "Support",
+        "response": "Yes, C is the granddaughter of D. Because D is the grandfather of C. Let's check: D -> B -> C."
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "Okay, I think I get it. But what if the genders were different? Would it change?"
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student asks about gender effect, showing engagement but also uncertainty about terminology. Clarify that generational link is unchanged.",
+        "state": "Diagnosis",
+        "response": "Good question. The relationship term changes with gender, but the generational link stays the same. If C were male, the term would be grandson. What do you think?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "Then C would be grandson."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student correctly identifies gender-specific term. Emphasize the core principle of identifying generations.",
+        "state": "Support",
+        "response": "Right. The term changes with gender, but the generational link stays the same. So the key is identifying the generations: D is parent of B, B is parent of C."
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "So the rule is: find the common ancestor and count generations."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student summarizes the principle. Prompt them to articulate it fully in their own words.",
+        "state": "Synthesis",
+        "response": "That's a good summary. The rule is to identify the common ancestor and count generations. Can you put that into your own words as a general rule for solving blood relation problems?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "The rule is to map out the family tree, find the common ancestor, and count the generations between them to determine the relationship."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly explained the concept in their own words. Conversation is ready to close.",
+        "state": "Closing",
+        "response": "Great job! You've got it. Ready for another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "high",
+      "student_level": "intermediate",
+      "hint_frequency": "high",
+      "mistake_frequency": "low",
+      "verbosity": "high",
+      "difficulty": "medium"
+    },
+    "domain": "everyday_reasoning",
+    "topic": "Comparing loan/interest offers",
+    "problem": "You are comparing two loan offers for $10,000 over 3 years. Offer A: 5% annual simple interest. Offer B: 4.5% annual interest compounded monthly. Which offer results in lower total repayment, and by how much?",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "For Offer A, I'd take the principal of $10,000 and multiply it by the annual rate of 0.05 and then by 3 years, which gives $1,500 in interest, so the total repayment would be $11,500. For Offer B, I think the formula is principal times (1 plus annual rate divided by 12) raised to the power of 36, so $10,000 times (1 + 0.045/12)^36. But I'm not sure if the rate should be 0.045 or 4.5% as a decimal, and whether the exponent is 36 or 3 years."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student showed partial understanding of simple interest but uncertainty about compound interest formula; need to diagnose their current approach before guiding.",
+        "state": "Diagnosis",
+        "response": "Could you walk me through how you would compute the total repayment for Offer A step by step, and then tell me what you think the compound interest formula looks like for Offer B, including how you'd handle the monthly periods and the exponent, so I can see exactly where you're confident and where you might want a hint?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "For Offer A, I'd take the principal of $10,000 and multiply it by the annual rate of 0.05 and then by 3 years, which gives $1,500 in interest, so the total repayment would be $11,500. For Offer B, I think the formula is principal times (1 plus annual rate divided by 12) raised to the power of 36, so $10,000 times (1 + 0.045/12)^36. But I'm not sure if the rate should be 0.045 or 4.5% as a decimal, and whether the exponent is 36 or 3 years."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student correctly set up simple interest and identified compound formula structure but unsure about rate decimal and exponent; provide targeted hint.",
+        "state": "Support",
+        "response": "You've got the simple interest calculation exactly right. For the compound offer, what does the 0.045 represent in the formula, and how many compounding periods are there in total over three years if it's monthly? Also, does the exponent you wrote match the number of periods, and why is it important that the periodic rate and the number of periods align?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "0.045 is the annual rate expressed as a decimal, and there are 12 months per year times 3 years, which equals 36 compounding periods, so the exponent should be 36. I think I had that right. When I calculate (1 + 0.045/12)^36, I get about 1.144, so the total comes out to roughly $11,440. That seems lower than $11,500, but I'm not fully confident in my calculator work and want to double-check."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student correctly identified periods and computed approximate factor; need to verify calculation steps.",
+        "state": "Support",
+        "response": "That sounds like the right number of periods. How did you arrive at the 1.144 factor? Could you show me the intermediate step of 0.045 divided by 12, and then how you raised it to the 36th power, maybe using a calculator or an approximation method, so I can verify that the periodic rate and exponent are being applied correctly?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "I did 0.045 divided by 12, which gives 0.00375, then I computed 1.00375 raised to the 36th power. On my phone calculator, 1.00375^36 equals 1.1442, so the total repayment is $10,000 times 1.1442, which is $11,442. So Offer B is about $58 cheaper than Offer A. But I'm wondering if there are any fees or other factors not mentioned in the problem that could change the comparison."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student computed both totals correctly and compared; now guide toward articulating general comparison principle.",
+        "state": "Support",
+        "response": "Great, your calculation looks correct. Now, if you were explaining to a friend how to decide between two loans like this, what general steps would you tell them to follow to ensure they're comparing the true total cost, and why is it important to use the appropriate interest formula for each offer rather than just comparing the nominal rates?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "I'd say first compute the total repayment for each loan using the appropriate interest formula: simple interest for simple, compound for compound. Then compare the totals directly. Also check for any extra fees or prepayment penalties that aren't reflected in the interest rate, because those can affect the true cost. Finally, make sure the time periods and compounding frequencies are aligned so the comparison is fair."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student articulated steps for comparing loans; now prompt to internalize the key principle.",
+        "state": "Synthesis",
+        "response": "In your own words, what's the key principle that lets you compare loans with different interest structures, and why is it important to bring everything to a common total repayment figure rather than just looking at the advertised annual percentage rate? Can you articulate that principle clearly so it becomes a reliable mental shortcut for any future loan decision?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "The principle is that you need to calculate the full amount you'll pay back over the life of the loan, including all interest, so you're comparing apples to apples. Different compounding methods can make a lower nominal rate actually cost more or less, so you have to compute the total repayment for each option and then compare those totals directly to see which is truly cheaper."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student gave a good explanation of the principle; ask for a concise summary to solidify.",
+        "state": "Synthesis",
+        "response": "That's a solid explanation. Can you summarize the rule in a single sentence that you could use as a quick check for any future loan comparison, capturing the need to compute total repayment using the correct formula for each loan's interest structure, and also mention why nominal rates alone can be misleading?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "Always compute the total repayment amount for each loan option using its specific interest formula, then compare those totals directly to see which is cheaper, because nominal rates don't account for compounding frequency or fees, and only the full repayment figure gives a true apples-to-apples comparison. That's the rule I'll use from now on."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly explained the concept in their own words, so the conversation can close warmly.",
+        "state": "Closing",
+        "response": "Nice, that's exactly it! You've got a reliable method for comparing loans now. Ready for another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "low",
+      "student_level": "beginner",
+      "hint_frequency": "medium",
+      "mistake_frequency": "high",
+      "verbosity": "medium",
+      "difficulty": "easy"
+    },
+    "domain": "history_and_social_studies",
+    "topic": "Comparing political systems",
+    "problem": "Identify two key differences between a democracy and an authoritarian government.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think a democracy is where people vote, but I'm not sure what makes an authoritarian government different."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student knows voting is part of democracy but is unclear on authoritarian systems. Need to elicit more about their current understanding.",
+        "state": "Diagnosis",
+        "response": "In a democracy, leaders are chosen through free, fair elections. Can you tell me what you know about how leaders are chosen in an authoritarian system?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "In an authoritarian government, the leader is elected by the military."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student incorrectly thinks the military elects the leader. Need to guide with a hint about party competition.",
+        "state": "Support",
+        "response": "Actually, authoritarian leaders often seize power without competitive elections. Hint: think about whether multiple political parties are allowed to compete."
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "I don't really get what that means. Does that mean there are no parties at all?"
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student is confused about party systems in authoritarian regimes. Provide clarification and pivot to civil liberties.",
+        "state": "Support",
+        "response": "In many authoritarian systems, only one party is legal or opposition is banned. So, what about civil liberties like free speech and a free press?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "Authoritarian governments have free speech and a free press."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student asserts a wrong claim about civil liberties. Correct directly and ask for another difference.",
+        "state": "Support",
+        "response": "Authoritarian regimes typically restrict free speech and control the media. Democracies protect these rights. Can you think of another key difference?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "But authoritarian governments still allow some free speech, don't they?"
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student resurfaces the earlier misconception about free speech. Reinforce the distinction and introduce rule of law as a key difference.",
+        "state": "Support",
+        "response": "Authoritarian regimes may tolerate limited dissent but generally control media and suppress opposition. A key difference is rule of law: in democracies, laws bind leaders too. What else distinguishes them?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "So democracies have free elections, protected civil liberties, and rule of law, while authoritarian systems lack these."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly identified the main differences. Move to synthesis to have them articulate the concept in their own words.",
+        "state": "Synthesis",
+        "response": "Exactly. Now, in your own words, how would you summarize the main distinctions between a democracy and an authoritarian government?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "A democracy lets people choose leaders through fair elections, guarantees freedoms like speech and press, and follows rule of law. An authoritarian government concentrates power, limits freedoms, and doesn't hold leaders accountable."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly explained the concept in their own words. Conversation is ready to close.",
+        "state": "Closing",
+        "response": "Great job! You've got it. Ready for another comparison?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "medium",
+      "student_level": "advanced",
+      "hint_frequency": "low",
+      "mistake_frequency": "high",
+      "verbosity": "high",
+      "difficulty": "hard"
+    },
+    "domain": "language_and_grammar",
+    "topic": "Parts of speech",
+    "problem": "Identify the part of speech of each word in the sentence: 'The complex houses married and single soldiers and their families.' Explain your reasoning for each word, especially 'complex', 'houses', 'married', and 'single'.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "Okay, so I'll start with 'The' — that's a determiner. 'Complex' seems like an adjective describing 'houses', so 'complex' is an adjective, 'houses' is a plural noun. Then 'married' looks like the main verb, past tense. 'And' is a conjunction. 'Single' could be an adjective or maybe another verb? 'Soldiers' is a noun, 'their' is a possessive pronoun, 'families' is a noun. But I'm not totally sure about 'single' and 'married'."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student gave a full parse but with several category assignments that don't align with the sentence's actual structure; need to understand their basis for each decision before guiding.",
+        "state": "Diagnosis",
+        "response": "Thanks for walking through that. Can you tell me more about how you decided that 'complex' is an adjective and 'houses' is a noun? What syntactic cues are you using?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "Well, 'complex' comes right before 'houses', and adjectives often precede nouns. Also 'houses' is plural, so it feels like the head noun of the subject phrase. Then 'married' follows 'houses' and there's no other verb, so it must be the main verb. 'Single' is trickier — it could be an adjective modifying 'soldiers', but it's after 'and' which connects to 'married', so maybe it's also a verb? I'm leaning toward verb because of the parallel structure."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student's parse treats 'houses' as head noun and 'married' as main verb, but they haven't considered 'houses' as a verb; a minimal hint to test that possibility without giving it away.",
+        "state": "Support",
+        "response": "What if 'houses' isn't a noun but the main verb? How would that change the role of 'complex' and the rest of the sentence?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "If 'houses' is the verb, then 'complex' becomes the subject noun — like a housing complex. That makes sense: 'The complex houses...' Then 'married' and 'single'... hmm, they'd be after the verb, so maybe they're adjectives describing 'soldiers'? But 'married' still looks like a past tense verb. Could it be a participle acting as an adjective? I'm not sure."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student is now entertaining the correct structure but still uncertain about the -ed forms; need to probe their thinking on 'married' and 'single' without leading.",
+        "state": "Diagnosis",
+        "response": "You're on the right track with 'complex' as subject and 'houses' as verb. What do you notice about the words 'married' and 'single' in relation to 'soldiers'?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "They both come right before 'soldiers', so they're modifying it. That suggests they're adjectives. But 'married' ends in -ed, which often marks past tense verbs, so I keep wanting to call it a verb. 'Single' doesn't have that ending, so it's clearly an adjective. The -ed is throwing me off."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student has identified the adjectival function but is conflicted by morphology; time to have them articulate the rule for distinguishing participial adjectives from verbs.",
+        "state": "Synthesis",
+        "response": "In your own words, how do you decide whether an -ed form like 'married' is functioning as a verb or as an adjective in a given sentence?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "If the -ed word follows a linking verb or directly modifies a noun without an auxiliary, it's an adjective. Here 'married' sits right before 'soldiers' with no helper verb, so it's an adjective. But wait — could it be a reduced relative clause like 'soldiers who are married'? That would still make it a participle, not a finite verb. So adjective is right."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student correctly analyzed 'married'; now check if they apply same logic to 'single' and also handle 'their'.",
+        "state": "Diagnosis",
+        "response": "Good. Does the same reasoning apply to 'single'? And what about 'their' — what part of speech is it in 'their families'?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "Yes, 'single' is also an adjective modifying 'soldiers'. 'Their'... I'd say it's a possessive pronoun because it shows ownership. But it's placed before a noun, so maybe it's a determiner? I've heard them called possessive determiners. I think it's a pronoun acting as a determiner."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student conflates pronoun and determiner categories; a gentle nudge to distinguish based on function.",
+        "state": "Support",
+        "response": "What does 'their' actually do in the phrase 'their families'? Does it replace a noun or specify which families?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "It specifies which families — the families belonging to them. So it's functioning as a determiner, not standing in for a noun. The rule overall: you identify parts of speech by looking at syntactic position, morphological cues, and agreement patterns. Words can shift categories — like 'complex' and 'houses' — depending on whether they head a phrase or serve as predicate. The key is finding the main verb and seeing how other words relate to it structurally."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student has articulated the core principle of syntactic distribution determining part of speech and applied it to all ambiguous words; conversation can wrap up.",
+        "state": "Closing",
+        "response": "Great, you've got it! Ready for the next one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "high",
+      "student_level": "advanced",
+      "hint_frequency": "high",
+      "mistake_frequency": "high",
+      "verbosity": "medium",
+      "difficulty": "medium"
+    },
+    "domain": "economics_and_finance",
+    "topic": "Inflation basics",
+    "problem": "The Consumer Price Index (CPI) was 120 in 2022 and 126 in 2023. A worker's nominal wage was $40,000 in 2022 and $42,000 in 2023. Calculate the inflation rate and the percentage change in real wage. Then explain whether the worker's purchasing power increased or decreased.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "Inflation = (126-120)/126 = 4.76%. Nominal wage growth = (42000-40000)/42000 = 4.76%. So real wage growth ≈ 0%. Purchasing power unchanged."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student used ending values as denominators for both inflation and nominal growth, revealing confusion about base year for percentage change. Need to diagnose their understanding of growth rate calculation.",
+        "state": "Diagnosis",
+        "response": "Why did you use 126 and 42000 as denominators?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "Because we're measuring change from the earlier to the later year, so the later year is the new base. That's how you calculate growth rates, right?"
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student still thinks later year is base for growth rates. Provide a hint by asking which year is the reference for a growth rate from 2022 to 2023.",
+        "state": "Support",
+        "response": "When we say 'growth rate from 2022 to 2023', which year's value serves as the reference point?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "Oh, growth rate uses the starting value as base. So inflation = (126-120)/120 = 5%. Nominal wage growth = (42000-40000)/40000 = 5%. Then real wage growth ≈ 0%. But let me compute exact real wage: 2022 real = 40000/120*100 = 33333.33, 2023 real = 42000/126*100 = 33333.33. So 0% change. Purchasing power unchanged."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student correctly computed real wage but now misinterprets constant real wage as decreased purchasing power. Guide them to connect real wage to purchasing power.",
+        "state": "Support",
+        "response": "You found real wage unchanged. What does that imply about the quantity of goods the worker can buy?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "If real wage is unchanged, but prices are 5% higher, the worker can buy 5% fewer goods. So purchasing power decreased."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student claimed purchasing power decreased despite constant real wage. Need to diagnose their concept of real wage.",
+        "state": "Diagnosis",
+        "response": "How does real wage relate to the quantity of goods a worker can purchase? What does 'real wage' measure?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "Real wage is nominal wage adjusted for inflation, so it directly measures purchasing power. If real wage is constant, purchasing power is constant. My previous statement was wrong."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student corrected themselves. Now support them to articulate the relationship between nominal growth, inflation, and real growth.",
+        "state": "Support",
+        "response": "Good catch. Now, can you explain in your own words the relationship between nominal wage growth, inflation, and real wage growth?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "Real wage growth is approximately nominal wage growth minus inflation. Exactly, it's (1+nominal growth)/(1+inflation) - 1. When both are 5%, real growth is zero. Purchasing power depends on real wage, not nominal."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has shown correct reasoning. Ask them to synthesize the key principle in their own words.",
+        "state": "Synthesis",
+        "response": "Can you summarize the key principle for calculating real wage changes and interpreting purchasing power?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "To find real wage change, you deflate nominal wages by the price index using the base year, then compute percentage change. Purchasing power changes only if real wage changes. The approximation nominal minus inflation works for small rates."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student has accurately explained the concept. Conversation can close warmly.",
+        "state": "Closing",
+        "response": "Great, you've got it! Ready for the next one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "high",
+      "student_level": "beginner",
+      "hint_frequency": "high",
+      "mistake_frequency": "medium",
+      "verbosity": "high",
+      "difficulty": "medium"
+    },
+    "domain": "ethics_and_critical_thinking",
+    "topic": "Argument structure: premises and conclusions",
+    "problem": "Consider the following argument: 'All mammals are warm-blooded. Whales are mammals. Therefore, whales are warm-blooded.' Identify the premises and the conclusion, and explain how you know which is which.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I see three sentences in the argument, but I'm not sure which ones are premises and which is the conclusion. The last one has the word 'therefore', so maybe that's important, but I don't really get what a premise is supposed to do in an argument."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student shows partial recognition of an indicator word but lacks understanding of premise/conclusion roles; need to elicit their current thinking.",
+        "state": "Diagnosis",
+        "response": "Can you walk me through how you went about deciding which parts of the argument might be premises and which might be the conclusion, and what you noticed about the structure of the sentences? I'm curious to hear your thought process because it will help me understand where you're at."
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I'm not really sure what a premise is supposed to be. Is it just any statement in the argument, or does it have a specific role? And the conclusion is the final sentence because it comes last, or is there more to it than just position?"
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student lacks definition of premise and conclusion; provide a guiding hint without giving the answer.",
+        "state": "Support",
+        "response": "What if we think of premises as the reasons given to support something else, and the conclusion as the claim those reasons are meant to support? Does that way of framing it help you look at the three sentences differently and see which ones play which role?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "Okay, so if premises are the reasons given to support something, then the premises must be the last sentence because it's the claim being supported, and the first two sentences are the conclusion since they give the reasons for that claim, right?"
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student explicitly swapped the roles, revealing a fundamental confusion; probe their reasoning to diagnose the misunderstanding.",
+        "state": "Diagnosis",
+        "response": "Can you explain why you think the last sentence is a premise and the first two are the conclusion? What about the word 'therefore' makes you assign those roles, and how do you see the relationship between the sentences in terms of support?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "Well, the last sentence says 'therefore whales are warm-blooded,' so it's presenting a fact, and the first two are just setting up that fact, so they must be the conclusion because they come before it and provide the basis for the claim."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student misinterprets 'therefore' as marking a premise; offer a hint about indicator words to guide correction.",
+        "state": "Support",
+        "response": "What role does the word 'therefore' usually play in an argument? Does it signal a reason or a result, and how might that help you decide which statement is the conclusion and which are the premises, especially in this example?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "I think the word 'therefore' introduces a premise because it shows the basis for the argument, indicating that what follows is the reason for the claim, so the premise comes after 'therefore' and the conclusion is before it, right?"
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student still misassigns indicator words; provide a comparative hint to clarify the function of 'therefore' versus 'because'.",
+        "state": "Support",
+        "response": "If 'therefore' signals a premise, what would a word like 'because' signal? And which part of the argument follows from the others, the part that comes after 'therefore' or the part that comes before it, and how does that relate to the structure of this argument?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "Oh, I think I mixed them up. 'Therefore' points to the conclusion, the claim that follows from the premises. So the first two sentences are premises, and the last is the conclusion, because the premises support the conclusion and 'therefore' marks that relationship."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student now correctly identifies parts; ready to articulate the underlying rule in their own words.",
+        "state": "Synthesis",
+        "response": "In your own words, what is the general rule for distinguishing premises from conclusions in an argument, and how do indicator words like 'therefore' and 'because' fit into that rule when you analyze an argument's structure?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "Premises are the statements that provide evidence or reasons, and the conclusion is the statement that the premises are intended to support. Indicator words like 'therefore' or 'thus' mark the conclusion, while 'because' or 'since' mark premises, helping you see the direction of support."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly explained the rule, demonstrating mastery; wrap up warmly.",
+        "state": "Closing",
+        "response": "Great, you've got it! Ready for another example?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "high",
+      "student_level": "beginner",
+      "hint_frequency": "medium",
+      "mistake_frequency": "low",
+      "verbosity": "low",
+      "difficulty": "easy"
+    },
+    "domain": "quantitative_aptitude",
+    "topic": "Speed, time and distance",
+    "problem": "A cyclist rides at 12 km/h for 3 hours. How far does he travel?",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think you multiply speed and time, but I'm not sure."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student expresses uncertainty about the formula; need to assess current understanding of the relationship between speed, time, and distance.",
+        "state": "Diagnosis",
+        "response": "What do you know about how speed, time, and distance relate?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "Speed is distance divided by time, I think."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student recalls the definition of speed; guide them to rearrange for distance.",
+        "state": "Support",
+        "response": "If speed = distance / time, how can you solve for distance?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "Multiply both sides by time? So distance = speed × time."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student derived the correct formula; now apply it to the given numbers.",
+        "state": "Support",
+        "response": "Right. Now plug in 12 km/h and 3 hours. What do you get?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "12 times 3 is 36 km."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student computed correctly; extend to a variant to reinforce the concept.",
+        "state": "Support",
+        "response": "Good. What if the time was 2.5 hours instead?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "Then 12 × 2.5 = 30 km."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student solved variations; now ask them to articulate the reasoning to internalize the concept.",
+        "state": "Synthesis",
+        "response": "Can you explain in your own words why multiplying speed by time gives distance?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "Because speed tells you how many kilometers you go each hour, so in 3 hours you go 3 times that amount."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student explained the concept correctly; wrap up warmly.",
+        "state": "Closing",
+        "response": "Nice, you've got it! Ready for another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "high",
+      "student_level": "advanced",
+      "hint_frequency": "medium",
+      "mistake_frequency": "high",
+      "verbosity": "medium",
+      "difficulty": "medium"
+    },
+    "domain": "statistics_and_data",
+    "topic": "Sampling bias",
+    "problem": "A researcher wants to estimate the average height of adults in a city. They decide to survey people at a local gym. What potential bias might this introduce, and how could it affect the estimate?",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think the main bias is that gym-goers might not represent the whole city because they're more health-conscious. Maybe they're taller because they eat better? Or maybe they're shorter because of weightlifting? I'm not sure."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student identifies a potential bias but confuses direction and introduces a myth about weightlifting stunting growth. Need to diagnose their understanding of how sampling frame relates to height.",
+        "state": "Diagnosis",
+        "response": "What makes you think health-consciousness relates to height? Can you explain the connection you see?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "Well, if they're health-conscious, they might eat better and grow taller? Or maybe they're shorter because they do more weightlifting which stunts growth? I've heard that."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student asserts a causal myth about weightlifting and height. Provide a hint to focus on sampling frame rather than biological mechanisms.",
+        "state": "Support",
+        "response": "Let's consider the sampling frame: who is included and who is excluded? How might that affect the average height estimate?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "The sample only includes gym members. So we miss people who don't go to gyms. That could bias the estimate if gym-goers differ systematically in height. But I think gym-goers are probably taller on average because they play basketball?"
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student assumes gym-goers are taller due to basketball, overgeneralizing. Probe to see if they recognize diversity of gym activities.",
+        "state": "Diagnosis",
+        "response": "You mentioned basketball players. Are all gym-goers basketball players? What other activities happen at a gym?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "Not all, but many gyms have basketball courts. Also people do yoga, weightlifting, running. Maybe the average height isn't that different? Actually, I'm not sure."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student acknowledges diversity but still unsure. Hint to consider correlates of gym membership like age, income, health.",
+        "state": "Support",
+        "response": "Think about the population of all adults in the city. What characteristics might correlate with gym membership?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "Gym membership might correlate with income, age, or health status. Height might correlate with some of those? For example, taller people might have higher income? That could mean gym-goers are taller on average, leading to overestimation."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student is reasoning about correlates but hasn't defined sampling bias. Offer a hint to connect systematic exclusion to bias direction.",
+        "state": "Support",
+        "response": "How does systematically excluding non-gym-goers create a bias, regardless of whether the difference is due to height directly or through other factors?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "But wait, what about the weightlifting stunting growth? That could make gym-goers shorter, so maybe the bias is opposite? I'm getting confused about which direction."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student resurfaces earlier myth, showing need to synthesize the core concept of sampling bias independent of specific mechanisms.",
+        "state": "Synthesis",
+        "response": "You've identified that the sample excludes non-gym-goers and that gym-goers might differ in height-related factors. How would you define sampling bias based on this?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "Sampling bias occurs when the sampling method systematically excludes certain groups, leading to a sample that doesn't represent the population. Here, sampling only at a gym excludes non-gym-goers, who might have different average height, so the estimate could be too high or too low depending on how gym-goers differ."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly articulated sampling bias in their own words, showing mastery. Time to close.",
+        "state": "Closing",
+        "response": "Great, you've got it! Ready for the next one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "medium",
+      "student_level": "beginner",
+      "hint_frequency": "low",
+      "mistake_frequency": "medium",
+      "verbosity": "low",
+      "difficulty": "easy"
+    },
+    "domain": "statistics_and_data",
+    "topic": "Reading and interpreting graphs",
+    "problem": "The bar graph shows the number of apples, bananas, and oranges sold at a store on Monday. The vertical axis goes from 0 to 20. The apple bar reaches 15, the banana bar reaches 10, and the orange bar reaches 8. Which fruit had the highest sales? How many more apples were sold than bananas?",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I see three bars but I don't know which is highest."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student is confused about interpreting the bar heights. Need to elicit what they understand about the graph's axes and bar values.",
+        "state": "Diagnosis",
+        "response": "What do the bars represent? Can you tell me the height of each?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "The tallest bar is bananas, so bananas are highest."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student incorrectly identified the tallest bar. Need to guide them to read the actual values on the vertical axis.",
+        "state": "Support",
+        "response": "Look at the numbers on the vertical axis. What value does the banana bar reach?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "The banana bar goes to 10, apple bar goes to 15."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student now correctly reads the values. Next step is to see if they can compute the difference between apples and bananas.",
+        "state": "Diagnosis",
+        "response": "Good. Now, how many more apples than bananas?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "Apples are 15, bananas 10, so difference is 25."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student added instead of subtracted. Need to prompt the correct operation for 'how many more'.",
+        "state": "Support",
+        "response": "Think about what 'how many more' means. Do we add or subtract?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "Oh, subtract: 15 minus 10 equals 5."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student correctly computed the difference. Now ask them to articulate the comparison process in their own words.",
+        "state": "Synthesis",
+        "response": "Can you explain in your own words how to compare two bars?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "You look at the heights, read the values, then subtract the smaller from the larger to find the difference."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student explained comparison well. Now prompt them to articulate how to find the overall highest sales.",
+        "state": "Synthesis",
+        "response": "That's right. What about finding the highest sales overall?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "You check which bar reaches the highest number on the axis."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly explained both concepts: comparing bars and identifying the maximum. Conversation can close warmly.",
+        "state": "Closing",
+        "response": "Great job! You've got it. Ready for another graph?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "medium",
+      "student_level": "beginner",
+      "hint_frequency": "medium",
+      "mistake_frequency": "low",
+      "verbosity": "low",
+      "difficulty": "hard"
+    },
+    "domain": "computer_science_light",
+    "topic": "Tracing a simple algorithm by hand",
+    "problem": "Trace the following algorithm by hand and give the final values of a, b, and c:\n\na = 3\nb = 7\nc = 0\nwhile a < b:\n    c = c + a\n    a = a + 2\n    b = b - 1\n\nWhat are the final values of a, b, and c after the loop ends?",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I'm not sure how to start tracing this loop."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student expresses uncertainty about starting point, need to diagnose their approach.",
+        "state": "Diagnosis",
+        "response": "What would be your first step when tracing a loop by hand?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I don't really get what 'trace' means here."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student doesn't understand tracing concept, provide minimal hint to start with initial values.",
+        "state": "Support",
+        "response": "Try writing down the initial values of a, b, and c before the loop."
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "Okay, a=3, b=7, c=0. But I'm stuck on the while condition."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student has initial values but unsure about loop condition, diagnose understanding of condition.",
+        "state": "Diagnosis",
+        "response": "What does the condition 'a < b' check at the start of each iteration?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "It checks if a is less than or equal to b."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student made an explicit error about condition, give hint to test with current values.",
+        "state": "Support",
+        "response": "Check the condition with the current values: is 3 < 7 true or false?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "It's true. So the loop runs. But I'm confused about the order of updates inside."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student understands condition now but unsure about update order, hint about sequence.",
+        "state": "Support",
+        "response": "Note the order: first c = c + a, then a = a + 2, then b = b - 1."
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "First iteration: c=3, a=5, b=6. Next, condition 5<6 true. Second: c=8, a=7, b=5. Now 7<5 false, loop ends. Final: a=7, b=5, c=8."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student correctly traced and got final values, now ready to synthesize concept.",
+        "state": "Synthesis",
+        "response": "Can you explain in your own words how the loop changes the variables each iteration?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "Each iteration adds the current a to c, then increases a by 2 and decreases b by 1, repeating until a is no longer less than b."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student articulated the rule correctly, conversation can close.",
+        "state": "Closing",
+        "response": "Great job! You've got the tracing down. Want to try another algorithm?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "medium",
+      "student_level": "advanced",
+      "hint_frequency": "medium",
+      "mistake_frequency": "high",
+      "verbosity": "high",
+      "difficulty": "easy"
+    },
+    "domain": "everyday_reasoning",
+    "topic": "Map reading and distance estimation",
+    "problem": "On a map, the scale indicates that 1 inch represents 5 miles. If two cities are 3.5 inches apart on the map, what is the actual distance between them in miles?",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I'm looking at the map scale which says 1 inch represents 5 miles, and the measured distance between the two cities on the map is 3.5 inches. So I did 3.5 times 5 in my head and got 15, so I think the real distance is 15 miles."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student gave an incorrect product (15) for 3.5*5, revealing a possible misunderstanding of decimal multiplication or scale application. Need to diagnose their exact reasoning.",
+        "state": "Diagnosis",
+        "response": "I want to make sure I follow your reasoning. You said 3.5 times 5 equals 15. Could you break down that multiplication for me? For instance, how did you treat the 3 and the 0.5 separately, or did you do it all at once?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I multiplied the 3 by 5 to get 15, and I didn't incorporate the 0.5 inch at all because I wasn't confident about multiplying decimals. So my answer of 15 miles only accounts for the 3 inches, not the extra half inch."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student admitted ignoring the 0.5 inch, showing a gap in handling fractional map units. A hint about the half-inch's mileage will guide them to incorporate it.",
+        "state": "Support",
+        "response": "Let's think about that half inch. The scale tells us 1 inch equals 5 miles. So if you have half an inch, what would that be in miles? How can you use the scale to figure out the distance for 0.5 inches?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "Oh, 0.5 inch would be half of 5 miles, so 2.5 miles. So total 15 + 2.5 = 17.5 miles. But wait, the map might be in centimeters, so maybe I need to convert inches to centimeters first?"
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student introduced an unnecessary unit conversion, indicating confusion about the given scale's units. A hint to focus on the direct inch-to-mile relationship will redirect them.",
+        "state": "Support",
+        "response": "Actually, the problem states the scale in inches, so there's no need to convert to centimeters. The scale directly tells you that each inch on the map corresponds to 5 miles in reality. How can you use that direct relationship to find the total distance?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "Okay, I see now. The scale is 1 inch to 5 miles, so I just multiply the map distance in inches by 5. That gives 3.5 times 5 equals 17.5 miles. My earlier answer of 15 was because I forgot to include the half inch."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student now correctly computes 17.5 but hasn't articulated the general principle. Need to diagnose if they understand why multiplication works.",
+        "state": "Diagnosis",
+        "response": "Can you explain in your own words why multiplying the map distance by the scale factor works? What does the scale factor represent, and how does multiplication capture the relationship between map distance and real distance?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "Because each inch on the map stands for 5 miles in reality, so if you have 3.5 inches, you have 3.5 groups of 5 miles, which is 3.5 times 5. But if it was 4.2 inches, you'd just multiply 4 by 5?"
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student explained the principle for 3.5 inches but overgeneralized by dropping the fractional part in a new example. Ready to synthesize the full rule.",
+        "state": "Synthesis",
+        "response": "You've got the right idea for the 3.5 inches: each inch corresponds to 5 miles, so you multiply the total map inches by 5. But in your example of 4.2 inches, what happens to the 0.2 inches? Does the same rule apply to the fractional part?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "Oh right, you multiply the whole map distance, including the fraction, by the scale factor. So for 4.2 inches, it's 4.2 times 5 = 21 miles. The rule is: real distance equals map distance multiplied by the scale factor (miles per inch). So you just multiply the number of inches by the miles per inch."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly stated the general rule in their own words, demonstrating mastery. Conversation can close warmly.",
+        "state": "Closing",
+        "response": "Nice, that's exactly it! You've got the concept down. Ready for another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "medium",
+      "student_level": "beginner",
+      "hint_frequency": "high",
+      "mistake_frequency": "low",
+      "verbosity": "medium",
+      "difficulty": "medium"
+    },
+    "domain": "ethics_and_critical_thinking",
+    "topic": "Cost-benefit reasoning",
+    "problem": "A nonprofit is deciding whether to launch a new job-training program. The program costs $200,000 per year. It is expected to help 50 participants gain employment, each earning an additional $10,000 per year. There are also societal benefits: reduced welfare payments of $5,000 per participant per year. However, the program requires diverting funds from an existing literacy program that serves 100 people and yields $3,000 per person per year in benefits. Using cost-benefit analysis, should the nonprofit launch the job-training program? Assume a one-year horizon.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I'm not sure where to start. Do I just add up the benefits and subtract the costs?"
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student shows awareness of the basic cost-benefit idea but hasn't identified specific cost and benefit components. Need to diagnose their understanding of what counts.",
+        "state": "Diagnosis",
+        "response": "What do you think counts as a cost or a benefit in this scenario? Think about both direct and indirect effects."
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "Well, the program costs $200,000, and the participants earn more money. That's a benefit. But I'm not sure about the literacy program."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student identified direct cost and participant earnings but missed the opportunity cost of the literacy program. Provide a hint to consider forgone benefits.",
+        "state": "Support",
+        "response": "Good, you've got the direct cost and participant earnings. What about the literacy program that loses funding? How might that factor in?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "Oh, the literacy program helps 100 people with $3,000 each. So that's $300,000 in benefits we lose. That's an opportunity cost, right?"
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student correctly identified the opportunity cost. Now need to ensure they include all benefits of the job-training program, especially societal benefits.",
+        "state": "Support",
+        "response": "What are all the benefits of the job-training program, including any societal benefits like reduced welfare payments?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "Let's see: 50 participants each gain $10,000 earnings plus $5,000 welfare reduction. That's $15,000 each, so $750,000 total benefits."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student computed job-training benefits correctly. Now guide them to sum all costs (direct + opportunity) for comparison.",
+        "state": "Support",
+        "response": "Right. Now add the direct program cost and the opportunity cost. What's the total cost for the nonprofit?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "Direct cost $200,000 plus opportunity cost $300,000 = $500,000 total cost."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student has total costs and benefits. Prompt them to compare and draw a conclusion.",
+        "state": "Support",
+        "response": "How do the total benefits compare to the total costs? What does that imply for the decision?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "Net benefit is $250,000 positive, so yes, they should launch it."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student reached the correct conclusion. Now ask them to articulate the principle to internalize the reasoning.",
+        "state": "Synthesis",
+        "response": "Nice work. In your own words, what's the core rule of cost-benefit reasoning you applied here?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "You compare all benefits, including indirect ones, against all costs, including opportunity costs, and go ahead if benefits outweigh costs."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student correctly explained the concept in their own words. The conversation can now wrap up warmly.",
+        "state": "Closing",
+        "response": "Great, you've got it! Ready for another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "low",
+      "student_level": "advanced",
+      "hint_frequency": "high",
+      "mistake_frequency": "low",
+      "verbosity": "medium",
+      "difficulty": "medium"
+    },
+    "domain": "physics",
+    "topic": "Levers and pulleys",
+    "problem": "A 3-meter uniform lever (mass 6 kg) is pivoted 1 meter from the left end. A 12 kg mass hangs from the left end. A rope attached to the right end passes over a fixed pulley and supports a hanging mass M. Find M to balance the system horizontally.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "The 12 kg mass on the left gives clockwise torque 12g times 1 meter. The rope on the right pulls up at 2 meters, so counterclockwise torque is T times 2. So 12g = 2T, T = 6g. Fixed pulley means M = 6 kg."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student correctly identifies the two main torques but omits the lever's own weight, which is a common edge-case oversight for advanced students. Need to diagnose whether they realize the lever mass matters and where it acts.",
+        "state": "Diagnosis",
+        "response": "You've correctly identified the two main torques but omitted the lever's own weight. The lever is 6 kg uniform — where does that weight act, and what torque does it add about the pivot?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "Right, uniform lever center of mass at 1.5 m from left. Pivot at 1 m, so COM is 0.5 m right. Clockwise torque 6g times 0.5 = 3g. Total clockwise 15g = 2T, so T = 7.5g, M = 7.5 kg."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student has now correctly included the lever weight at its center of mass and computed M = 7.5 kg. They've reached the correct numerical answer. Now guide them to articulate the pulley principle explicitly.",
+        "state": "Support",
+        "response": "Exactly — lever weight acts at center of mass, 0.5 m right of pivot, adding clockwise torque. Equation: 12g(1) + 6g(0.5) = T(2), so T = 7.5g. Fixed pulley only changes direction, so tension equals Mg. M = 7.5 kg. Why doesn't a fixed pulley change the tension magnitude?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "A fixed pulley just redirects the force — the rope tension is the same on both sides because the pulley is massless and frictionless in ideal cases. So the upward pull on the lever equals the weight of M."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student correctly explains the fixed pulley behavior. Now prompt for the general torque-balance rule to synthesize the lever concept.",
+        "state": "Support",
+        "response": "That's the key idea — an ideal fixed pulley transmits tension unchanged. Now, what's the general torque-balance rule for a lever with multiple forces, including the lever's own weight?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "For rotational equilibrium, the sum of clockwise torques equals the sum of counterclockwise torques about the pivot. Each torque is force times perpendicular distance. The lever's weight acts at its center of mass, so you include it like any other force at that distance."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student states the torque balance rule clearly. Offer a contrasting hint (movable pulley) to deepen understanding, then ask for the complete unifying principle.",
+        "state": "Support",
+        "response": "Right. And if the pulley were movable instead of fixed, the mechanical advantage would change — you'd need half the force but pull twice the distance. For this problem, can you state the complete principle that ties the hanging mass, lever weight, and pulley together?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "With a fixed pulley, the tension equals Mg. The lever balances when the clockwise torques from the 12 kg mass and the lever's weight at its center of mass equal the counterclockwise torque from that tension at the right end. Sum of torques about the pivot equals zero."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student has integrated all elements correctly. Now ask for a concise one-sentence synthesis to confirm internalization.",
+        "state": "Synthesis",
+        "response": "Perfect — you've accounted for the hanging mass, the lever's weight at its center of mass, and the fixed pulley's tension. In one sentence, what's the core principle that makes this work?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "Core principle: rotational equilibrium means net torque about pivot is zero. Clockwise torques from weights balance counterclockwise from forces. Lever weight acts at its center of mass. Fixed pulley transmits tension unchanged."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly explained the complete principle in their own words, covering torque balance, center of mass, and fixed pulley behavior. The conversation is ready to close.",
+        "state": "Closing",
+        "response": "Excellent — you've nailed the torque balance and pulley behavior. Want to try another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "high",
+      "student_level": "beginner",
+      "hint_frequency": "low",
+      "mistake_frequency": "low",
+      "verbosity": "low",
+      "difficulty": "easy"
+    },
+    "domain": "history_and_social_studies",
+    "topic": "Timeline reasoning",
+    "problem": "Place these three events in chronological order: The signing of the Magna Carta (1215), The American Revolution (1775-1783), The fall of the Berlin Wall (1989).",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I have these three events but I don't know which came first."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student shows uncertainty about ordering; need to elicit their current approach to dates.",
+        "state": "Diagnosis",
+        "response": "What do you notice about the dates associated with each event?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "They have years: 1215, 1775-1783, 1989."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student identified years; now guide them to use years for ordering.",
+        "state": "Support",
+        "response": "How can you use those years to decide the order?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "I think the smallest year is earliest."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student proposed smallest year earliest; need to check their reasoning.",
+        "state": "Diagnosis",
+        "response": "Can you explain why the smallest year means earliest?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "Because time goes forward, so earlier years are smaller numbers."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student explained reasoning; now ask them to apply to specific events.",
+        "state": "Support",
+        "response": "So which event has the smallest year?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "Magna Carta in 1215."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student identified first event; prompt for next.",
+        "state": "Support",
+        "response": "And the next smallest?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "American Revolution around 1775."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly ordered events; ask them to articulate the general rule.",
+        "state": "Synthesis",
+        "response": "In your own words, what's the rule for ordering events on a timeline?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "You compare the years; the earliest year comes first, then the next, then the latest."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student explained the rule correctly; conversation can close warmly.",
+        "state": "Closing",
+        "response": "Exactly! You've got it. Want to try another set?"
+      }
+    ]
+  }
+]

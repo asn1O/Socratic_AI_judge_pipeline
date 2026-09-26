@@ -1,0 +1,1427 @@
+[
+  {
+    "config": {
+      "socratic_level": "low",
+      "student_level": "advanced",
+      "hint_frequency": "medium",
+      "mistake_frequency": "high",
+      "verbosity": "high",
+      "difficulty": "medium"
+    },
+    "domain": "computer_science_light",
+    "topic": "Tracing a simple algorithm by hand",
+    "problem": "Consider the following pseudocode that processes an array of integers:\n\nsum = 0\nfor i = 0 to length(arr)-1:\n    if arr[i] % 2 == 0:\n        sum = sum + arr[i]\n    else:\n        sum = sum - 1\n\nTrace the algorithm by hand for the input array [3, 4, 5, 6, 7] and indicate the final value of sum.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I looked at the pseudocode and decided that only the even numbers change the sum, so I started sum at 0 and added each even element, ignoring the odds entirely. I also thought the loop index begins at 1, so I skipped the first element 3, but since it's odd I didn't add it anyway. Finally, I believed the loop stops before the last element, so I never processed the 7. With those assumptions I added 4 and 6, getting a final sum of 10."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "The student exhibited several misconceptions about which parts of the code modify the sum, the loop's start index, and its termination condition, indicating a need to uncover their underlying reasoning.",
+        "state": "Diagnosis",
+        "response": "Can you walk me through your reasoning step by step, explaining how you determined which lines of the pseudocode actually modify the sum, why you thought the loop index should begin at 1 instead of 0, and what led you to believe the loop terminates before processing the final array element?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I see now that the else branch subtracts 1 for odd numbers, so I shouldn’t ignore them. I’ll keep the loop from i=0 to length‑1, but I still think the loop runs one fewer iteration because I mistakenly used <= instead of <. Let me recalc: start sum=0. i=0, 3 odd → sum=-1. i=1, 4 even → sum=3. i=2, 5 odd → sum=2. i=3, 6 even → sum=8. i=4, 7 odd → sum=7. I think the answer is 7."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "The student acknowledged the else branch but still expressed uncertainty about the loop’s extent, showing they are ready for a focused hint about the else clause’s effect.",
+        "state": "Support",
+        "response": "Remember, the else clause is executed whenever the current array element is odd, and it always subtracts exactly one from the sum, no matter how large or small that odd number is; this operation does not depend on the element’s value itself, and this consistent decrement is what causes the sum to decrease by one for each odd entry."
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "Okay, so for each odd I subtract 1. Let me go through again: sum=0. i=0, 3 odd → sum=-1. i=1, 4 even → sum=3. i=2, 5 odd → sum=2. i=3, 6 even → sum=8. i=4, 7 odd → sum=7. I still feel like I might be missing something about the loop’s end condition; maybe I should stop at i=3 instead of i=4? If I stopped early, the sum would be 8."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "The student’s lingering doubt about the loop’s iteration count suggests they need a hint that directs attention to the loop condition without giving the answer.",
+        "state": "Support",
+        "response": "Could you please restate the exact loop condition shown in the algorithm and tell me how many iterations it would perform when processing an array that contains five elements, explaining what that means for the index values it visits, and also mention whether the first and last indices are included or excluded?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "The loop condition is i < length, so it runs for i=0,1,2,3,4 — five times. I think I got that right now. For the odds, I subtract 1 each time, so my previous calculation stands: final sum 7. However, I’m wondering if the else should subtract the odd number itself instead of just 1; if I did that, the sum would be different."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "After confirming the loop bounds, the student still questioned the else clause’s operation, so a concise statement reinforcing the exact else action helps eliminate that uncertainty.",
+        "state": "Support",
+        "response": "The else branch explicitly says sum = sum - 1, which means that whenever the current element is odd, the algorithm reduces the sum by exactly one, irrespective of how large or small that odd number is; this operation does not involve the element’s value at all."
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "Now I see that the algorithm adds the element when it’s even and subtracts one when it’s odd. So for each element, if arr[i] % 2 == 0, sum += arr[i]; else sum -= 1. I think that’s the rule, but I’m not sure how to express it concisely."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "The student now describes the algorithm’s behavior correctly but hesitates to articulate it in their own words, signaling readiness for a synthesis prompt that asks them to explain the rule.",
+        "state": "Synthesis",
+        "response": "Please explain, using your own language, the overall effect of this algorithm on the variable sum when it iterates through the array, making clear how the parity of each element determines whether the sum is increased by the element’s value or decreased by exactly one."
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "It goes through each number in the array from the first to the last, checking whether each number is even or odd; when the number is even, it adds that exact number to the running total called sum, and when the number is odd, it subtracts exactly one from that total, regardless of the odd number’s magnitude, and after processing all elements the final sum reflects those additions and subtractions."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "The student’s explanation captures the core idea but omits explicit reference to the accumulator variable and the parity check; a brief supportive hint guides them to include these details.",
+        "state": "Support",
+        "response": "When you describe the algorithm, be explicit that the accumulator variable is named sum, and clarify that the decision to either add the element’s value or subtract one is based solely on the result of the expression arr[i] % 2 == 0, which tests whether the element is even."
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "The algorithm starts with sum at zero, then looks at each element in order; if the element is even it adds that element’s value to sum, and if the element is odd it subtracts one from sum. After processing all elements, sum holds the result."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "The student has successfully explained the algorithm’s rule in their own words, indicating mastery of the concept and allowing the conversation to close.",
+        "state": "Closing",
+        "response": "Great, you've got it! Ready for another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "high",
+      "student_level": "advanced",
+      "hint_frequency": "medium",
+      "mistake_frequency": "low",
+      "verbosity": "high",
+      "difficulty": "hard"
+    },
+    "domain": "ethics_and_critical_thinking",
+    "topic": "Logical fallacies",
+    "problem": "Consider the following argument:\n\n'If we raise the minimum wage, businesses will have to cut jobs to stay profitable. If businesses cut jobs, unemployment will rise. Rising unemployment will lead to increased crime rates. Therefore, raising the minimum wage will cause an increase in crime.'\n\nWhich logical fallacy, if any, is committed in this argument? Explain your reasoning, and discuss why it is not merely a causal fallacy or a slippery slope.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think it's a causal fallacy because it's claiming that raising the minimum wage causes increased crime through a chain of events."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student identifies a causal fallacy but hasn't examined whether the argument relies on an inevitable chain; need to elicit their reasoning to see what they consider causal.",
+        "state": "Diagnosis",
+        "response": "Can you walk me through how you decided it's a causal fallacy?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "Well, the argument presents a series of if-then statements linking the initial action to the final outcome, suggesting that the first event directly leads to the last."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student focuses on the causal link but hasn't considered what makes this chain a slippery slope rather than a simple causal claim; need a hint to draw their attention to the nature of the links.",
+        "state": "Support",
+        "response": "What distinguishes a slippery slope from a straightforward causal claim?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "A slippery slope involves an exaggerated chain where each step is assumed to inevitably follow the previous one, often without evidence."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student mentions inevitability but hasn't evaluated whether the argument presents each link as certain or merely possible; need a hint to make them examine the certainty of each step.",
+        "state": "Support",
+        "response": "In this argument, do you think each link is presented as inevitable or merely possible?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "The argument uses 'will' each time, implying certainty, so it seems like an inevitable chain."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student has noted the certainty of each step; now need to see how they relate that to the definition of a slippery slope to ensure they grasp the concept.",
+        "state": "Diagnosis",
+        "response": "How does that certainty relate to the definition of a slippery slope?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "A slippery slope occurs when someone argues that a modest first step will inevitably lead to extreme, undesirable outcomes without sufficient justification for the inevitability of each step."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student has articulated the definition well; need to guide them to apply it to the argument and confirm their conclusion.",
+        "state": "Support",
+        "response": "So, given that, would you say the argument commits a slippery slope fallacy?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "Yes, it's a slippery slope because the argument assumes that raising the minimum wage will inevitably lead to higher crime through a chain of certain events, without providing evidence that each step will actually happen. It's not just a causal fallacy because it's not merely claiming a direct cause-effect; it's claiming an inevitable cascade."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly explained the slippery slope fallacy and distinguished it from a mere causal claim; the concept is understood, so we can wrap up.",
+        "state": "Closing",
+        "response": "Nice work! You've got it. Want to try another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "low",
+      "student_level": "intermediate",
+      "hint_frequency": "high",
+      "mistake_frequency": "medium",
+      "verbosity": "medium",
+      "difficulty": "hard"
+    },
+    "domain": "economics_and_finance",
+    "topic": "Elasticity of demand",
+    "problem": "Consider the demand function Q = 100 - 2P. (a) Calculate the price elasticity of demand at P = 20 using the point elasticity formula. (b) If the price rises from 20 to 22, estimate the percentage change in quantity demanded using the elasticity you computed.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think the elasticity is just the slope of the demand curve, so -2."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "The student equated elasticity with slope, missing the P/Q factor; need to uncover their understanding of the elasticity formula.",
+        "state": "Diagnosis",
+        "response": "Elasticity is not just the slope; it also depends on price and quantity. Can you walk me through how you arrived at -2? What formula are you using for elasticity?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I'm not sure if I need to include something else; maybe I missed a step."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student shows uncertainty; need to remind them of the full point elasticity formula.",
+        "state": "Support",
+        "response": "Remember that point elasticity is (dQ/dP)*(P/Q). For a linear demand, dQ/dP is the slope, but you still multiply by the ratio of price to quantity."
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "So dQ/dP is -2, P=20, Q=100-2*20=60, so elasticity = -2 * (20/60) = -0.666..., about -0.67."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student computed elasticity correctly; need to check interpretation of sign and magnitude.",
+        "state": "Diagnosis",
+        "response": "The negative sign shows price and quantity move inversely; we often look at the absolute value to classify elasticity. What does an elasticity of -0.67 tell us about demand?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "It means demand is inelastic because the absolute value is less than 1, so quantity doesn't change much with price."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student interpreted correctly; now we move to part (b) about estimating % change in quantity for a price change.",
+        "state": "Support",
+        "response": "To estimate % change in quantity when price changes, multiply elasticity by the percent change in price."
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "I multiply elasticity -0.67 by the price change of 2 to get -1.34, so quantity drops by 1.34 units."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student confused percent change with absolute change; need to remind them elasticity relates percent changes.",
+        "state": "Support",
+        "response": "Remember elasticity relates percent changes, not absolute changes. You need to find the percent change in price first."
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "Percent change in price is (22-20)/20 = 0.1 = 10%. Then %ΔQ = elasticity * %ΔP = -0.67 * 10% = -6.7%. So quantity falls about 6.7%."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly applied elasticity to estimate percent change; now ask them to articulate the rule in their own words.",
+        "state": "Synthesis",
+        "response": "Elasticity gives the percent change in quantity per percent change in price. In your own words, how do you use point elasticity to estimate the effect of a price change?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "You multiply the elasticity at the initial price by the percent change in price to get the approximate percent change in quantity."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student has successfully explained the concept; conversation can wrap up.",
+        "state": "Closing",
+        "response": "Nice work! You've got elasticity down. Want to try another problem?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "medium",
+      "student_level": "beginner",
+      "hint_frequency": "medium",
+      "mistake_frequency": "high",
+      "verbosity": "high",
+      "difficulty": "hard"
+    },
+    "domain": "physics",
+    "topic": "Buoyancy and density",
+    "problem": "A solid block weighs 12.0 N in air. When fully submerged in water, the tension in the string holding it is 4.0 N. The same block is then fully submerged in an unknown liquid, and the tension measures 1.0 N. What is the density of the unknown liquid? (Take the density of water as 1000 kg/m^3 and g = 9.8 m/s^2).",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I've read the problem about the block weighing 12 N in air and the tensions in water and unknown liquid, but I'm not sure how to connect those numbers to find the density of the unknown liquid. Should I first find the mass of the block, or is there a direct way using the tensions? I feel stuck on where to begin."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "The student expresses overall uncertainty about where to start, indicating they haven't identified the relevant forces or equations yet.",
+        "state": "Diagnosis",
+        "response": "Please describe each force acting on the block when it's submerged, indicate whether each force pulls up or down, and explain how the balance of these forces leads to a zero net force when the block is held stationary by the string in the fluid."
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I think the tension in the string equals the weight of the block because the string is what's holding the block up, so it must support the full weight. In air the tension would be 12 N, and when submerged I guess the tension stays the same because the string still has to hold up the block against gravity, regardless of what's around it."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "The student incorrectly claimed that tension equals weight regardless of submersion, showing they haven't considered the buoyant force reducing tension. A hint about the upward buoyant force will help them revisit the force balance.",
+        "state": "Support",
+        "response": "Remember that when an object is submerged, the fluid exerts an upward buoyant force on it. Think about the forces acting on the block: weight downward, buoyant force upward, and tension upward. If the block is stationary, what must be true about the sum of these forces?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "I think the buoyant force on the block is exactly equal to its weight of 12 N, because the block displaces a volume of water that weighs the same as the block itself. So the tension should be zero, but since we measure 4 N, I'm confused about how the tension can be non‑zero if the buoyant force already balances the weight."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "The student again confused buoyant force with weight, indicating they haven't applied the equilibrium condition correctly. A hint asking them to infer buoyant force from weight and tension will guide them toward the correct relationship.",
+        "state": "Support",
+        "response": "Given that the block weighs 12 N in air and the scale reads a tension of 4 N when it's fully submerged in water, what can you infer about the magnitude of the upward buoyant force from the fluid, and how does that relate to the weight and tension?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "To find the density of the unknown liquid, I'll take the weight of the block (12 N) and divide it by the volume times gravity, because the buoyant force equals the weight of the displaced fluid. So ρ = 12 N / (0.000816 m^3 * 9.8 m/s^2) to get the density in kg/m^3."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "The student correctly found the volume but then incorrectly used the block's weight instead of the buoyant force for the unknown liquid, revealing a partial misunderstanding of how to isolate buoyant force in the second scenario.",
+        "state": "Diagnosis",
+        "response": "Let's examine the force balance for the block in the unknown liquid. Remember that the buoyant force is not necessarily equal to the weight; it depends on the tension measured. What expression gives the buoyant force using the weight and the tension in that case?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "I think the buoyant force in the unknown liquid is equal to the tension reading of 1 N, because the string is pulling up with that force and the buoyant force must balance it. So I'll compute the density as 1 N divided by (0.000816 m^3 * 9.8 m/s^2) to get the result in kg/m^3."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "The student thinks the buoyant force equals the tension reading, missing the contribution of weight. A prompt recalling the force balance and asking for the buoyant force will help them correct this mistake.",
+        "state": "Support",
+        "response": "Recall that the forces acting on the block are weight downward, buoyant force upward, and tension upward, and they must sum to zero. If the block weighs 12 N and the tension measured in the unknown liquid is 1 N, what must the upward buoyant force be for the block to remain stationary?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "Okay, so the buoyant force in water is weight minus tension: 12 N minus 4 N equals 8 N. Using Fb = ρ_water * V * g, I get V = 8 N divided by (1000 kg/m^3 times 9.8 m/s^2), which is about 8.16 × 10^-4 m^3. For the unknown liquid, buoyant force = weight minus tension = 12 N minus 1 N equals 11 N. Then ρ_unknown = Fb divided by (V times g) = 11 N divided by (8.16e-4 m^3 times 9.8 m/s^2), giving approximately 1375 kg/m^3."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "The student has now correctly computed the buoyant forces, volume, and unknown density, showing they grasp the quantitative steps. Asking them to articulate the rule in their own words will consolidate their understanding.",
+        "state": "Synthesis",
+        "response": "You've just used the idea that the buoyant force equals the weight of the displaced fluid and that for a stationary object the forces balance. In your own words, how would you describe the general rule for finding the density of an unknown fluid using weight and tension measurements?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "The buoyant force on a submerged object equals the weight of the fluid it displaces. You can find that force by measuring the object's weight in air and the tension in the string while it's submerged, then subtracting the tension from the weight. Because the buoyant force also equals the fluid's density times the object's volume times g, and you can get the volume from a known fluid case, you rearrange to solve for the unknown fluid's density."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "The student has successfully explained the principle of buoyancy and density in their own words, indicating mastery of the concept, so the conversation can wrap up.",
+        "state": "Closing",
+        "response": "Nice work! You've correctly explained that the buoyant force equals the weight of the displaced fluid, which you find by subtracting the string tension from the object's weight, and then using that with the known volume to compute the unknown fluid's density. Feel free to tackle another similar problem if you'd like."
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "medium",
+      "student_level": "intermediate",
+      "hint_frequency": "high",
+      "mistake_frequency": "medium",
+      "verbosity": "medium",
+      "difficulty": "hard"
+    },
+    "domain": "computer_science_light",
+    "topic": "Tracing a simple algorithm by hand",
+    "problem": "Consider the following algorithm that determines if a string s is a palindrome (ignoring case). It first converts s to lowercase, then sets left = 0 and right = length(s) - 1. While left < right, it compares s[left] and s[right]; if they differ, it returns False; otherwise it increments left by 1 and decrements right by 1. If the loop finishes, it returns True. Trace the algorithm step‑by‑step for the string 'Racecar'.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think we start by setting left to 0 and right to the last index, then while left is less than right we compare the characters at those positions. If they match we move the pointers inward."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "The student described the initial setup and the comparison step but didn't mention how the pointers change or when the loop ends.",
+        "state": "Diagnosis",
+        "response": "What happens to left and right after a successful comparison, and how do you know when to stop?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "We set left=0, right=len-1, then while left<right we compare s[left] with s[right+1]; if they match we increment left and decrement right."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "The student made an indexing error, using right+1 instead of right for the comparison. We need to hint at the correct index without giving it away.",
+        "state": "Support",
+        "response": "We want to compare the left character with its mirror on the right side. What index should we use for the right-side character?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "I think we should compare s[left] with s[right]; if they're equal, we increment left by 1 and decrement right by 1."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "The student corrected the comparison; now we need to see if they know the algorithm's response to a mismatch.",
+        "state": "Support",
+        "response": "If the characters don't match, what should the algorithm return?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "If they don't match, we just increment left and decrement right anyway and keep checking."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "The student incorrectly continued the loop on a mismatch; we need to hint that a mismatch means the string is not a palindrome and the algorithm should stop.",
+        "state": "Support",
+        "response": "A single mismatch means the whole string fails the palindrome test, so the algorithm should stop and return false. What does that tell us about whether we should keep moving the pointers?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "If they don't match, we can immediately return False because the string can't be a palindrome."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "The student has demonstrated correct handling of both matching and mismatching cases; now we need them to articulate the overall principle in their own words.",
+        "state": "Synthesis",
+        "response": "You've walked through the steps for matching and mismatching characters; in your own words, how would you describe the algorithm's decision process for determining a palindrome?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "The algorithm uses two pointers starting at the ends of the string and moves them inward, comparing characters; if any pair differs, it returns false; if all pairs match, it returns true."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "The student has correctly explained the palindrome-check algorithm in their own words, indicating mastery of the concept.",
+        "state": "Closing",
+        "response": "Great job! You've got the palindrome-check algorithm down. Want to try another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "low",
+      "student_level": "intermediate",
+      "hint_frequency": "high",
+      "mistake_frequency": "low",
+      "verbosity": "high",
+      "difficulty": "easy"
+    },
+    "domain": "chemistry",
+    "topic": "States of matter and phase changes",
+    "problem": "A sample of ice is heated slowly at 1 atm pressure. Describe what happens to the temperature of the ice as it melts.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I know that ice melts at 0°C under normal atmospheric pressure, but I'm uncertain about what happens to the temperature during the actual melting process. Does it rise as we keep adding heat, or does it stay constant while the ice turns into water? I have a feeling it might stay the same, but I'm not completely sure why that would be."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student expressed uncertainty about temperature change during melting, indicating they need to articulate their current thinking.",
+        "state": "Diagnosis",
+        "response": "When you think about heating ice at constant pressure, what do you imagine happens to the temperature as the ice begins to melt? Do you picture it climbing steadily, staying flat, or perhaps behaving in some other way? Take a moment to consider what you would expect to see on a thermometer as the ice absorbs heat. Walk me through your reasoning."
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I guess the temperature might stay the same because the heat we're adding is going into breaking the bonds between water molecules rather than making them move faster. I'm not entirely sure, but that seems like it could make sense if the energy is used for the phase change instead of raising kinetic energy."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student suggested heat goes into breaking bonds, showing partial correct reasoning; give a hint to reinforce the idea.",
+        "state": "Support",
+        "response": "You're on the right track thinking about where the energy goes. During melting, the supplied heat is absorbed as latent heat, which works to overcome the intermolecular forces holding the solid together, and this energy does not raise the average kinetic energy of the molecules, so the temperature remains unchanged."
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "So if the heat is used as latent heat to break those intermolecular forces, then the temperature really does stay constant while the ice is turning into water, because all the energy is going into changing the state rather than increasing how fast the molecules are moving."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student linked constant temperature to melting point; give a hint about terminology.",
+        "state": "Support",
+        "response": "This fixed temperature during the transition is known as the melting point, and the process of solid turning into liquid is called melting, or sometimes fusion. The energy required for this change is the latent heat of fusion, which is why the temperature does not climb until all the ice has melted."
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "So melting is the solid-to-liquid change, and the temperature stays at the melting point during the change because the added heat is consumed as latent heat of fusion, which breaks the intermolecular bonds without raising the average kinetic energy of the particles while the substance remains in equilibrium between solid and liquid phases."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student described the concept correctly; give a hint about graphical representation to solidify understanding.",
+        "state": "Support",
+        "response": "If you plot temperature on the vertical axis and time on the horizontal axis while heating the ice, you'll see a flat, horizontal segment during the melting period—a plateau that shows the temperature remaining constant at 0°C until all the solid has turned into liquid."
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "Yeah, that makes sense—the graph would show a clear plateau at 0°C while the ice is melting, indicating that the temperature isn't changing even though we're continuously adding heat, because that energy is going into the latent heat required for the phase change of the substance."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student has demonstrated correct understanding; ask them to articulate the rule in their own words to internalize it.",
+        "state": "Synthesis",
+        "response": "Now, in your own words, could you summarize the rule that governs what happens to the temperature of a substance when it undergoes a phase change such as melting, and explain why that rule follows from the way energy is absorbed during the transition?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "During a phase change like melting, the temperature stays constant because the heat energy supplied to the system is used as latent heat to break the intermolecular bonds that hold the solid together, rather than increasing the average kinetic energy of the molecules, so unless all the substance has changed phase, the temperature will not rise."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has explained the rule correctly; conversation wraps up.",
+        "state": "Closing",
+        "response": "Great job working through that! You've clearly grasped how temperature behaves during a phase change and why the heat goes into latent heat rather than raising temperature. If you'd like to try another similar problem or explore a different concept, just let me know today."
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "high",
+      "student_level": "intermediate",
+      "hint_frequency": "medium",
+      "mistake_frequency": "low",
+      "verbosity": "low",
+      "difficulty": "hard"
+    },
+    "domain": "statistics_and_data",
+    "topic": "Basic probability distributions",
+    "problem": "A box contains 7 good and 3 defective bulbs. Bulbs are drawn one at a time without replacement and tested. Let X be the draw number on which the second defective bulb is found. What is the probability that X = 6?",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think we need to consider how many defectives appear in the first 6 draws, maybe exactly 2?"
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student expressed uncertainty about the approach; need to clarify what X=6 means before proceeding.",
+        "state": "Diagnosis",
+        "response": "What does it mean for the second defective to be found on the 6th draw?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "It means that in the first 5 draws there is exactly 1 defective, and the 6th draw is defective."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student correctly interpreted the condition; now need to guide them to compute the probability of exactly 1 defective in the first 5 draws.",
+        "state": "Support",
+        "response": "How would you compute the probability of exactly 1 defective in the first 5 draws?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "I'd use hypergeometric: C(3,1)*C(7,4)/C(10,5)."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student gave the correct hypergeometric expression for the first step; need to guide them to the conditional probability of the 6th draw being defective.",
+        "state": "Support",
+        "response": "And given that, what's the probability the 6th draw is defective?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "After removing 1 defective and 4 good, there are 2 defectives left and 3 good left, total 5. So probability is 2/5."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student has both components (probability of 1 defective in first 5 draws and conditional probability of 6th draw defective); need to elicit how to combine them.",
+        "state": "Synthesis",
+        "response": "Can you explain how to combine these two steps to get the final probability?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "Multiply the probability of exactly 1 defective in first 5 draws by the probability that the 6th is defective given that: (C(3,1)*C(7,4)/C(10,5)) * (2/5)."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student wrote the combined expression; hint to simplify the numeric value to reinforce understanding.",
+        "state": "Support",
+        "response": "Would you like to simplify that expression?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "C(3,1)=3, C(7,4)=35, C(10,5)=252, so first part = (3*35)/252 =105/252=5/12. Then multiply by 2/5 gives (5/12)*(2/5)=2/12=1/6."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student computed the correct numeric answer; need to have them articulate the underlying principle in their own words before closing.",
+        "state": "Synthesis",
+        "response": "What principle about sequential draws without replacement did we apply?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "We used the idea that the event of the second defective appearing on a specific draw can be broken into the probability of having a certain number of defectives in the earlier draws and then the probability of drawing a defective next, multiplying conditional probabilities."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly explained the rule in their own words; the concept is mastered and the conversation can wrap up.",
+        "state": "Closing",
+        "response": "Nice work! Want to try another problem?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "medium",
+      "student_level": "beginner",
+      "hint_frequency": "medium",
+      "mistake_frequency": "high",
+      "verbosity": "medium",
+      "difficulty": "hard"
+    },
+    "domain": "history_and_social_studies",
+    "topic": "Cause-and-effect in historical events",
+    "problem": "Explain the causes of the French Revolution, distinguishing between long-term structural factors and immediate triggers, and discuss how they interacted.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think the French Revolution happened because the king was bad and people were unhappy."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "The student attributes the revolution solely to the king's behavior, showing an oversimplified causal view. To uncover their reasoning, I ask an open‑ended question.",
+        "state": "Diagnosis",
+        "response": "Can you walk me through why you believe the king's actions alone caused the revolution, and what evidence you're using?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "The Revolution was mainly caused by the storming of the Bastille; that's when everything started."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "The student fixates on the Bastille as the sole cause, ignoring long‑term factors. I give a minimal hint about pre‑existing hardship to broaden their perspective.",
+        "state": "Support",
+        "response": "Think about the harvest failures and tax burdens on peasants—how might those have affected their overall attitude toward the regime?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "The Enlightenment ideas didn't really influence the peasants; they were too busy farming, so only the nobles cared."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "The student asserts peasants were untouched by Enlightenment ideas, revealing a misconception about idea diffusion. I ask for justification to surface their reasoning.",
+        "state": "Diagnosis",
+        "response": "What makes you think the peasants weren't exposed to Enlightenment ideas at all, considering the spread of pamphlets and sermons?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "I think only the bourgeoisie wanted change; the peasants were happy with the feudal system."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "The student overlooks peasant discontent, suggesting a missing link. I hint at feudal dues and lack of voice to encourage re‑evaluation of peasant motives.",
+        "state": "Support",
+        "response": "Consider the feudal dues and lack of political voice that peasants faced—how might those factors have motivated them to seek change?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "Even after you mentioned harvests, I still think the Enlightenment didn't matter much; the revolution was just about taxes."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "The student sees a partial link between Enlightenment and taxes but isolates the financial crisis as the sole cause. I prompt them to connect ideological shift to broader resistance to foster synthesis.",
+        "state": "Synthesis",
+        "response": "Enlightenment thinkers criticized absolute monarchy and promoted ideas of liberty and equality, which helped people see tax injustices as illegitimate—how could that shift have fueled broader resistance?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "I see, so Enlightenment ideas made people question the king's right to tax them, but I still think the financial crisis was the only cause."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "state": "Support",
+        "reasoning": "The student reduces causality to finance alone, missing inter‑estate tensions. I ask for specific tensions to push them to consider multiple interacting factors.",
+        "response": "Besides the financial crisis, what specific tensions existed between the estates, such as noble privileges, tax exemptions, and peasant obligations?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "The Revolution resulted from long-term problems like unfair taxes, feudal dues, Enlightenment ideas calling for liberty, and food shortages, which created tension; then immediate events like the calling of the Estates-General and the Bastille spark acted as triggers that lit the powder keg."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "The student has articulated the rule about long‑term and immediate causes interacting, indicating mastery of the concept.",
+        "state": "Closing",
+        "response": "Nice work breaking down the long‑term and immediate causes—ready to try another historical scenario?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "low",
+      "student_level": "beginner",
+      "hint_frequency": "medium",
+      "mistake_frequency": "high",
+      "verbosity": "high",
+      "difficulty": "easy"
+    },
+    "domain": "computer_science_light",
+    "topic": "Boolean logic",
+    "problem": "Simplify the Boolean expression: (A OR B) AND (A OR NOT B).",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I'm not really sure where to start with this expression. I see two parts with ORs inside and an AND between them, but I don't know how to simplify it."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student shows uncertainty and hasn't described any strategy; need to elicit their thinking.",
+        "state": "Diagnosis",
+        "response": "What do you notice about the overall structure of the expression? How would you describe what's happening?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I think I can just cancel the B and NOT B inside, so it becomes A AND A, which is just A."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student attempted an invalid cancellation; need to guide them toward a correct approach like distribution.",
+        "state": "Support",
+        "response": "Let's use the distributive law: X AND (Y OR Z) equals (X AND Y) OR (X AND Z). How could we apply that here?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "So I think A OR (A AND B) simplifies to A AND B, because the A outside gets absorbed into the AND."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student stated an incorrect absorption rule; need to correct the misconception with a brief hint.",
+        "state": "Support",
+        "response": "Actually, the absorption law says A OR (A AND B) equals A, not A AND B."
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "I'm still confused about how to handle the whole expression after distribution."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student expresses uncertainty; need to prompt them to consider the complement term B AND NOT B.",
+        "state": "Support",
+        "response": "What does B AND NOT B always equal, regardless of B's value?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "I think B AND NOT B equals B, because NOT B just flips it."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student claimed B AND NOT B equals B; need to clarify that it's always false.",
+        "state": "Support",
+        "response": "B AND NOT B is always false, no matter what B is."
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "Now we have A OR (A AND NOT B) OR (A AND B). I think A OR (A AND NOT B) simplifies to A AND NOT B, using the same absorption idea."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student again misapplied absorption; need to reinforce the correct absorption law before they can finish.",
+        "state": "Support",
+        "response": "Remember, absorption works the other way: A OR (A AND B) = A, and similarly A OR (A AND NOT B) = A."
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "Okay, so after distribution we get A OR (A AND NOT B) OR (A AND B) and the B AND NOT B term drops out as false."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly identified the distributed form and the false term; now prompt them to articulate the overall reasoning.",
+        "state": "Synthesis",
+        "response": "In your own words, explain why the original expression simplifies to A."
+      },
+      {
+        "turn": 15,
+        "speaker": "student",
+        "text": "We used distribution to expand the AND over the OR, which gave us A, A AND NOT B, A AND B, and B AND NOT B. Since B AND NOT B is always false, it disappears. Then absorption tells us that A OR (A AND NOT B) is just A, and A OR (A AND B) is also just A, leaving only A as the final result."
+      },
+      {
+        "turn": 16,
+        "speaker": "tutor",
+        "reasoning": "Student has successfully explained the simplification rule in their own words; the conversation can wrap up.",
+        "state": "Closing",
+        "response": "Great job! You've got it. Want to try another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "low",
+      "student_level": "intermediate",
+      "hint_frequency": "high",
+      "mistake_frequency": "low",
+      "verbosity": "high",
+      "difficulty": "medium"
+    },
+    "domain": "quantitative_aptitude",
+    "topic": "Mixtures and alligation",
+    "problem": "A vessel contains 60 liters of a mixture of milk and water in the ratio 5:1. Some amount of the mixture is drawn off and replaced with water, resulting in a new ratio of 5:3. How many liters of the mixture were drawn off?",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I first found the initial amounts: milk is 5/6 of 60, so 50 liters, and water is 10 liters. But I'm not sure how to account for drawing off some mixture and then adding the same amount of water."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "The student correctly computed the initial quantities but has not yet linked the unknown volume drawn off to changes in milk and water. This calls for a Diagnosis to elicit their thinking about the replacement process.",
+        "state": "Diagnosis",
+        "response": "When you remove some of the mixture, both milk and water leave in the same 5:1 ratio. What do you think happens to the amounts of milk and water after you put back the same volume of pure water?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I think the milk decreases by the fraction that was removed, and the water decreases by that fraction too, but then we add back the water we took out. I’m just not sure how to turn that into an equation."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "The student recognizes the proportional removal and the addition of water but is uncertain about forming the algebraic relationship. A Support turn with a hint focusing on what stays constant (milk) will help them move forward.",
+        "state": "Support",
+        "response": "Remember, milk is only lost when you take out mixture; none is added back. So the final milk equals the initial milk minus the milk that was removed."
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "So if we draw off x liters, the milk removed is (5/6)x, leaving milk as 50 minus (5/6)x. I can write that, but I’m stuck on how to express the water after removal and addition."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "The student has correctly expressed the remaining milk but is unsure about the water balance. Another Support turn, giving a hint about water’s loss and gain, will clarify the next step.",
+        "state": "Support",
+        "response": "Water loses the same fraction when mixture is removed, then you add back the full volume you took out. So final water equals initial water minus the water removed plus the volume removed."
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "Got it: water removed is (1/6)x, so water after removal is 10 minus (1/6)x, and then we add x liters of water, giving 10 minus (1/6)x plus x, which simplifies to 10 plus (5/6)x. Now I set the ratio milk/water equal to 5/3 but I’m not sure how to solve it."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "The student has set up the correct fractional equation but hesitates at the algebraic solution. A Support turn with a hint about cross‑multiplication will guide them to clear the fractions.",
+        "state": "Support",
+        "response": "To get rid of the fractions, cross‑multiply the two sides: three times the milk expression equals five times the water expression."
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "I did 3 times (50 minus (5/6)x) equals 5 times (10 plus (5/6)x). That gives 150 minus (15/6)x equals 50 plus (25/6)x. Multiplying everything by 6 yields 900 minus 15x equals 300 plus 25x, and solving gives 40x equals 600, so x equals 15 liters."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "The student has arrived at the correct answer (15 liters) and demonstrated the full solution process. Now it’s appropriate to move to Synthesis, asking them to articulate the underlying principle in their own words.",
+        "state": "Synthesis",
+        "response": "In your own words, explain why the amount of milk depends only on what you removed and how that led to finding the volume drawn off."
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "The milk never gets added back; it only decreases by the amount that was taken out in the same proportion as the original mixture. Water, however, decreases by the amount removed and then increases by the full volume we poured back in. Setting the final milk‑to‑water ratio equal to the desired ratio creates a simple linear equation, and solving it tells us how much mixture we had to draw off."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "The student has correctly explained the principle behind the solution, indicating mastery of the concept. The conversation can now conclude with a brief, warm Closing turn.",
+        "state": "Closing",
+        "response": "Great job! You've got the concept down. Want to try another problem?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "low",
+      "student_level": "advanced",
+      "hint_frequency": "medium",
+      "mistake_frequency": "low",
+      "verbosity": "medium",
+      "difficulty": "easy"
+    },
+    "domain": "everyday_reasoning",
+    "topic": "Scaling a recipe",
+    "problem": "A recipe for 6 pancakes uses 1 cup of milk. How much milk is needed to make 15 pancakes?",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think you need more milk for more pancakes, but I'm not sure how to figure out the exact amount."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "The student expressed uncertainty about the method to determine the needed milk, showing partial reasoning but not yet a concrete plan.",
+        "state": "Diagnosis",
+        "response": "What makes you think you need more milk, and how could you determine the exact amount needed for the new batch?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "So, when I divide 15 by 6, I get 2.5, which tells me how many times larger the new batch is."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "The student correctly identified that dividing the desired servings by the original servings gives the scaling factor, indicating they are on the right track.",
+        "state": "Support",
+        "response": "To find how many times more pancakes you need, you divide the desired number (15) by the original number (6)."
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "When I do the division, 15 divided by 6 gives me 2.5, which is the factor that shows how much bigger the new batch is compared to the original."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "The student computed the factor correctly; now they need a hint on how to apply this factor to the ingredient amounts.",
+        "state": "Support",
+        "response": "That factor tells you by what multiplier you should increase each ingredient to keep the proportions correct, ensuring the recipe scales evenly."
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "I multiply the original 1 cup of milk by the factor 2.5, which gives me 2.5 cups of milk for the larger batch."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "The student provided an answer for the milk amount; we check if they judge it reasonable to elicit their reasoning about proportionality.",
+        "state": "Diagnosis",
+        "response": "Does using 2.5 cups of milk seem reasonable when you compare it to the original 1 cup needed for 6 pancakes?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "Yes, because when you make more pancakes you need more milk, and 2.5 cups is indeed greater than the original 1 cup."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "The student affirmed the reasonableness of their answer, showing they understand the proportional increase; we reinforce this with a hint about matching increases.",
+        "state": "Support",
+        "response": "Notice that the increase in the number of pancakes matches the increase in the amount of milk when you scale the recipe proportionally."
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "What about the eggs? The original recipe calls for 2 eggs to make 6 pancakes, so I need to figure out how many eggs are needed for 15 pancakes."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "The student extended the problem to another ingredient (eggs); we give a minimal hint about using the factor without revealing the operation.",
+        "state": "Support",
+        "response": "Think about what mathematical operation you should apply to the factor in order to determine the correct number of eggs for the larger batch."
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "I multiply the original 2 eggs by the factor 2.5, which gives me 5 eggs needed for the 15-pancake batch."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "The student correctly scaled both milk and eggs using the same factor, demonstrating they have grasped the procedure; we now ask them to articulate the general rule.",
+        "state": "Synthesis",
+        "response": "In your own words, please explain the general rule or procedure you followed to scale the amounts of milk and eggs for the larger number of pancakes."
+      },
+      {
+        "turn": 15,
+        "speaker": "student",
+        "text": "To scale a recipe, you first find how many times more servings you need by dividing the new number of servings by the original number, and then you multiply each ingredient amount by that factor."
+      },
+      {
+        "turn": 16,
+        "speaker": "tutor",
+        "reasoning": "The student has successfully explained the scaling rule in their own words, indicating mastery of the concept.",
+        "state": "Closing",
+        "response": "Nice work! You've explained the scaling rule clearly, and your reasoning was spot on. Would you like to try another similar problem?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "low",
+      "student_level": "advanced",
+      "hint_frequency": "high",
+      "mistake_frequency": "high",
+      "verbosity": "low",
+      "difficulty": "hard"
+    },
+    "domain": "ethics_and_critical_thinking",
+    "topic": "Argument structure: premises and conclusions",
+    "problem": "Read the following passage and identify all premises, intermediate conclusions, and final conclusion(s). Also note any logical errors.\n\n'All mammals are warm-blooded. All whales are mammals. Therefore, all whales are warm-blooded. Since whales live in water, they must be fish. Therefore, whales are both warm-blooded and fish.'",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think the first two sentences are premises, and the conclusion is that whales are warm-blooded."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student identified some premises and a conclusion but ignored the rest of the argument; need to elicit full thinking.",
+        "state": "Diagnosis",
+        "response": "Can you explain how you reached that conclusion and what you think about the rest of the passage?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I think the hidden premise that all water-dwellers are fish is true and the argument is valid."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student claimed hidden premise true and argument valid; need to hint to examine hidden premise's truth.",
+        "state": "Support",
+        "response": "Let's check whether the hidden premise that all water-dwellers are fish actually holds in all cases."
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "The hidden premise is false, so the argument is unsound."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student correctly noted unsoundness but hasn't broken down argument structure; need to prompt identification of all premises and conclusions.",
+        "state": "Support",
+        "response": "What are all the statements offered as reasons, including any unstated ones, and what conclusions follow from them?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "I think premises include hidden assumption that water-dwellers are fish, but I mistakenly labeled 'whales are warm-blooded' as a premise."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student mislabeled an intermediate conclusion as a premise; need to help them distinguish premise vs conclusion.",
+        "state": "Support",
+        "response": "Consider whether a statement is a reason for another or the claim the argument tries to prove."
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "Premises: three statements + hidden assumption water-dwellers fish. Intermediate conclusions: whales warm-blooded and whales fish. Final: whales warm-blooded and fish."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly identified premises, conclusions, hidden premise; now need them to articulate the concept in their own words.",
+        "state": "Synthesis",
+        "response": "Please explain in your own words what makes a statement a premise or a conclusion."
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "A premise supports a conclusion; a conclusion is what the premises support; sometimes premises are unstated assumptions."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has successfully explained the rule in their own words; conversation can wrap up.",
+        "state": "Closing",
+        "response": "Nice work! Want to try another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "high",
+      "student_level": "advanced",
+      "hint_frequency": "medium",
+      "mistake_frequency": "medium",
+      "verbosity": "high",
+      "difficulty": "hard"
+    },
+    "domain": "logic_and_puzzles",
+    "topic": "Coding-decoding",
+    "problem": "You are given the following encodings: BRAVE → DNEJA, GLADE → YTEBA, QUIET → OKWAL. Using the same rule, what is the code for BLACK?",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I notice that the length of the word is 5, and maybe each letter is shifted forward by 5?"
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "The student hypothesized that each letter is shifted forward by the word length, which is an incorrect claim. I need to elicit their thinking and test this hypothesis.",
+        "state": "Diagnosis",
+        "response": "If we shift each letter forward by the word length, what would BRAVE become?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "If I just shift each letter forward by 5, BRAVE becomes GWFAJ, which doesn't match DNEJA. Maybe we also need to reverse the word after shifting?"
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "The student found the shift-only idea fails and proposed shifting then reversing, another incorrect claim. I give a minimal hint to test this new idea.",
+        "state": "Support",
+        "response": "What do you get if you shift BRAVE forward by 5 and then reverse the result?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "Shift then reverse gave JAFWG, still not right. What if we first replace each letter with its opposite in the alphabet (A↔Z, etc.) and then shift each letter forward by the word length?"
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "The student tested shift+reverse and it didn't work, then hypothesized opposite then shift. I guide them to test this hypothesis on another example.",
+        "state": "Support",
+        "response": "If we first replace each letter with its opposite in the alphabet (A<->Z, etc.) and then shift each letter forward by the word length, what do we get for GLADE?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "Let's try that on GLADE: opposite gives T O Z W V, shifting each by 5 yields Y T E B A, which matches the example YTEBA. It also works for QUIET: opposite J F R V G, shift 5 gives O K W A L, matching OKWAL."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "The student confirmed that opposite+shift works for the given examples. Now I want to see if they can apply the rule to the new word.",
+        "state": "Diagnosis",
+        "response": "Now, using those two steps, what would be the code for BLACK?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "For BLACK, opposite gives Y O Z X P, shifting each by 5 gives D T E C U, so the code should be DTECU."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "The student correctly applied the rule and obtained DTECU. I now ask them to articulate the rule in their own words to consolidate understanding.",
+        "state": "Synthesis",
+        "response": "Can you describe the rule you used to go from the original word to the code?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "First, replace each letter with its opposite in the alphabet (A becomes Z, B becomes Y, and so on). Then, shift each resulting letter forward in the alphabet by the number of letters in the original word, wrapping around if needed."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "The student has successfully explained the rule in their own words, indicating mastery.",
+        "state": "Closing",
+        "response": "Nice, that's exactly it! Want to try another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "medium",
+      "student_level": "intermediate",
+      "hint_frequency": "low",
+      "mistake_frequency": "high",
+      "verbosity": "medium",
+      "difficulty": "hard"
+    },
+    "domain": "physics",
+    "topic": "Buoyancy and density",
+    "problem": "A rectangular block of wood (density 0.5 g/cm^3) measures 10 cm × 10 cm × 20 cm. A solid lead plug (density 11.3 g/cm^3) of volume 5 cm^3 is glued to the bottom face of the block. The block is placed gently in fresh water (density 1.0 g/cm^3). Determine whether the block floats or sinks, and if it floats, calculate the height of the block that remains above the water surface.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think the block will sink because the lead plug is really heavy, so the average density must be higher than water."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student attributes sinking solely to the lead’s weight, ignoring the wood’s contribution; we need to uncover their density‑mixing method.",
+        "state": "Diagnosis",
+        "response": "It sounds like you think the lead makes it sink; can you walk me through how you combined the densities of wood and lead to get the average density you used?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I added the densities: 0.5 + 11.3 = 11.8 g/cm^3, then divided by 2 to get ~5.9, still higher than water, so it sinks."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student used an incorrect simple average of densities; we prompt them to think about proper weighting using masses and volumes.",
+        "state": "Support",
+        "response": "I see you tried averaging by adding the densities and dividing by two; what does it mean to find the average density of a composite object, and how might you use the masses and volumes of each part?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "I guess I need to weight each density by its volume fraction, but I'm not sure how to do that."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student recognizes they need to weight by volume but is unsure how; we ask them to compute total mass and volume as a next step.",
+        "state": "Support",
+        "response": "You mentioned needing to weight each density by its volume fraction; how would you find the total mass and total volume of the block using density = mass/volume for each part?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "So wood mass is 0.5*2000=1000 g, lead mass is 11.3*5=56.5 g, total mass 1056.5 g. Total volume is 2000+5=2005 cm^3."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly calculated total mass and volume; we check whether they understand the floating condition.",
+        "state": "Diagnosis",
+        "response": "You have the total mass and total volume; if the block floats, what must be true about its weight and the buoyant force acting on it in equilibrium?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "The weight must equal the buoyant force, so m_total * g = ρ_water * g * V_total, where V_total is the whole block volume."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student incorrectly applied buoyancy using the total volume; we redirect them to consider what volume of water is actually displaced.",
+        "state": "Support",
+        "response": "You used the total volume in the buoyancy equation; what determines the volume of water actually displaced by a floating object?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "So I set m_total * g = ρ_water * g * V_submerged, cancel g, and solve V_submerged = m_total / ρ_water = 1056.5 cm^3."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly found the submerged volume; we now ask them to articulate the overall reasoning in their own words.",
+        "state": "Synthesis",
+        "response": "In your own words, explain the steps you used to determine whether the block floats and how much of it stays above the water surface."
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "I added the masses of wood and lead to get total mass, divided by water density to get displaced volume (not the block's total volume), then divided by base area to find submerged height, and subtracted from total height to get height above water."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student has clearly explained the buoyancy reasoning, indicating mastery; we close the conversation.",
+        "state": "Closing",
+        "response": "Nice work! You've grasped the buoyancy concept well. Would you like to try another similar problem to practice and reinforce what you've learned?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "low",
+      "student_level": "advanced",
+      "hint_frequency": "medium",
+      "mistake_frequency": "medium",
+      "verbosity": "high",
+      "difficulty": "medium"
+    },
+    "domain": "everyday_reasoning",
+    "topic": "Scaling a recipe",
+    "problem": "A recipe for chocolate chip cookies makes 24 cookies and calls for 1 1/2 cups of flour, 1/2 cup of sugar, 1/4 cup of butter, 1 tsp of baking soda, and a pinch of salt. You want to make 60 cookies. How much of each ingredient do you need?",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "Well, looking at the numbers, 60 cookies is about double the original 24, so I guess I should just double everything—multiply each amount by 2—to get close to what I need. I haven’t done the exact math yet, but doubling seems like a reasonable first approximation because the numbers are close enough."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "The student approximated the scaling factor as 2 without calculating the exact ratio, showing reliance on intuition rather than precise computation. I need to uncover their reasoning about how they chose that factor.",
+        "state": "Diagnosis",
+        "response": "How did you decide on the factor to multiply the ingredients by? Think about how many times the original batch of 24 cookies fits into the amount you want, which is 60 cookies. What operation would give you that number? Consider using division to find the ratio."
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I figured the factor is 2 because 24 times 2 equals 48, which is close to 60, and I didn’t want to overcomplicate it by doing exact division; I thought a simple doubling would be good enough for the cookies. I figured that being off by a few cookies wouldn’t matter much for the taste."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "The student asserted an incorrect scaling factor of 2, based on an approximate equality rather than the exact ratio. I should provide a minimal hint that points them toward the correct operation without revealing the factor.",
+        "state": "Support",
+        "response": "Let’s think about the relationship between the amounts: the factor is the ratio of the desired number of cookies to the original number. What operation would give you that ratio? You could start by dividing 60 by 24. Doing that will give you the exact multiplier you need for each ingredient. That way you’ll avoid guessing and get accurate amounts."
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "I divided 60 by 24 and got 2.5, so the scaling factor is 2.5. That means I need to multiply each ingredient amount by 2.5 to adjust the recipe for 60 cookies. I’ll use that factor to figure out the new quantities for flour, sugar, butter, baking soda, and salt. This way I keep the proportions the same while increasing the batch size."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "The student correctly identified the scaling factor as 2.5. Now I want to check whether they can apply that factor to a specific ingredient without error, so I’ll ask them to compute the flour amount and give a hint to break the multiplication down.",
+        "state": "Diagnosis",
+        "response": "Let’s start with the flour. The original recipe calls for 1 ½ cups. How would you compute 1.5 times 2.5? You might find it helpful to split 1.5 into 1 and 0.5 and multiply each part separately. Then add the two products together to get the total flour needed. This method reduces the chance of making a multiplication error."
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "I multiplied 1 by 2.5 to get 2.5, and I thought 0.5 times 2.5 equals 1.0, so adding those gives 2.5 plus 1.0 equals 3.5 cups of flour needed. I know it’s not exact, but I think that’s close enough for baking. If I’m off by a little, the cookies should still turn out fine."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "The student incorrectly calculated half of 2.5 as 1.0 instead of 1.25, showing a slip in the fractional multiplication. I’ll give a hint that encourages them to re‑evaluate that step without directly providing the correct product.",
+        "state": "Support",
+        "response": "When you multiply 0.5 by 2.5, think of 0.5 as one‑half. What is one‑half of 2.5? You can find half of 2 and half of 0.5 separately, then add them. That should give you the correct value to add to the product of 1 and 2.5. Then you’ll have the accurate flour amount. This avoids the common slip of treating 0.5 times a number as just half the integer part."
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "I recalculated: half of 2.5 is 1.25, so 0.5 times 2.5 equals 1.25. Adding that to 2.5 from the 1 times 2.5 gives 3.75 cups of flour. That seems right because 1.5 times 2.5 should be a bit more than three cups. I’ll use that amount for the flour in the scaled‑up recipe."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "The student has now correctly applied the scaling factor to flour, showing they understand the procedure. I want them to articulate the general rule for scaling any recipe in their own words to consolidate their learning.",
+        "state": "Synthesis",
+        "response": "In your own words, describe the step‑by‑step process you would use to scale any ingredient amount when changing the number of servings in a recipe. Explain how you find the factor and then apply it to each quantity. Make sure to mention why the factor is based on the ratio of desired to original servings."
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "First, I find the scaling factor by dividing the number of servings I want by the number the original recipe makes. Then I multiply every ingredient amount by that factor to get the new quantities. This keeps the proportions the same so the recipe turns out right."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "The student has successfully explained the scaling rule in their own words, indicating mastery of the concept. The conversation can now wrap up with a brief, encouraging closing.",
+        "state": "Closing",
+        "response": "Great job! You’ve clearly explained how to scale a recipe by finding the ratio of desired to original servings and multiplying each ingredient by that factor. Understanding this proportional reasoning will help you adjust any recipe confidently. Would you like to try another scaling problem?"
+      }
+    ]
+  }
+]
