@@ -19,13 +19,93 @@ log.addHandler(file_handler)
 DATA_DIR = Path(__file__).parent / "data"
 
 
-def is_valid_conversation(conversation: dict) -> bool:
+VALID_SPEAKERS = {"student", "tutor"}
+VALID_STATES = {"diagnosis", "support", "synthesis", "closing"}
+
+
+def is_valid_conversation(entry: dict) -> tuple[bool, str]:
+    """Structurally validate a single conversation entry.
+
+    Returns (True, "") if valid, or (False, reason) if not.
     """
-    TODO: Implement the actual validation logic here.
-    Return True if the conversation element is structurally valid,
-    False otherwise.
-    """
-    return True  # placeholder – replace with real checks
+
+    # 1. Must have "problem" and "conversation" fields
+    if "problem" not in entry:
+        return False, "missing 'problem' field"
+    if "conversation" not in entry:
+        return False, "missing 'conversation' field"
+
+    turns = entry["conversation"]
+
+    if not isinstance(turns, list) or len(turns) == 0:
+        return False, "'conversation' is not a non-empty list"
+
+    # 2. Turn numbering must start at 1 and increment by 1
+    for i, turn in enumerate(turns):
+        expected_turn = i + 1
+        if "turn" not in turn:
+            return False, f"turn at index {i}: missing 'turn' field"
+        if turn["turn"] != expected_turn:
+            return False, (
+                f"turn at index {i}: expected turn number {expected_turn}, "
+                f"got {turn['turn']}"
+            )
+
+    # 3. Speaker must be "student" or "tutor" (case-insensitive),
+    #    first turn must be student, and they must alternate
+    for i, turn in enumerate(turns):
+        if "speaker" not in turn:
+            return False, f"turn {i+1}: missing 'speaker' field"
+
+        speaker = turn["speaker"].strip().lower()
+
+        if speaker not in VALID_SPEAKERS:
+            return False, f"turn {i+1}: invalid speaker '{turn['speaker']}'"
+
+        expected_speaker = "student" if i % 2 == 0 else "tutor"
+        if speaker != expected_speaker:
+            return False, (
+                f"turn {i+1}: expected speaker '{expected_speaker}', "
+                f"got '{turn['speaker']}'"
+            )
+
+    # 4. Every tutor turn must have a valid "state"
+    for i, turn in enumerate(turns):
+        if turn["speaker"].strip().lower() != "tutor":
+            continue
+        if "state" not in turn:
+            return False, f"turn {i+1} (tutor): missing 'state' field"
+        state = turn["state"].strip().lower()
+        if state not in VALID_STATES:
+            return False, (
+                f"turn {i+1} (tutor): invalid state '{turn['state']}'"
+            )
+
+    # 5. Last tutor turn must be "Closing",
+    #    and the tutor turn before that must be "Synthesis"
+    tutor_turns = [
+        (i, t) for i, t in enumerate(turns)
+        if t["speaker"].strip().lower() == "tutor"
+    ]
+
+    if len(tutor_turns) < 2:
+        return False, "fewer than 2 tutor turns; cannot verify Synthesis→Closing"
+
+    last_tutor_idx, last_tutor = tutor_turns[-1]
+    if last_tutor["state"].strip().lower() != "closing":
+        return False, (
+            f"turn {last_tutor_idx+1}: last tutor turn state must be "
+            f"'Closing', got '{last_tutor['state']}'"
+        )
+
+    second_last_idx, second_last_tutor = tutor_turns[-2]
+    if second_last_tutor["state"].strip().lower() != "synthesis":
+        return False, (
+            f"turn {second_last_idx+1}: second-to-last tutor turn state must "
+            f"be 'Synthesis', got '{second_last_tutor['state']}'"
+        )
+
+    return True, ""
 
 
 def validate_file(file_path: Path) -> int:
@@ -40,11 +120,15 @@ def validate_file(file_path: Path) -> int:
     removed_count = 0
 
     for index, element in enumerate(conversations):
-        # ── Call the validator here ──────────────────────────────
-        if is_valid_conversation(element):
+        is_valid, error_msg = is_valid_conversation(element)
+
+        if is_valid:
             valid.append(element)
         else:
-            log.warning("REMOVED  file=%s  index=%d", file_path, index)
+            log.warning(
+                "REMOVED  file=%s  index=%d  reason=%s",
+                file_path, index, error_msg,
+            )
             removed_count += 1
 
     # Write back only if something was removed
