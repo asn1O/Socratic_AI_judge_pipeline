@@ -1,0 +1,1415 @@
+[
+  {
+    "config": {
+      "socratic_level": "medium",
+      "student_level": "intermediate",
+      "hint_frequency": "low",
+      "mistake_frequency": "medium",
+      "verbosity": "high",
+      "difficulty": "easy"
+    },
+    "domain": "computer_science_light",
+    "topic": "Big-O intuition via analogies",
+    "problem": "Imagine you have a row of n students, and you want to sort them by height using the following method: repeatedly go through the row, swapping any adjacent pair that is out of order, and repeat until no swaps are needed. What is the Big-O time complexity of this method?",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think it's O(n) because you just go through the list once and swap any adjacent items that are out of order."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student claims O(n) based on one pass, showing they miss the need for repeated passes. Need to uncover their reasoning.",
+        "state": "Diagnosis",
+        "response": "Can you walk me through what happens during that first pass and why you think one pass would be enough to sort the whole row? I’m interested in hearing your step‑by‑step picture of the process. Could you also tell me what you observe about the ordering of the students after that pass?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "During the first pass, the biggest student will bubble to the end, but I’m not sure if the rest are sorted, so maybe we need more passes."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student expresses uncertainty about whether one pass suffices, indicating they are considering multiple passes but not yet quantifying. Need to elicit their thinking about work per pass.",
+        "state": "Diagnosis",
+        "response": "What do you think happens to the amount of work needed in each successive pass? For instance, does the number of comparisons stay the same, shrink, or maybe change in some other pattern as we go through the row? Try to describe whether you think the work per pass is constant, decreasing, or something else, and why you believe that."
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "I think the algorithm runs in O(n log n) time because each pass cuts the unsorted portion in half."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student asserts O(n log n) based on mistaken halving idea, revealing a procedural error in estimating passes. Need to examine their justification.",
+        "state": "Diagnosis",
+        "response": "What makes you think each pass cuts the unsorted part in half? Walk me through the reasoning that leads you to halve the problem size after each round. I want to understand where the idea of halving comes from, because it seems important to check if our intuition matches what actually happens in the algorithm."
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "Well, after each pass the biggest element is at the end, so we can ignore it, leaving n‑1 elements, which feels like we’re cutting the problem roughly in half after a few passes."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student sticks to halving idea; need to redirect focus to actual comparisons per pass without giving answer.",
+        "state": "Support",
+        "response": "Consider how many elements you actually need to compare in each pass, not just ignoring the last one. Think about the inner loop: on the first pass you compare n‑1 pairs, on the second pass you compare n‑2, and so on. What does that pattern suggest about the total amount of work as n grows?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "In the first pass we compare n‑1 pairs, in the second pass n‑2, and so on until the last pass does just one comparison. Adding those gives (n‑1)+(n‑2)+…+1, which equals n(n‑1)/2."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly summed the series and recognized quadratic growth; now need them to articulate the rule in their own words.",
+        "state": "Synthesis",
+        "response": "Think about the outer and inner loops: how do their contributions combine? In your own words, explain why doing a decreasing amount of work each pass still leads to a growth rate that is proportional to n squared. Try to describe the relationship between the number of passes and the work per pass in plain language."
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "Because we have an outer loop that runs about n times, and for each iteration the inner loop goes through the remaining elements, which is on the order of n, so the total work is proportional to n times n, giving O(n²)."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has successfully explained the quadratic time complexity in their own words, indicating mastery of the concept.",
+        "state": "Closing",
+        "response": "Nice job! You've got the intuition for quadratic time. Want to try another example?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "high",
+      "student_level": "intermediate",
+      "hint_frequency": "low",
+      "mistake_frequency": "medium",
+      "verbosity": "high",
+      "difficulty": "easy"
+    },
+    "domain": "economics_and_finance",
+    "topic": "Elasticity of demand",
+    "problem": "Suppose the price of a product rises from $10 to $12, and the quantity demanded falls from 100 units to 80 units. Using the midpoint formula, calculate the price elasticity of demand.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I started by thinking elasticity just measures how much quantity reacts to a price change, so I took the difference in quantity, 80 minus 100 equals -20, and divided it by the difference in price, 12 minus 10 equals 2, giving -20/2 equals -10. I know that number seems large, but I'm not sure if I used the right approach because I recall something about using percentages instead of raw differences."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "The student gave an explicit wrong claim by using a simple ratio of changes, indicating they may be confusing elasticity with a slope. I need to uncover their thought process to diagnose the misunderstanding.",
+        "state": "Diagnosis",
+        "response": "Can you walk me through the steps you just described and tell me which formula or definition you had in mind for elasticity, as well as explain what you think elasticity represents and where you looked for the specific calculation method?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I remember that elasticity involves percent changes, but I'm fuzzy on whether I should use the original price and quantity as the base for those percentages or maybe the new values. I think I saw something about averaging, but I'm not confident which base is correct."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "The student expresses uncertainty about which base to use for percent changes, showing they recall the concept but are unsure of the midpoint approach. I will probe their understanding of percent change in general to clarify.",
+        "state": "Diagnosis",
+        "response": "When you think about calculating a percent change for any variable, what steps do you usually follow? Could you describe how you would find the percent change in price if it went from $10 to $12, using whatever base you think is appropriate, and explain why you chose that base?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "Okay, I'll try using the original values as the base. For quantity, the change is -20, and dividing by the starting quantity 100 gives -0.20, or -20%. For price, the change is +2, divided by the starting price 10 gives +0.20, or +20%. Then elasticity is the percent change in quantity divided by the percent change in price, so -20% divided by +20% equals -1."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "The student made a second explicit mistake by using initial‑value percentages instead of the midpoint average. I will give a minimal hint about using the average as the base without revealing the full calculation.",
+        "state": "Support",
+        "response": "What if, instead of always using the starting value, we used the average of the starting and ending values as the base for each percent change? How would that change the calculation you just did for quantity and price?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "I'll try using the average. For quantity, the average of 100 and 80 is 90, so the percent change is -20/90 ≈ -0.222, or -22.2%. For price, the average of 10 and 12 is 11, so the percent change is 2/11 ≈ 0.182, or 18.2%. Dividing -22.2% by 18.2% gives about -1.22. I'm not entirely sure if the elasticity should be negative or if I should drop the minus sign."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "After the hint the student computed the correct numerical value but is unsure about the sign and interpretation. I need to confirm their understanding of what the negative sign and magnitude imply.",
+        "state": "Diagnosis",
+        "response": "Given the numbers -22.2% and 18.2% with a ratio of about -1.22, what does the negative sign tell you about the relationship between price and quantity demanded, and how would you interpret the absolute value being greater than 1 in terms of elastic or inelastic demand?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "The negative sign shows that price and quantity move in opposite directions, which matches the law of demand. Since the absolute value is about 1.22, which is bigger than 1, the demand is elastic—meaning quantity responds more than proportionally to a price change. So the elasticity is approximately -1.22."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "The student has correctly calculated and interpreted the elasticity, showing they grasp the procedure. Now I will prompt them to articulate the general rule in their own words to reach synthesis.",
+        "state": "Synthesis",
+        "response": "Could you explain, in your own words and without looking at any notes, the general method for calculating price elasticity of demand using the midpoint formula, and describe each step as if you were teaching it to a classmate?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "I think you start by finding the change in quantity and the change in price. Then you divide each change by the average of the starting and ending values to get percent changes. Finally, you divide the percent change in quantity by the percent change in price. I'm not completely sure if I have to keep the negative sign or if I should report the absolute value."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "The student’s explanation of the method is mostly correct but leaves out the exact formula and the role of averaging. I will ask them to state the formula step‑by‑step to complete their synthesis.",
+        "state": "Synthesis",
+        "response": "Could you write out the exact formula, showing how to compute the percent change in quantity as (Q2 - Q1) divided by ((Q1 + Q2)/2), and similarly for price, and then explain how those two ratios combine to give elasticity, using your own wording?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "To find elasticity with the midpoint method, subtract the initial quantity from the new quantity and divide by the average of the two quantities to get the percent change in quantity. Do the same for price. Then divide the percent change in quantity by the percent change in price. The result is negative for a normal good; its absolute value shows if demand is elastic (>1), inelastic (<1), or unit elastic (=1)."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "The student has successfully explained the midpoint elasticity formula and its meaning, indicating mastery of the concept. The conversation can now close with a brief, positive wrap-up.",
+        "state": "Closing",
+        "response": "Excellent work! You've clearly explained how to compute elasticity using the midpoint formula, including the averaging step and interpretation of the sign and magnitude. Feel free to try another problem if you'd like, or let me know if you have any questions."
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "medium",
+      "student_level": "intermediate",
+      "hint_frequency": "medium",
+      "mistake_frequency": "low",
+      "verbosity": "low",
+      "difficulty": "easy"
+    },
+    "domain": "computer_science_light",
+    "topic": "Binary number conversion",
+    "problem": "Convert the decimal number 13 to binary.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think you divide by 2 and keep the remainders, but I'm not sure how to read them."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student shows partial method but unclear about remainder order, need to elicit their thinking.",
+        "state": "Diagnosis",
+        "response": "How did you get the remainders?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I did 13/2=6 rem1, 6/2=3 rem0, 3/2=1 rem1, 1/2=0 rem1."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student listed remainders correctly but hasn't addressed order; need hint about reading direction.",
+        "state": "Support",
+        "response": "Writing the remainders in order gives them reversed; does reading bottom-up give the right binary?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "So I read them bottom-up? That gives 1101? I'm not sure."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student uncertain about order; need to reinforce concept of LSB first.",
+        "state": "Support",
+        "response": "The first remainder is the least significant bit, so we reverse to get the correct order; does that make sense?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "Yes, reversing 1,0,1,1 gives 1101, which is binary for 13."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student got correct answer; need to check understanding of why reverse works.",
+        "state": "Diagnosis",
+        "response": "Why do we need to reverse the remainders?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "Because the first remainder is the least significant bit, so the last remainder is the most significant bit."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student explained concept; need to confirm with another example to solidify.",
+        "state": "Support",
+        "response": "Try converting 6 to binary using the same steps; what do you get when you reverse the remainders?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "6/2=3 rem0, 3/2=1 rem1, 1/2=0 rem1 → remainders 0,1,1 reversed → 110."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student successfully applied rule to another case; now ask them to articulate rule in own words.",
+        "state": "Synthesis",
+        "response": "In your own words, what's the rule you just used for converting decimal to binary?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "Keep dividing by 2, save remainders, then read them in reverse order."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly explained the concept, wrap up.",
+        "state": "Closing",
+        "response": "Nice, you've got it! Want to try another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "high",
+      "student_level": "beginner",
+      "hint_frequency": "medium",
+      "mistake_frequency": "low",
+      "verbosity": "low",
+      "difficulty": "hard"
+    },
+    "domain": "everyday_reasoning",
+    "topic": "Map reading and distance estimation",
+    "problem": "On a map with scale 1:50,000, a hiking trail is drawn as three straight segments: 4.6 cm from the trailhead to a lake, 3.9 cm from the lake to a viewpoint, and 2.7 cm from the viewpoint to the summit. The map also shows that the trailhead-to-lake segment climbs 120 m, the lake-to-viewpoint segment is level, and the viewpoint-to-summit segment descends 80 m. If the hiker walks at 5 km/h on flat ground, but speed decreases by 20% when climbing uphill and increases by 10% when descending, estimate the total time to hike the trail.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think I need to measure the lines on the map and add them up, but I'm not sure how to use the scale."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student shows they know to measure and add but are uncertain about the scale conversion; need to elicit their understanding of what the scale means.",
+        "state": "Diagnosis",
+        "response": "What does the scale 1:50,000 mean to you?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I guess 1 cm on the map equals 50,000 cm in real life, but I don't know how to turn that into kilometers."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student knows the ratio but is stuck on unit conversion; a hint about centimeters in a kilometer will help them move forward.",
+        "state": "Support",
+        "response": "How many centimeters are in a kilometer?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "There are 100,000 centimeters in a kilometer."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student has the conversion factor; guiding them to compute the real‑world length of one map centimeter will clarify the scale.",
+        "state": "Support",
+        "response": "If 1 cm on the map equals 50,000 cm real, how many kilometers is that?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "50,000 cm is 0.5 km, so each centimeter on the map is half a kilometer."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student now understands the scale conversion; asking them to apply it to the first segment checks if they can turn a map measurement into a distance.",
+        "state": "Diagnosis",
+        "response": "What would be the real distance of the first segment that measures 4.6 cm on the map?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "4.6 times 0.5 km equals 2.3 km."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student has the first distance; now they need to adjust speed for the uphill segment. A hint about calculating the reduced speed will keep them on track.",
+        "state": "Support",
+        "response": "If the hiker’s flat speed is 5 km/h, what would be the speed uphill if it drops by 20%?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "Uphill speed would be 5 km/h times 0.8, which is 4 km/h."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has distances and speed for the uphill segment; prompting them to combine distance and speed for each segment and sum the times encourages them to apply the full procedure.",
+        "state": "Support",
+        "response": "Using the distances and speeds you found, how would you calculate the total time for the hike?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "First I convert each map length to real distance (1 cm = 0.5 km): 2.3 km, 1.95 km, 1.35 km. Then I adjust speed: uphill 4 km/h, flat 5 km/h, downhill 5.5 km/h. Time for each segment is distance divided by speed: 2.3/4 = 0.575 h (34.5 min), 1.95/5 = 0.39 h (23.4 min), 1.35/5.5 ≈ 0.245 h (14.7 min). Total ≈ 1.21 h, about 1 hour 13 minutes. The rule is: convert map distance with the scale, adjust speed for slope, then compute time = distance/speed for each part and add them up."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly explained the procedure and given a reasonable estimate, indicating mastery of the concept.",
+        "state": "Closing",
+        "response": "Nice work! Want to try another problem?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "high",
+      "student_level": "advanced",
+      "hint_frequency": "medium",
+      "mistake_frequency": "low",
+      "verbosity": "low",
+      "difficulty": "medium"
+    },
+    "domain": "ethics_and_critical_thinking",
+    "topic": "Logical fallacies",
+    "problem": "Consider the argument: 'If we lower the voting age to 16, then soon we’ll be letting 10‑year‑olds vote, and eventually infants will have a say in elections; therefore we should not lower the voting age.' Identify the logical fallacy present and explain why it is a fallacy.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "That looks like a slippery slope fallacy, but I'm not sure."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "The student expressed uncertainty about labeling the fallacy; need to elicit their reasoning to diagnose understanding.",
+        "state": "Diagnosis",
+        "response": "What makes you think it's a slippery slope?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "Because it claims a small step leads to extreme outcome without evidence."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "The student identified the slippery slope nature but needs clarification on the evidential requirement; a minimal hint is appropriate.",
+        "state": "Support",
+        "response": "What would you need to show to prove it's not a slippery slope?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "You'd need to show the chain of events is likely, maybe with data."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "The student mentioned needing to show the chain is likely; we should push them to consider the lack of evidence linking the steps.",
+        "state": "Support",
+        "response": "If the premise lacks any evidence linking the steps, what does that imply about the argument's validity?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "Then the argument is weak; the conclusion doesn't follow."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "The student described the weakness but hasn't articulated the underlying rule; we ask them to explain in their own words to move toward synthesis.",
+        "state": "Synthesis",
+        "response": "In your own words, why is this pattern considered a fallacy?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "Because it assumes a chain reaction will happen just because the first step occurs, without proving the links."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "The student gave a decent explanation but could benefit from distinguishing slippery slope from reasonable prediction; a hint helps refine their thinking.",
+        "state": "Support",
+        "response": "What distinguishes a slippery slope from a reasonable causal prediction?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "A reasonable prediction would have evidence or mechanism showing each step likely; slippery slope lacks that."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "The student is close to a correct definition; we ask them to formulate the general rule to solidify synthesis.",
+        "state": "Synthesis",
+        "response": "So, how would you define the slippery slope fallacy in general?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "It assumes a small step will inevitably lead to extreme results without proof of the links."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "The student has correctly explained the slippery slope fallacy in their own words; the conversation is complete.",
+        "state": "Closing",
+        "response": "Nice work! Want to try another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "medium",
+      "student_level": "advanced",
+      "hint_frequency": "medium",
+      "mistake_frequency": "medium",
+      "verbosity": "medium",
+      "difficulty": "hard"
+    },
+    "domain": "computer_science_light",
+    "topic": "Big-O intuition via analogies",
+    "problem": "Consider the following algorithm that processes numbers from 1 to n: for each i, it iterates over the set bits of i (i.e., the positions where i has a 1 in binary) and does O(1) work per set bit. Using an analogy to binary counting or bit patterns, determine the overall time complexity in Big-O notation.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think the algorithm runs in O(n) time because the inner loop depends on i, but as i grows the work per iteration stays bounded, so total is linear."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "student claims O(n) without justifying inner loop cost; need to uncover their thinking",
+        "state": "Diagnosis",
+        "response": "Can you walk me through how you determined the inner loop's cost for a specific value of i, and what assumptions you made about its growth?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I see that the inner loop runs through the set bits of i, which is at most log₂ n, so I guessed the total might be n log n, but I’m not confident about the averaging."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "student shows uncertainty but suggests n log n; need to guide them to verify via bit-position analysis",
+        "state": "Support",
+        "response": "Think about each bit position individually—each bit follows a regular pattern. For a given bit position k, how many numbers between 1 and n have that bit set?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "I believe the inner loop can run as many as i times in the worst case, so summing i from 1 to n gives about n²/2, which is O(n²)."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "student asserts O(n²) based on wrong inner loop size; need to probe their reasoning",
+        "state": "Diagnosis",
+        "response": "What makes you think the inner loop's number of iterations equals i? Could you show how you derived that from the algorithm?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "I realize the inner loop counts the set bits of i, which is at most log₂ n, not i. So each outer iteration does at most log₂ n work."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "student corrected inner loop bound; now need to guide them to sum over bits",
+        "state": "Support",
+        "response": "Take the least‑significant bit as an example—it alternates every number, flipping between 0 and 1. How many ones appear in that position when we count from 1 up to n?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "The LSB is set in roughly half the numbers, about ⌈n/2⌉ times. The same holds for each bit position: bit k is set in about n/2 numbers, and there are ⌊log₂ n⌋+1 bits, so total set bits ≈ (n/2)·log₂ n, which is O(n log n)."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "student gave correct sum; now need to push them to articulate the principle in own words",
+        "state": "Synthesis",
+        "response": "In your own words, why does looking at each bit position lead to the O(n log n) bound for the total work?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "Each bit contributes about n/2 operations, and adding them up for all bits gives roughly n/2 times the number of bits, which is n log n."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "student gave a correct summary but we want them to elaborate on the approximation and edge cases to solidify understanding; we give a hint about leftover block",
+        "state": "Support",
+        "response": "Consider the incomplete block at the end of the sequence—how many extra ones can appear at most for a given bit position, and why doesn’t this change the asymptotic bound?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "Each bit repeats every 2^{k+1} steps, being set for half of them. Over n steps the count is about n/2, with at most an extra 2^k. Summing over all bits gives ≤ n·log₂ n + n, hence O(n log n)."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "student has correctly explained the rule in own words; we wrap up",
+        "state": "Closing",
+        "response": "Great job! You've captured the intuition perfectly by explaining how each bit's regular pattern leads to the n log n bound. Feel free to tackle another similar problem whenever you're ready."
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "high",
+      "student_level": "advanced",
+      "hint_frequency": "low",
+      "mistake_frequency": "medium",
+      "verbosity": "medium",
+      "difficulty": "medium"
+    },
+    "domain": "ethics_and_critical_thinking",
+    "topic": "Cost-benefit reasoning",
+    "problem": "A city is evaluating a proposal to build a bike lane network. The initial construction cost is $2 million. Annual maintenance cost is $200 k. Expected annual benefits: $150 k in reduced fuel costs, $100 k in reduced accident costs, and $50 k in increased tax revenue from higher property values. The analysis horizon is 10 years, and the city uses a discount rate of 5% per year. Should the city proceed with the bike lane based on a net present value (NPV) comparison?",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think we just compare the $2 million construction cost to the yearly benefits of $150k + $100k + $50k = $300k. Over ten years that’s $3 million, so benefits exceed costs and we should go ahead."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student compared only upfront cost to annual benefits, leaving out maintenance costs and the time value of money.",
+        "state": "Diagnosis",
+        "response": "What are all the costs and benefits, including future ones, that should be included when evaluating this project over ten years?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "We should subtract the $200k maintenance each year, so net yearly benefit is $100k. Since the discount rate is low, we can just add up the net benefits over ten years without adjusting for time, giving a total benefit of $1 million."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student correctly included maintenance but claimed we can ignore discounting, which misunderstands present value.",
+        "state": "Support",
+        "response": "How does a positive discount rate change the value of money received in the future compared to money today, in present value terms?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "So we only discount the future $100k net benefit each year, while the $2 million construction cost stays at its present value of $2 million."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student has clarified that only future flows are discounted; next we need the formula to value the recurring annual benefit.",
+        "state": "Support",
+        "response": "What is the formula for the present value of an annual amount received each year for n years at discount rate r?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "The present value factor for an annuity is (1 − (1 + r)^‑n) ÷ r. Multiply that factor by the annual amount to get its present value."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student stated the annuity formula correctly; now we need them to plug in our numbers to see the outcome.",
+        "state": "Support",
+        "response": "Using a 5% discount rate and a ten‑year horizon, what is the present value of the $100k yearly net benefit?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "For r = 5% and n = 10, the factor is about 7.72, so the PV of $100k/year is $100k × 7.72 ≈ $772k. Subtract the $2 million upfront cost gives an NPV of roughly –$1.23 million, meaning the project is not worthwhile."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student has arrived at the correct NPV conclusion; now we want them to articulate the guiding principle in their own words.",
+        "state": "Synthesis",
+        "response": "In your own words, how do we compare costs and benefits that occur at different times when doing a cost‑benefit analysis?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "We first change all future costs and benefits to their present value using the discount rate, then add them up; if the total present value of benefits is greater than the total present value of costs, the project is worth doing."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly articulated the cost‑benefit reasoning rule, indicating mastery.",
+        "state": "Closing",
+        "response": "Nice work! You’ve got the core idea down. Want to try another problem?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "high",
+      "student_level": "advanced",
+      "hint_frequency": "high",
+      "mistake_frequency": "medium",
+      "verbosity": "high",
+      "difficulty": "medium"
+    },
+    "domain": "everyday_reasoning",
+    "topic": "Scaling a recipe",
+    "problem": "A recipe for 6 servings calls for 300 grams of flour, 200 grams of sugar, 3 eggs, and 80 milliliters of milk. How much of each ingredient would you need to make 15 servings?",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I'm looking at the recipe that serves 6, and I want to make enough for 15 people. My first thought was to scale down because the number of servings is increasing, so I thought I should use the original servings over the desired servings as a multiplier. So I took 6 divided by 15, which is 0.4, and I planned to multiply each ingredient by that fraction."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student shows an incorrect scaling factor; need to elicit their reasoning to understand the misconception.",
+        "state": "Diagnosis",
+        "response": "Can you walk me through exactly how you arrived at that fraction, and what thinking led you to choose the original servings as the numerator and the desired servings as the denominator?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "Well, when I see that I need to go from 6 servings to 15 servings, my intuition told me that if I’m making more servings, each serving should maybe be smaller, or I thought I needed to reduce the amount per serving, so I figured I should divide the original number by the target number to get a factor less than one, and then multiply each ingredient by that factor to scale the recipe down."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student still confused about direction; provide a minimal hint via a concrete example (doubling) to guide them toward the correct approach.",
+        "state": "Support",
+        "response": "To help us think about direction, consider what you would do if you simply wanted to double the recipe—would you increase or decrease each ingredient, and how would you figure out the multiplier for that case, given that doubling means making twice as much, and what does that tell us about the relationship between the desired servings and the original servings?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "Okay, that makes sense—when I think about doubling, I clearly need to use more of each ingredient, not less, so the multiplier must be greater than one. That tells me I got the fraction backwards; the correct factor should be the desired servings divided by the original servings, which in this case is 15 over 6."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student begins to correct the direction; need to elicit the exact ratio of desired to original servings.",
+        "state": "Diagnosis",
+        "response": "Given that realization, could you please state explicitly what the ratio of desired servings to original servings is in this problem, and walk me through the exact calculation you would perform to get that number?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "The ratio of desired servings to original servings is 15 divided by 6, which equals 2.5. So for every unit of the original recipe, I need 2.5 units to reach the target of 15 servings. This means I’m increasing the recipe by a factor of two and a half, so each ingredient amount should be multiplied by 2.5 to scale up properly."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student has the correct factor; need to guide them to apply it to an ingredient to start the computation.",
+        "state": "Support",
+        "response": "Now that we have the factor, let’s apply it to one ingredient to see how it works—could you show me step by step how you would calculate the new amount of flour starting from the original 300 grams, and explain what multiplication you would perform?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "I’ll multiply 300 grams of flour by 2.5, which gives 750 grams of flour. For sugar, 200 grams times 2.5 equals 500 grams. For eggs, 3 times 2.5 equals 7.5 eggs, but since you can’t use a fraction of an egg in practice, I’ll round down to 7 eggs to keep it whole. Finally, for milk, 80 milliliters times 2.5 equals 200 milliliters."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student made a rounding error on the eggs; need to understand their reasoning before addressing the mistake.",
+        "state": "Diagnosis",
+        "response": "I hear you decided to round the 7.5 eggs down to 7; could you explain the reasoning behind choosing to round down rather than up, and what you think the effect of that choice would be on the final dish?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "I chose to round down because I prefer not to waste ingredients, and I thought using 7 eggs would still give a decent result, whereas adding an eighth egg might make the batter too rich or alter the texture in a way I don’t want."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student explained their rounding; need to hint at the exact result and encourage thinking about practical handling without giving the answer.",
+        "state": "Support",
+        "response": "What does the exact multiplication give you for the egg amount, and how would you decide whether to round up, round down, or maybe use a different approach like beating one egg and using only part of it?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "The exact multiplication gives 7.5 eggs, which means seven and a half eggs. In practice I could either use seven eggs and accept a slightly lighter texture, or I could use eight eggs for a richer outcome, or I could beat one egg and use half of it to get as close as possible to the intended amount."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student has given the correct scaled amounts; now prompt them to articulate the general rule in their own words to reach synthesis.",
+        "state": "Synthesis",
+        "response": "Based on what we’ve just worked through, could you please describe in your own words the general procedure you would follow to scale any recipe to a different number of servings, mentioning how you determine the factor, what you do with each ingredient, and how you would handle practical adjustments for things like eggs?"
+      },
+      {
+        "turn": 15,
+        "speaker": "student",
+        "text": "To scale a recipe, I first divide the number of servings I want by the number of servings the original recipe makes to get a scaling factor. Then I multiply each ingredient quantity by that factor to find the exact amounts needed. If any ingredient results in a fractional amount that’s hard to measure, like eggs, I decide whether to round up or down, or use a partial amount, based on how critical precision is for that ingredient."
+      },
+      {
+        "turn": 16,
+        "speaker": "tutor",
+        "reasoning": "Student has successfully explained the scaling principle; conversation wraps up.",
+        "state": "Closing",
+        "response": "Great job walking through the scaling steps and explaining the principle clearly. I appreciate how you thought about the fractional egg and considered practical adjustments. If you’d like, we can try another similar problem to keep practicing, or move on to a different topic whenever you’re ready."
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "high",
+      "student_level": "intermediate",
+      "hint_frequency": "high",
+      "mistake_frequency": "medium",
+      "verbosity": "high",
+      "difficulty": "easy"
+    },
+    "domain": "quantitative_aptitude",
+    "topic": "Ratio and proportion",
+    "problem": "The ratio of boys to girls in a class is 4:5. If 8 boys join the class, the ratio of boys to girls becomes 6:5. Find the original number of students in the class.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think the ratio 4:5 means there are exactly 4 boys and 5 girls, so the class would have 9 students. When 8 more boys join, we would have 12 boys and still 5 girls, giving a ratio of 12:5. But the problem says the new ratio should be 6:5, so I'm confused about how to move forward."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student shows they know the ratio represents parts but is stuck on applying the change; need to elicit their understanding of the multiplier concept.",
+        "state": "Diagnosis",
+        "response": "When we see a ratio like 4:5 describing two quantities, what does the unknown multiplier x usually represent, and how would you use it to write expressions for the actual number of boys and girls before any additional students join? Consider what the multiplier means in scaling the ratio to real-world counts."
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I think we can just set the expressions equal to the ratio numbers, so 4x plus 8 equals 6 and 5x equals 5. I reasoned that since the new ratio is 6:5, the number of boys after adding eight must be exactly 6 and the number of girls exactly 5, which would make the multiplier x equal to 1. Solving those gives x equals 1, which would mean there are 4 boys and 5 girls originally."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student incorrectly equated expressions directly to the ratio numbers; need to hint at representing quantities with a multiplier without giving the answer.",
+        "state": "Support",
+        "response": "If we know the original ratio of boys to girls is 4:5, how would you express the number of boys and the number of girls using a single unknown multiplier, and why does this representation keep the ratio intact? Think about how multiplying both parts of the ratio by the same number preserves the relationship."
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "So the boys are 4x and the girls are 5x originally. After adding 8 boys, the number of boys becomes 4x+8 while the girls stay 5x. I'm not sure how to use the new ratio 6:5 to find x, because I'm uncertain whether I should set up a fraction like (4x+8)/(5x) = 6/5 or perhaps compare the difference between the numbers. Could you remind me what the ratio tells us about the two quantities?"
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student correctly expressed the quantities with x but is unsure how to form an equation from the new ratio; need to hint at setting up a proportion.",
+        "state": "Support",
+        "response": "When we say the new ratio of boys to girls is 6:5 after adding eight boys, what does it mean for two ratios to be equal, and how could you set up an equation that shows (4x+8) divided by 5x is equivalent to 6/5? Remember that equal ratios imply equal cross‑products, which can help you solve for the multiplier."
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "If I cross‑multiply I get 5 times (4x+8) equals 6 times 5x, which simplifies to 20x+40 equals 30x, so 10x equals 40 and x equals 4. Therefore the boys are 5x, which is 20, and the girls are 4x, which is 16, because I mistakenly swapped which multiplier corresponds to which gender when interpreting the final numbers."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student solved for x correctly but swapped the interpretation of boys and girls; need to hint at checking which expression matches which part of the original ratio.",
+        "state": "Support",
+        "response": "Having solved for x and found it to be 4, how would you decide which expression, 4x or 5x, corresponds to the number of boys and which to the number of girls, based on the original ratio given in the problem? Recall that the first number in the ratio refers to boys and the second to girls."
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "Oh, I see my mistake. Since the original ratio was boys to girls 4:5, boys correspond to 4x and girls to 5x. So with x=4 we have 4*4=16 boys and 5*4=20 girls, making a total of 16+20=36 students. I realized that the first number in the ratio always goes with the first quantity mentioned, which is boys, and the second with girls."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student has arrived at the correct numeric answer; now we need them to articulate the reasoning or rule in their own words to consolidate understanding.",
+        "state": "Synthesis",
+        "response": "Now that you have the correct answer, can you walk me through, in your own words, each step of how we used the multiplier x, set up the proportion with the new ratio, solved for x, and then found the original numbers of boys and girls? Explain why each step is necessary and how the algebra leads to the final count."
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "We start by letting the common multiplier be x, so the original numbers of boys and girls are 4x and 5x. After 8 boys join, the boys become 4x+8 while the girls stay 5x. The new ratio 6:5 means (4x+8)/5x equals 6/5. Cross‑multiplying gives 5(4x+8)=6·5x, which simplifies to 20x+40=30x, leading to 10x=40 and x=4. Plugging x back in gives 4·4=16 boys and 5·4=20 girls, for a total of 36 students."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly explained the concept, indicating mastery; time to wrap up the interaction.",
+        "state": "Closing",
+        "response": "Nice work! You've got it. Want to try another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "low",
+      "student_level": "beginner",
+      "hint_frequency": "low",
+      "mistake_frequency": "medium",
+      "verbosity": "low",
+      "difficulty": "easy"
+    },
+    "domain": "computer_science_light",
+    "topic": "Big-O intuition via analogies",
+    "problem": "Suppose you have an algorithm that determines whether a list contains any duplicate entries by comparing each element to every other element. As the size of the list grows, how does the number of comparisons grow? What is the Big-O time complexity of this algorithm?",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I'm not really sure how to find the Big-O for this duplicate-check algorithm."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student expresses uncertainty about approach; need to elicit their current thinking.",
+        "state": "Diagnosis",
+        "response": "Finding Big-O means looking at how the number of steps grows with input size. Can you describe what the algorithm does with a small list, like three items?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "It compares the first item to the second and third, then the second to the third."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student gave a correct qualitative description but hasn't quantified the work; prompting for a specific count may reveal their thinking.",
+        "state": "Support",
+        "response": "Each item is compared with the items after it. If the list has n items, how many comparisons does the first item make?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "The first item makes n comparisons."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student overcounted the first item's comparisons; need to correct and guide them to see the pattern.",
+        "state": "Support",
+        "response": "Actually, the first item compares to the n-1 items after it, not n. How does the number of comparisons change for each subsequent item?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "Each next item has one fewer comparison than the previous one."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student described the pattern correctly; now we need to prompt them to consider the total work to lead to the next misconception.",
+        "state": "Support",
+        "response": "Adding up those comparisons gives (n-1)+(n-2)+...+1. How would you describe the growth of that sum as n gets large?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "It grows linearly, so it's O(n)."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student incorrectly claimed linear growth; need to correct this misconception without giving the answer, then ask them to articulate the correct growth.",
+        "state": "Support",
+        "response": "If it were linear, doubling the input size would roughly double the work, but here the work grows faster than that. How would you describe the work's growth then?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "The work grows roughly like n squared, so the time complexity is O(n^2)."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly explained the concept in their own words; ready to wrap up.",
+        "state": "Closing",
+        "response": "Nice, you've got it! Want to try another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "low",
+      "student_level": "intermediate",
+      "hint_frequency": "high",
+      "mistake_frequency": "high",
+      "verbosity": "low",
+      "difficulty": "hard"
+    },
+    "domain": "computer_science_light",
+    "topic": "Binary number conversion",
+    "problem": "Convert -45 decimal to an 8-bit two's complement binary representation.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think -45 is just 101101 with a minus sign in front."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student uses sign-magnitude, missing two's complement method.",
+        "state": "Diagnosis",
+        "response": "Can you walk me through how you'd turn -45 into binary?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I'd take 45 as 00101101 and set the leftmost bit to 1, giving 10101101."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student still thinks setting MSB suffices; need to remind about 8-bit start.",
+        "state": "Support",
+        "response": "Start by writing +45 as an 8-bit binary number."
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "Okay, +45 in 8-bit is 00101101."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student has the positive bits; needs reminder to invert them.",
+        "state": "Support",
+        "response": "The next step is to change each 0 to 1 and each 1 to 0."
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "I flipped to 11010010, and I think that's the final answer."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student forgot the final addition step; need to hint at extra step.",
+        "state": "Support",
+        "response": "After flipping, there's one more step to complete the two's complement."
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "After adding 1, I get 11010011."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student now has correct bits; ask them to explain the process.",
+        "state": "Synthesis",
+        "response": "Can you explain, in your own words, the steps you just used to get the result?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "To get a negative, write the positive value in binary, flip every bit, then add one."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly explained the concept; wrap up.",
+        "state": "Closing",
+        "response": "Nice, you've got it! Want to try another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "high",
+      "student_level": "advanced",
+      "hint_frequency": "medium",
+      "mistake_frequency": "high",
+      "verbosity": "high",
+      "difficulty": "hard"
+    },
+    "domain": "statistics_and_data",
+    "topic": "Basic probability distributions",
+    "problem": "A basketball player makes each free throw with probability 0.7, independent of previous throws. What is the probability that he makes his 5th successful free throw exactly on his 8th attempt?",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I started by thinking about the number of successes in a fixed number of attempts, so the binomial distribution came to mind. With eight attempts and a success probability of 0.7, I figured the chance of getting exactly five successes would be C(8,5)*(0.7)^5*(0.3)^3. I’m not completely certain that this matches the wording, because the problem specifies that the fifth success occurs on the eighth attempt, not just anywhere within the eight tries."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "The student mentioned the binomial distribution but expressed uncertainty about its fit, showing they have a partial idea but need to examine the assumptions more closely.",
+        "state": "Diagnosis",
+        "response": "Considering the requirements of a binomial distribution - fixed number of trials, only two possible outcomes per trial, the same success probability on each trial, and independence between trials - could you tell me which aspects of the free‑throw situation you explicitly believe match each of those four conditions?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I computed the binomial probability for exactly five successes in eight attempts: C(8,5) equals 56, 0.7 raised to the fifth power is about 0.16807, 0.3 cubed is 0.027, and multiplying those together gives roughly 0.254. Because the binomial counts the number of ways to get five successes in eight trials, I believed this was the probability that the fifth success occurs on the eighth attempt."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "The student asserted that the binomial probability directly answers the question, revealing a misunderstanding about what the binomial model counts; a hint about the meaning of that number will help them see the limitation.",
+        "state": "Support",
+        "response": "If we were to use the binomial probability for exactly five successes in eight attempts, what does that number actually represent in terms of the possible sequences of makes and misses, and how might it include outcomes that don’t meet the requirement that the fifth make happens precisely on the eighth try?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "To enforce that the eighth attempt must be a success, I adjusted the binomial result by multiplying it by the probability of a make on that specific shot, which is 0.7. Starting from the binomial probability of roughly 0.254 for exactly five successes in eight tries, I multiplied by 0.7 to get approximately 0.178, and I concluded that this product represents the likelihood of the fifth success occurring precisely on the eighth attempt."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "The student tried to fix the binomial answer by multiplying by the success probability, which still misrepresents the required condition; prompting them to consider what must be true about the first seven shots guides them toward the correct negative binomial setup.",
+        "state": "Support",
+        "response": "What must be true about the results of the first seven free throws if we know that the eighth shot is the fifth successful one, and how exactly and clearly does that condition translate into a specific count of successes and failures among those initial attempts?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "To get the probability, I first found the number of ways to have exactly four makes in the first seven attempts, which is C(7,4) = 35. Then I calculated the probability of any specific sequence with four makes and three misses as 0.7 to the fourth power times 0.3 cubed, which is roughly 0.2401 multiplied by 0.027, giving about 0.00648. Multiplying this by 35 yields roughly 0.2269 for the first seven shots, and then I multiplied by the probability of a make on the eighth attempt, 0.7, arriving at a final value of approximately 0.111."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "The student produced a numeric value that seems too low given the component probabilities, indicating a likely arithmetic slip; asking them to judge the plausibility of the product encourages self‑correction without giving the correction.",
+        "state": "Support",
+        "response": "When you multiply the combination value, the two powers of 0.7, the power of 0.3, and the additional factor of 0.7 for the final success, does the product’s size seem plausible when you think about how each component is a number between zero and one, except the combination which is a small whole number?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "Let me double‑check the arithmetic: C(7,4) is 35, 0.7^4 equals approximately 0.2401, 0.3^3 equals 0.027, so the probability of four makes and three misses in a specific order is 0.2401 × 0.027 = 0.0064827. Multiplying by 35 gives 0.2268945 for the first seven attempts, and multiplying by the final success probability of 0.7 yields 0.15882615, which rounds to about 0.159. Therefore the probability that the fifth success occurs exactly on the eighth attempt is approximately 0.159."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "The student has now stated the correct expression and numeric value for the probability, showing they have reached the right answer; asking them to explain the reasoning in their own words will help them internalize the concept.",
+        "state": "Synthesis",
+        "response": "Based on the reasoning we’ve just walked through, could you describe in your own words why the probability that the rth success occurs on the nth trial equals the number of ways to arrange r‑1 successes in the first n‑1 trials multiplied by p raised to the r and (1‑p) raised to the n‑r?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "The reasoning is that for the rth success to happen on the nth trial, the first n‑1 trials must contain exactly r‑1 successes and any number of failures, while the nth trial itself must be a success. There are C(n‑1, r‑1) distinct ways to choose which of the first n‑1 trials are the successes, each such arrangement has probability p^{r‑1}(1‑p)^{(n‑1)-(r‑1)} for the initial trials, and we multiply by p for the guaranteed success on the nth trial, giving the formula C(n‑1, r‑1) p^r (1‑p)^{n‑r}."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "The student has successfully articulated the negative binomial reasoning, indicating mastery of the concept.",
+        "state": "Closing",
+        "response": "Want to try another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "low",
+      "student_level": "advanced",
+      "hint_frequency": "low",
+      "mistake_frequency": "medium",
+      "verbosity": "medium",
+      "difficulty": "medium"
+    },
+    "domain": "computer_science_light",
+    "topic": "Boolean logic",
+    "problem": "Simplify the Boolean expression F = (A + B)·(A' + C) + B·C' using Boolean algebra. Show steps and give the final simplified form.",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think (A+B)(A'+C) simplifies to just B·C because A·A' is zero and the other terms disappear, so I get B·C. Then plus B·C' gives B·C + B·C' = B(C + C') = B. So the whole thing equals B."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student claims the first factor reduces to B·C, missing terms; need to elicit their distribution process to see the gap.",
+        "state": "Diagnosis",
+        "response": "When you distribute (A+B)(A'+C), you should get four terms: A·A', A·C, B·A', and B·C. Can you show me how you distributed?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I distributed: (A+B)(A'+C) = A·A' + A·C + B·A' + B·C. Since A·A' = 0, I have A·C + B·A' + B·C. Then I added the B·C' term from the original expression, giving A·C + B·A' + B·C + B·C'."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly expanded the first part and kept the B·C' term; now they need to notice that B·C + B·C' simplifies to B.",
+        "state": "Support",
+        "response": "Look at the terms B·C and B·C' together."
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "B·C + B·C' simplifies to B because B·C + B·C' = B(C + C') = B·1 = B. So now I have A·C + B·A' + B."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student has combined B·C and B·C' correctly; now they have A·C + B·A' + B and need to simplify B·A' + B.",
+        "state": "Diagnosis",
+        "response": "Recall that B + B·A' can be simplified using absorption. What does that become?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "B + B·A' simplifies to B (absorption), so the expression becomes A·C + B."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student now has A·C + B and is about to combine them; need to see their reasoning for this step to catch any error.",
+        "state": "Diagnosis",
+        "response": "When you have an OR of a term and a product, you can't just drop the product unless certain conditions hold. How did you combine A·C + B?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "I think A·C + B simplifies to A·C because B is redundant when ORed with anything; so the final answer is A·C."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student incorrectly claims A·C + B = A·C, missing the case when B is true. Need to guide them to consider truth values.",
+        "state": "Diagnosis",
+        "response": "Let's think about the truth values: if B is false, the expression depends on A·C; if B is true, the expression is true regardless of A·C. What expression captures both cases?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "The expression simplifies to B + A·C because when B is true the output is true, and when B is false the output equals A·C, which matches the original function."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly explained the simplification in their own words, so we can wrap up.",
+        "state": "Closing",
+        "response": "Great, you've got it! Ready for the next one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "high",
+      "student_level": "advanced",
+      "hint_frequency": "medium",
+      "mistake_frequency": "high",
+      "verbosity": "medium",
+      "difficulty": "hard"
+    },
+    "domain": "computer_science_light",
+    "topic": "Tracing a simple algorithm by hand",
+    "problem": "Consider the following pseudocode that takes an integer n and returns a count. Trace the algorithm by hand for n = 6 and state the final value returned.\n\nfunction mystery(n):\n    count = 0\n    for i from 1 to n:\n        for j from i to n:\n            if (i + j) mod 2 == 0:\n                count = count + 1\n    return count",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "I think the outer loop runs six times, from i=1 to 6. For each i, I believe the inner loop runs 6 minus i times. I counted the increments when i+j is even and got a total of 10."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "The student gave a specific mistaken assumption about loop length and an incorrect total; asking them to detail a concrete case will reveal their counting method.",
+        "state": "Diagnosis",
+        "response": "Can you walk me through how you counted the increments for a specific value of i, say i=2?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "For i=2, I thought j goes from 2 to 5, so four steps: j=2,3,4,5. Then i+j is 4,5,6,7; the evens are 4 and 6, so I added two to count."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "The student missed the upper bound of the inner loop for i=2; a minimal hint to include j=6 will help them see the missing increment without giving the answer.",
+        "state": "Support",
+        "response": "What would happen if you included j=6 in that inner loop for i=2?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "Including j=6 gives i+j=8, which is even, so now I have three increments for i=2. I redid the sums: i=1 gives 3, i=2 gives 3, i=3 gives 2, i=4 gives 2, i=5 gives 1, i=6 gives 1, totaling 11."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "The student's per‑i counts look right but the summed total is off; asking about a specific i value focuses their attention on a possible addition error.",
+        "state": "Support",
+        "response": "What did you get for i=3?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "For i=3, j goes 3,4,5,6; i+j is 6,7,8,9; evens are 6 and 8, so two increments. I see now my addition was off: 3+3+2+2+1+1 actually equals 12, not 11."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "The student now has the correct numeric answer but hasn't articulated the underlying principle; prompting them to explain why the condition works elicits the rule in their own words.",
+        "state": "Synthesis",
+        "response": "In your own words, can you explain why the algorithm increments count only when i and j have the same parity?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "It counts when i and j are both even or both odd, because only then their sum is even."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "The student’s rule explanation omitted the effect of the loop bounds; a hint about how the loops restrict pairs guides them to incorporate the i ≤ j condition without stating it outright.",
+        "state": "Support",
+        "response": "Can you explain how the loop limits ensure we don't count both (i,j) and (j,i), given the starting values?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "Because i starts at 1 and j runs from i to n, we only look at pairs where i ≤ j, so each unordered pair with matching parity is counted exactly once."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "The student has refined their explanation to include both parity and ordering; asking them to state the algorithm’s computation in their own words solidifies their understanding.",
+        "state": "Synthesis",
+        "response": "In your own words, can you describe what the algorithm is computing in terms of i, j, and n, and why that matches the observed count?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "It returns the number of pairs (i,j) with 1 ≤ i ≤ j ≤ n such that i and j are both even or both odd."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "The student has correctly explained the concept, so the conversation can end with a brief, positive wrap-up.",
+        "state": "Closing",
+        "response": "Great job! Want to try another one?"
+      }
+    ]
+  },
+  {
+    "config": {
+      "socratic_level": "medium",
+      "student_level": "beginner",
+      "hint_frequency": "high",
+      "mistake_frequency": "high",
+      "verbosity": "medium",
+      "difficulty": "hard"
+    },
+    "domain": "logic_and_puzzles",
+    "topic": "Seating arrangement",
+    "problem": "Six friends — Alex, Brooke, Casey, Dylan, Evan, and Finley — are to be seated in a row of six chairs numbered 1 through 6 from left to right. The following conditions apply:\n\n1. Alex sits immediately to the left of Brooke.\n2. Casey does not sit at either end.\n3. Dylan sits somewhere to the left of Finley.\n4. Evan sits in chair 3.\n5. Brooke and Casey are not adjacent.\n6. Casey sits immediately to the left of Dylan.\n\nQuestion: Which person sits in chair 5?",
+    "conversation": [
+      {
+        "turn": 1,
+        "speaker": "student",
+        "text": "Alex left of Brooke, maybe not adjacent. Evan chair3. Casey not at ends, so not chair2 or chair5. Dylan immediately left of Finley, so Dylan4 Finley5. Brooke and Casey not adjacent, so Brooke stays chair2."
+      },
+      {
+        "turn": 2,
+        "speaker": "tutor",
+        "reasoning": "Student shows multiple misconceptions about immediate left, ends, and somewhere left; need to elicit their thinking to diagnose gaps.",
+        "state": "Diagnosis",
+        "response": "Can you explain what each condition means to you, step by step?"
+      },
+      {
+        "turn": 3,
+        "speaker": "student",
+        "text": "I think 'immediately left' just means somewhere left, so Alex could be chair1 and Brooke chair3. 'Not at an end' I thought means not chair2 or chair5. 'Somewhere to the left' I took as right next to, so Dylan-Finley are adjacent."
+      },
+      {
+        "turn": 4,
+        "speaker": "tutor",
+        "reasoning": "Student still misinterprets \"immediately left\" and confuses ends and somewhere left; provide a hint about the meaning of immediate left.",
+        "state": "Support",
+        "response": "Remember, 'immediately left' means there is no chair between them. Does that change how you placed Alex and Brooke?"
+      },
+      {
+        "turn": 5,
+        "speaker": "student",
+        "text": "Okay, Alex must be right next to Brooke on her left, so Alex chair1, Brooke chair2. Evan chair3, fine. I still think Casey can’t be in chair2 or chair5. Dylan-Finley I still think they sit side-by-side with Dylan left."
+      },
+      {
+        "turn": 6,
+        "speaker": "tutor",
+        "reasoning": "Student still mistaken about which chairs are the ends; give a hint about ends.",
+        "state": "Support",
+        "response": "The ends of the row are chair1 and chair6. How does that affect where Casey could sit?"
+      },
+      {
+        "turn": 7,
+        "speaker": "student",
+        "text": "Got it, Casey can’t be chair1 or chair6, so she could be chair2, chair3, chair4, chair5. I still think Dylan-Finley must be adjacent with Dylan left."
+      },
+      {
+        "turn": 8,
+        "speaker": "tutor",
+        "reasoning": "Student still thinks Dylan-Finley must be adjacent; hint about the meaning of \"somewhere to the left\".",
+        "state": "Support",
+        "response": "If Dylan is somewhere to the left of Finley, what does that tell you about their chair numbers?"
+      },
+      {
+        "turn": 9,
+        "speaker": "student",
+        "text": "So Dylan just needs a lower number than Finley, e.g., Dylan chair1 Finley chair4 or Dylan chair2 Finley chair5. For Casey and Dylan, I think 'immediately left' might just mean Casey is somewhere left of Dylan, not necessarily adjacent."
+      },
+      {
+        "turn": 10,
+        "speaker": "tutor",
+        "reasoning": "Student still misinterprets \"immediately left\" for the Casey-Dylan pair; give another hint about adjacency via a question.",
+        "state": "Support",
+        "response": "Again, what does 'immediately left' mean for the Casey‑Dylan pair?"
+      },
+      {
+        "turn": 11,
+        "speaker": "student",
+        "text": "Evan in chair3 Casey-Dylan adjacent with Casey left, they are in 4-5 or 5-6. Dylan left of Finley; if they were 5-6, Dylan would be 6 and Finley would have no spot, impossible. They are 4-5, placing Dylan in chair5."
+      },
+      {
+        "turn": 12,
+        "speaker": "tutor",
+        "reasoning": "Student has arrived at the correct solution; now prompt them to articulate the underlying principle in their own words.",
+        "state": "Synthesis",
+        "response": "You've worked through the cases; can you summarize how the constraints forced the final arrangement?"
+      },
+      {
+        "turn": 13,
+        "speaker": "student",
+        "text": "Evan in chair3 Casey-Dylan adjacent with Casey left, they are in 4-5 or 5-6. Dylan left of Finley; if they were 5-6, Dylan would be 6 and Finley would have no spot, impossible. They are 4-5, placing Dylan in chair5."
+      },
+      {
+        "turn": 14,
+        "speaker": "tutor",
+        "reasoning": "Student has correctly explained the concept, indicating mastery; wrap up warmly.",
+        "state": "Closing",
+        "response": "Great job! You've got it. Want to try another seating puzzle?"
+      }
+    ]
+  }
+]
