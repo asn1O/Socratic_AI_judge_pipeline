@@ -74,7 +74,8 @@ def _configure_logging(output_dir: str, model_name: Optional[str] = None) -> Non
     log_dir = Path(output_dir) / "logs"
     log_dir.mkdir(parents=True, exist_ok=True)
     if model_name:
-        log_path = log_dir / f"{_generator_id()}.{model_name}.log"
+        safe_model_name = model_name.replace("/", "_").replace(":", "-")
+        log_path = log_dir / f"{_generator_id()}.{safe_model_name}.log"
     else:
         log_path = log_dir / f"{_generator_id()}.log"
     formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
