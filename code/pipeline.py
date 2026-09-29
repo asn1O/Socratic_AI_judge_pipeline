@@ -69,21 +69,24 @@ def _generator_id() -> str:
     return os.getenv("DATASET_GENERATOR_ID", "unknown").strip() or "unknown"
 
 
-def _configure_logging(output_dir: str) -> None:
+def _configure_logging(output_dir: str, model_name: Optional[str] = None) -> None:
     """Configure a shared pipeline logger for the current evaluation run."""
     log_dir = Path(output_dir) / "logs"
     log_dir.mkdir(parents=True, exist_ok=True)
-    log_path = log_dir / f"{_generator_id()}.log"
+    if model_name:
+        log_path = log_dir / f"{_generator_id()}.{model_name}.log"
+    else:
+        log_path = log_dir / f"{_generator_id()}.log"
     formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
 
-    if not any(
-        isinstance(handler, logging.FileHandler)
-        and Path(handler.baseFilename) == log_path.resolve()
-        for handler in logger.handlers
-    ):
-        file_handler = logging.FileHandler(log_path, mode="a", encoding="utf-8")
-        file_handler.setFormatter(formatter)
-        logger.addHandler(file_handler)
+    # Remove existing FileHandlers so we can reconfigure per-model if needed
+    for handler in list(logger.handlers):
+        if isinstance(handler, logging.FileHandler):
+            logger.removeHandler(handler)
+
+    file_handler = logging.FileHandler(log_path, mode="a", encoding="utf-8")
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
 
     if not any(type(handler) is logging.StreamHandler for handler in logger.handlers):
         stream_handler = logging.StreamHandler()
@@ -456,6 +459,7 @@ def run_pipeline(
     data_dir: str = "data",
     output_dir: str = "output",
     source_model_dir: Optional[str] = None,
+    judge_index: Optional[int] = None,
 ) -> int:
     """Evaluate up to max_conversations from a single input model folder."""
     load_dotenv()
@@ -474,6 +478,12 @@ def run_pipeline(
         logger.error("No models found in %s.", models_path)
         return 0
 
+    if judge_index is not None:
+        if judge_index < 0 or judge_index >= len(models):
+            logger.error("Invalid judge index %s for models array of length %s.", judge_index, len(models))
+            return 0
+        models = [models[judge_index]]
+
     data_root = Path(data_dir)
     if not data_root.exists():
         raise FileNotFoundError(f"Data directory not found: {data_root}")
@@ -489,6 +499,7 @@ def run_pipeline(
     combined_stats = _new_stats()
 
     for model in models:
+        _configure_logging(output_dir, model.model_name)
         model_state = _load_state(output_root / source_model_dir)
         model_stats = _maybe_evaluate_model(
             model=model,
@@ -546,6 +557,12 @@ def _parse_args() -> argparse.Namespace:
         required=True,
         help="Maximum number of conversations to evaluate from the given source model folder in this run.",
     )
+    parser.add_argument(
+        "--judge-index",
+        type=int,
+        default=None,
+        help="Zero-based index of the judge model to use from the model.json file.",
+    )
     return parser.parse_args()
 
 
@@ -557,5 +574,6 @@ if __name__ == "__main__":
         data_dir=args.data_dir,
         output_dir=args.output_dir,
         source_model_dir=args.source_model_dir,
+        judge_index=args.judge_index,
     )
     print(f"Evaluated {count} conversation(s).")
