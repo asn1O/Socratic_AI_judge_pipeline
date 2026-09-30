@@ -1,3 +1,4 @@
+import argparse
 import json
 import logging
 from collections import Counter
@@ -141,16 +142,16 @@ def is_valid_conversation(entry: dict) -> tuple[bool, str, str]:
     return True, "", ""
 
 
-def validate_file(file_path: Path, error_stats: Counter) -> int:
+def validate_file(file_path: Path, error_stats: Counter, delete_invalid: bool) -> int:
     """Validate every conversation in a single JSON file.
 
-    Returns the number of elements removed.
+    Returns the number of invalid elements found.
     """
     with open(file_path, "r", encoding="utf-8") as f:
         conversations: list[dict] = json.load(f)
 
     valid = []
-    removed_count = 0
+    invalid_count = 0
 
     for index, element in enumerate(conversations):
         is_valid, error_detail, error_category = is_valid_conversation(element)
@@ -158,33 +159,49 @@ def validate_file(file_path: Path, error_stats: Counter) -> int:
         if is_valid:
             valid.append(element)
         else:
-            log.warning(
-                "REMOVED  file=%s  index=%d  reason=%s",
-                file_path, index, error_detail,
-            )
+            invalid_count += 1
             error_stats[error_category] += 1
-            removed_count += 1
+            if delete_invalid:
+                log.warning(
+                    "REMOVED  file=%s  index=%d  reason=%s",
+                    file_path, index, error_detail,
+                )
+            else:
+                log.warning(
+                    "INVALID  file=%s  index=%d  reason=%s",
+                    file_path, index, error_detail,
+                )
+                valid.append(element)
 
     # Write back only if something was removed
+    removed_count = invalid_count if delete_invalid else 0
     if removed_count > 0:
         with open(file_path, "w", encoding="utf-8") as f:
             json.dump(valid, f, indent=2, ensure_ascii=False)
         log.info("Rewrote %s  (removed %d elements)", file_path, removed_count)
 
-    return removed_count
+    return invalid_count
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Validate JSON conversations.")
+    parser.add_argument(
+        "--delete-invalid",
+        action="store_true",
+        help="Actually remove structurally invalid elements and rewrite the files."
+    )
+    args = parser.parse_args()
+
     json_files = sorted(DATA_DIR.rglob("*.json"))
     log.info("Found %d JSON files under %s", len(json_files), DATA_DIR)
 
-    total_removed = 0
+    total_invalid = 0
     error_stats = Counter()
 
     for file_path in json_files:
-        total_removed += validate_file(file_path, error_stats)
+        total_invalid += validate_file(file_path, error_stats, args.delete_invalid)
 
-    log.info("Done. Total elements removed: %d", total_removed)
+    log.info("Done. Total invalid elements found: %d", total_invalid)
 
     # ── Error stats summary ────────────────────────────────────────────
     if error_stats:
