@@ -150,7 +150,9 @@ def _load_json_array(path: Path) -> List[Any]:
     raise ValueError(f"JSON record at {path} is not a list or conversation object")
 
 
-def _state_path_for_source_dir(source_dir: Path) -> Path:
+def _state_path_for_source_dir(source_dir: Path, judge_number: int = 1) -> Path:
+    if judge_number == 2:
+        return source_dir / "evaluation_state_2.json"
     return source_dir / "evaluation_state.json"
 
 
@@ -184,9 +186,9 @@ def _validate_evaluation_payload(payload: Any) -> bool:
     return True
 
 
-def _load_state(source_dir: Path) -> Dict[str, Dict[str, Any]]:
+def _load_state(source_dir: Path, judge_number: int = 1) -> Dict[str, Dict[str, Any]]:
     """Load the persisted per-conversation evaluator metadata."""
-    state_path = _state_path_for_source_dir(source_dir)
+    state_path = _state_path_for_source_dir(source_dir, judge_number)
     if not state_path.exists():
         return {}
 
@@ -209,10 +211,10 @@ def _load_state(source_dir: Path) -> Dict[str, Dict[str, Any]]:
     return normalized
 
 
-def _save_state(source_dir: Path, state: Dict[str, Dict[str, Any]]) -> None:
+def _save_state(source_dir: Path, state: Dict[str, Dict[str, Any]], judge_number: int = 1) -> None:
     """Persist evaluator metadata for every evaluated conversation."""
     source_dir.mkdir(parents=True, exist_ok=True)
-    state_path = _state_path_for_source_dir(source_dir)
+    state_path = _state_path_for_source_dir(source_dir, judge_number)
     with state_path.open("w", encoding="utf-8") as file:
         json.dump(state, file, indent=2, ensure_ascii=False)
         file.write("\n")
@@ -325,6 +327,7 @@ def _maybe_evaluate_model(
     output_dir: Path,
     source_model_dir: str,
     max_conversations: int,
+    judge_number: int = 1,
     state: Optional[Dict[str, Dict[str, Any]]] = None,
 ) -> Dict[str, Any]:
     """Evaluate up to max_conversations from one source model folder and return statistics."""
@@ -334,7 +337,7 @@ def _maybe_evaluate_model(
 
     output_model_dir = output_dir / source_model_dir
     output_model_dir.mkdir(parents=True, exist_ok=True)
-    state = state if state is not None else _load_state(output_model_dir)
+    state = state if state is not None else _load_state(output_model_dir, judge_number)
     model_key = f"{model.provider} / {model.model_name}"
     stats = _new_stats()
     stats["models"][model_key]["model"] = model
@@ -458,15 +461,30 @@ def _maybe_evaluate_model(
                 consecutive_http_errors = 0
                 break
 
-            result_record = {
-                "source_file": relative_path,
-                "conversation_index": idx,
+            judge_key = f"judge_{judge_number}"
+            judge_result = {
                 "model": {"provider": model.provider, "model_name": model.model_name},
                 "total_tokens": total_tokens,
                 "evaluation": evaluation,
             }
 
-            existing_rows.append(result_record)
+            # Merge into existing record if the other judge already evaluated this conversation
+            existing_record = None
+            for row in existing_rows:
+                if row.get("source_file") == relative_path and row.get("conversation_index") == idx:
+                    existing_record = row
+                    break
+
+            if existing_record is not None:
+                existing_record[judge_key] = judge_result
+            else:
+                result_record = {
+                    "source_file": relative_path,
+                    "conversation_index": idx,
+                    judge_key: judge_result,
+                }
+                existing_rows.append(result_record)
+
             _write_output_entries(output_file, existing_rows)
 
             state[conversation_key] = {
@@ -474,7 +492,7 @@ def _maybe_evaluate_model(
                 "model_name": model.model_name,
                 "status": "evaluated",
             }
-            _save_state(output_model_dir, state)
+            _save_state(output_model_dir, state, judge_number)
 
             stats["saved"] += 1
             stats["models"][model_key]["saved"] += 1
@@ -502,6 +520,7 @@ def run_pipeline(
     output_dir: str = "output",
     source_model_dir: Optional[str] = None,
     judge_index: Optional[int] = None,
+    judge_number: Optional[int] = None,
 ) -> int:
     """Evaluate up to max_conversations from a single input model folder."""
     load_dotenv()
@@ -511,6 +530,10 @@ def run_pipeline(
         raise ValueError("max_conversations is required and must be non-negative")
     if source_model_dir is None or not source_model_dir.strip():
         raise ValueError("source_model_dir is required")
+    if judge_index is None:
+        raise ValueError("judge_index is required")
+    if judge_number is None or judge_number not in (1, 2):
+        raise ValueError("judge_number is required and must be 1 or 2")
 
     if models_path is None:
         models_path = str(Path(__file__).resolve().parent / "model.json")
@@ -520,11 +543,10 @@ def run_pipeline(
         logger.error("No models found in %s.", models_path)
         return 0
 
-    if judge_index is not None:
-        if judge_index < 0 or judge_index >= len(models):
-            logger.error("Invalid judge index %s for models array of length %s.", judge_index, len(models))
-            return 0
-        models = [models[judge_index]]
+    if judge_index < 0 or judge_index >= len(models):
+        logger.error("Invalid judge index %s for models array of length %s.", judge_index, len(models))
+        return 0
+    models = [models[judge_index]]
 
     data_root = Path(data_dir)
     if not data_root.exists():
@@ -542,13 +564,14 @@ def run_pipeline(
 
     for model in models:
         _configure_logging(output_dir, model.model_name)
-        model_state = _load_state(output_root / source_model_dir)
+        model_state = _load_state(output_root / source_model_dir, judge_number)
         model_stats = _maybe_evaluate_model(
             model=model,
             data_dir=data_root,
             output_dir=output_root,
             source_model_dir=source_model_dir,
             max_conversations=max_conversations,
+            judge_number=judge_number,
             state=model_state,
         )
 
@@ -602,8 +625,15 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--judge-index",
         type=int,
-        default=None,
+        required=True,
         help="Zero-based index of the judge model to use from the model.json file.",
+    )
+    parser.add_argument(
+        "--judge-number",
+        type=int,
+        required=True,
+        choices=[1, 2],
+        help="Which judge slot this run fills (1 or 2). Controls the state file and output field used.",
     )
     return parser.parse_args()
 
@@ -617,5 +647,6 @@ if __name__ == "__main__":
         output_dir=args.output_dir,
         source_model_dir=args.source_model_dir,
         judge_index=args.judge_index,
+        judge_number=args.judge_number,
     )
     print(f"Evaluated {count} conversation(s).")
