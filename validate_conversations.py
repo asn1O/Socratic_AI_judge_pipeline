@@ -142,16 +142,17 @@ def is_valid_conversation(entry: dict) -> tuple[bool, str, str]:
     return True, "", ""
 
 
-def validate_file(file_path: Path, error_stats: Counter, delete_invalid: bool) -> int:
+def validate_file(file_path: Path, error_stats: Counter, delete_invalid: bool) -> tuple[int, int]:
     """Validate every conversation in a single JSON file.
 
-    Returns the number of invalid elements found.
+    Returns a tuple of (total_count, invalid_count).
     """
     with open(file_path, "r", encoding="utf-8") as f:
         conversations: list[dict] = json.load(f)
 
     valid = []
     invalid_count = 0
+    total_count = len(conversations)
 
     for index, element in enumerate(conversations):
         is_valid, error_detail, error_category = is_valid_conversation(element)
@@ -180,7 +181,47 @@ def validate_file(file_path: Path, error_stats: Counter, delete_invalid: bool) -
             json.dump(valid, f, indent=2, ensure_ascii=False)
         log.info("Rewrote %s  (removed %d elements)", file_path, removed_count)
 
-    return invalid_count
+    return total_count, invalid_count
+
+
+def validate_dataset(
+    data_dir: Path = DATA_DIR, delete_invalid: bool = False
+) -> tuple[int, int, dict[str, dict[str, int]], Counter, int]:
+    """Validate all JSON files in data_dir.
+
+    Returns:
+        (total_conversations, total_invalid, folder_stats, error_stats, file_count)
+    """
+    json_files = sorted(data_dir.rglob("*.json"))
+    log.info("Found %d JSON files under %s", len(json_files), data_dir)
+
+    total_conversations = 0
+    total_invalid = 0
+    error_stats = Counter()
+    folder_stats: dict[str, dict[str, int]] = {}
+
+    if data_dir.exists():
+        for sub_dir in sorted(data_dir.iterdir()):
+            if sub_dir.is_dir() and not sub_dir.name.startswith("."):
+                folder_stats[sub_dir.name] = {"total": 0, "invalid": 0}
+
+    for file_path in json_files:
+        try:
+            rel_path = file_path.relative_to(data_dir)
+            folder_name = rel_path.parts[0] if len(rel_path.parts) > 1 else "(root)"
+        except ValueError:
+            folder_name = file_path.parent.name
+
+        if folder_name not in folder_stats:
+            folder_stats[folder_name] = {"total": 0, "invalid": 0}
+
+        file_total, file_invalid = validate_file(file_path, error_stats, delete_invalid)
+        total_conversations += file_total
+        total_invalid += file_invalid
+        folder_stats[folder_name]["total"] += file_total
+        folder_stats[folder_name]["invalid"] += file_invalid
+
+    return total_conversations, total_invalid, folder_stats, error_stats, len(json_files)
 
 
 def main():
@@ -190,18 +231,48 @@ def main():
         action="store_true",
         help="Actually remove structurally invalid elements and rewrite the files."
     )
+    parser.add_argument(
+        "--data-dir",
+        type=Path,
+        default=DATA_DIR,
+        help="Path to the directory containing conversation JSON files (default: data)."
+    )
     args = parser.parse_args()
 
-    json_files = sorted(DATA_DIR.rglob("*.json"))
-    log.info("Found %d JSON files under %s", len(json_files), DATA_DIR)
+    data_dir = args.data_dir.resolve()
+    (
+        total_conversations,
+        total_invalid,
+        folder_stats,
+        error_stats,
+        file_count,
+    ) = validate_dataset(data_dir, args.delete_invalid)
 
-    total_invalid = 0
-    error_stats = Counter()
+    log.info(
+        "Done. Validated %d conversations across %d files. Total invalid elements found: %d",
+        total_conversations,
+        file_count,
+        total_invalid,
+    )
 
-    for file_path in json_files:
-        total_invalid += validate_file(file_path, error_stats, args.delete_invalid)
-
-    log.info("Done. Total invalid elements found: %d", total_invalid)
+    # ── Folder stats summary ───────────────────────────────────────────
+    if folder_stats:
+        log.info("── Folder Stats ──")
+        max_name_len = max(len(name) for name in folder_stats)
+        for folder_name, stats in sorted(folder_stats.items()):
+            invalid = stats["invalid"]
+            total = stats["total"]
+            valid = total - invalid
+            pct = (invalid / total * 100) if total > 0 else 0.0
+            log.info(
+                "  %-*s : %4d invalid / %4d total (%4d valid | %5.1f%% invalid)",
+                max_name_len,
+                folder_name,
+                invalid,
+                total,
+                valid,
+                pct,
+            )
 
     # ── Error stats summary ────────────────────────────────────────────
     if error_stats:
