@@ -28,10 +28,10 @@ Return `false` when the tutor makes a substantive factual, mathematical, logical
 
 Evaluate the method of guidance used by the tutor. Focus specifically on whether the tutor guides the student's reasoning primarily through questions that elicit thinking, or through statements that provide information, reasoning, or conclusions.
 
-0 = Predominantly states answers, conclusions, or solution steps instead of eliciting student reasoning.
-1 = Some questioning is present, but guidance is frequently statement-based, leading, or answer-revealing.
-2 = Generally uses questions to guide the student's reasoning, with occasional direct statements or overly leading questions.
-3 = Consistently uses targeted questions to elicit, probe, and extend the student's own reasoning.
+0 = Almost all guidance is statements (answers, solution steps, corrections, explanations). Any questions are rhetorical or have the answer built into them.
+1 = Some genuine questions, but statements or leading questions make up about half or more of the guidance. The tutor often asks a question and then answers it, or states the next step.
+2 = Most guidance is genuine questions that require the student to think, but at least once the tutor states a step, fact, or conclusion the student could have worked out, or asks a clearly leading question.
+3 = Essentially every substantive turn is a question that requires the student to generate reasoning, including at least one that asks the student to justify or test their own idea. The tutor never states a step or conclusion the student could have reached themselves.
 
 Do not use the amount of help provided as the basis for this score. Evaluate the method of guidance.
 
@@ -39,10 +39,10 @@ Do not use the amount of help provided as the basis for this score. Evaluate the
 
 Evaluate the granularity and amount of help provided by the tutor during each intervention. Focus on how much of the reasoning or solution is supplied versus how much is left for the student to work out.
 
-0 = Provides essentially the complete solution or the key reasoning needed to solve the problem.
-1 = Provides a large portion of the solution or reveals a major reasoning step.
-2 = Provides a useful but limited direction while leaving meaningful reasoning to the student.
-3 = Provides a small, targeted nudge that helps the student progress while leaving the central reasoning for them to discover.
+0 = Provides the full solution, the final answer, or performs the central step for the student.
+1 = Names the key method or sets up the problem, so the student's central decision is made for them. The student only carries it out.
+2 = Gives a useful partial direction (points to a relevant concept, step, or part of the problem) and the student still makes the central inference, but the help is larger than needed or comes before the student has had a chance to try.
+3 = Gives the smallest nudge that could work (e.g., redirecting attention to one detail), and escalates only if the student stays stuck. The central reasoning is left entirely to the student.
 
 Do not use whether the tutor asks a question or makes a statement as the basis for this score. Evaluate the amount and granularity of assistance.
 
@@ -50,28 +50,28 @@ Do not use whether the tutor asks a question or makes a statement as the basis f
 
 Evaluate how well the tutor responds to the student's current understanding, mistakes, confusion, and progress.
 
-0 = Tutor responses are largely disconnected from the student's state.
-1 = Tutor acknowledges the student's response but does not meaningfully adapt.
-2 = Tutor generally adapts to the student's state but misses some important details.
-3 = Tutor precisely responds to the student's current reasoning, misconception, or level of understanding.
+0 = Responses do not depend on what the student said. They follow a script, or repeat a move that already failed.
+1 = Acknowledges the student's response ("good," "not quite") but the next move is generic and could be given in reply to any answer.
+2 = Most replies address the student's specific error or step, but at least one important thing is missed: an error left unaddressed, a correct step not recognized, a failed approach repeated, or difficulty not adjusted.
+3 = Every reply is tied to the student's specific words or reasoning, targets the exact misconception, changes approach when something fails, and adjusts pace to the student's level. No important error or signal is missed.
 
 **diagnosis**
 
 Evaluate how well the tutor identifies and investigates what the student currently understands, misunderstands, or is unable to do.
 
-0 = No meaningful diagnosis of the student's reasoning.
-1 = Limited or inaccurate diagnosis.
-2 = Generally identifies the relevant difficulty or understanding.
-3 = Clearly identifies the student's reasoning state and uses appropriate questions to uncover it.
+0 = No attempt to find out what the student thinks. The tutor acts on assumptions.
+1 = Only generic checks ("Do you understand?"), or the tutor's inference about the difficulty is wrong or unsupported, or the tutor tells the student what is wrong without asking about their reasoning.
+2 = Accurately identifies the main difficulty from the student's answers, but does not confirm it by asking the student to explain, or does not distinguish a slip from a misconception.
+3 = Asks targeted questions that bring out the student's reasoning, accurately identifies the cause (slip, misconception, or missing prerequisite), and confirms it before intervening.
 
 **student_agency**
 
 Evaluate who performs the intellectual heavy lifting throughout the conversation. Focus on whether the student is the person generating, connecting, testing, and articulating the important reasoning.
 
-0 = The tutor performs most of the important reasoning; the student mainly follows or confirms it.
-1 = The student contributes some reasoning, but the tutor performs or supplies many important reasoning steps.
-2 = The student performs a substantial portion of the reasoning, with the tutor providing meaningful support.
-3 = The student performs the central reasoning, makes important connections, and articulates the solution or understanding in their own words.
+0 = The tutor produces nearly all key reasoning. The student confirms, copies, or says "ok."
+1 = The student produces some steps, but the tutor chooses the strategy or makes the central inference. Student turns are short or echo the tutor.
+2 = The student produces most steps, including the strategy or the central inference, but the tutor supplies at least one important step, or the student's explanation depends on the tutor's wording.
+3 = The student produces the central reasoning, makes connections on their own, self-corrects, and explains in their own words. The tutor supplies no key reasoning step.
 
 Do not use the number of tutor questions as the basis for this score. Evaluate who actually performs the reasoning.
 
@@ -79,19 +79,19 @@ Do not use the number of tutor questions as the basis for this score. Evaluate w
 
 Evaluate whether the conversation moves the student meaningfully toward understanding and solving the problem.
 
-0 = Little or no meaningful progress.
-1 = Some progress, but important confusion or gaps remain.
-2 = Student makes substantial progress toward a correct solution or understanding.
-3 = Student reaches the correct solution and demonstrates meaningful understanding of the underlying reasoning or principle.
+0 = No progress, or the student ends more confused than they started.
+1 = Partial progress: some steps completed or a misconception partly addressed, but the solution is incomplete or a major gap remains at the end.
+2 = The student reaches, or is one step from, a correct solution, or the main misconception is resolved, but there is no evidence they understand why (no explanation, check, or transfer), or it happened only with heavy tutor support.
+3 = The student reaches the correct solution through their own reasoning and shows understanding: explains why it works, states the principle, or handles a check or variant.
 
 **coherence**
 
 Evaluate the logical and conversational consistency of the dialogue.
 
-0 = Conversation is substantially incoherent or contradictory.
-1 = Noticeable inconsistencies, repetition, or disconnected responses.
-2 = Generally coherent with minor issues.
-3 = Responses form a clear, logically connected progression throughout.
+0 = Frequently contradictory or off-topic. Replies are often unrelated to the previous turn.
+1 = Noticeable problems: a contradiction, an unanswered student question, purposeless repetition, or an uncorrected tutor error that affects the dialogue.
+2 = Mostly coherent, with one or two minor issues (slight redundancy, a brief tangent, a minor wording slip) that do not affect the logic.
+3 = Every turn follows from the previous one. No contradictions, repetition, or ignored questions.
 
 **premature_answer**
 
