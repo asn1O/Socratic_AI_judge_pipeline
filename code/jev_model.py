@@ -17,96 +17,94 @@ FIXED_QUESTIONS: Dict[str, Any] = {
     "socratic_guidance": {
         "type": "score",
         "instructions": (
-            "Evaluate the tutor's method of guidance across the entire conversation. "
+            "Evaluate the method of guidance used by the tutor. "
             "Focus specifically on whether the tutor guides the student's reasoning primarily through questions "
             "that elicit thinking, or through statements that provide information, reasoning, or conclusions. "
-            "Do not use the amount of help provided as the basis for this score."
+            "Do not use the amount of help provided as the basis for this score. Evaluate the method of guidance."
         ),
         "criteria": [
-            "Predominantly states answers, conclusions, or solution steps instead of eliciting student reasoning.",
-            "Some questioning is present, but guidance is frequently statement-based, leading, or answer-revealing.",
-            "Generally uses questions to guide the student's reasoning, with occasional direct statements or overly leading questions.",
-            "Consistently uses targeted questions to elicit, probe, and extend the student's own reasoning.",
+            "Almost all guidance is statements (answers, solution steps, corrections, explanations). Any questions are rhetorical or have the answer built into them.",
+            "Some genuine questions, but statements or leading questions make up about half or more of the guidance. The tutor often asks a question and then answers it, or states the next step.",
+            "Most guidance is genuine questions that require the student to think, but at least once the tutor states a step, fact, or conclusion the student could have worked out, or asks a clearly leading question.",
+            "Essentially every substantive turn is a question that requires the student to generate reasoning, including at least one that asks the student to justify or test their own idea. The tutor never states a step or conclusion the student could have reached themselves.",
         ],
     },
     "scaffolding": {
         "type": "score",
         "instructions": (
-            "Evaluate the granularity and amount of help provided by the tutor during each intervention across the conversation. "
-            "Focus on how much reasoning or solution information the tutor supplies versus how much is left for the student to work out. "
-            "Do not use whether the tutor asks a question or makes a statement as the basis for this score."
+            "Evaluate the granularity and amount of help provided by the tutor during each intervention. "
+            "Focus on how much of the reasoning or solution is supplied versus how much is left for the student to work out. "
+            "Do not use whether the tutor asks a question or makes a statement as the basis for this score. "
+            "Evaluate the amount and granularity of assistance."
         ),
         "criteria": [
-            "Provides essentially the complete solution or the key reasoning needed to solve the problem.",
-            "Provides a large portion of the solution or reveals a major reasoning step.",
-            "Provides a useful but limited direction while leaving meaningful reasoning to the student.",
-            "Provides a small, targeted nudge that helps the student progress while leaving the central reasoning for them to discover.",
+            "Provides the full solution, the final answer, or performs the central step for the student.",
+            "Names the key method or sets up the problem, so the student's central decision is made for them. The student only carries it out.",
+            "Gives a useful partial direction (points to a relevant concept, step, or part of the problem) and the student still makes the central inference, but the help is larger than needed or comes before the student has had a chance to try.",
+            "Gives the smallest nudge that could work (e.g., redirecting attention to one detail), and escalates only if the student stays stuck. The central reasoning is left entirely to the student.",
         ],
     },
     "state_adaptation": {
         "type": "score",
         "instructions": (
-            "Evaluate how well the tutor responds to the student's current understanding, mistakes, confusion, and progress. "
-            "Consider the relationship between each student response and the tutor's subsequent response."
+            "Evaluate how well the tutor responds to the student's current understanding, mistakes, confusion, and progress."
         ),
         "criteria": [
-            "Tutor responses are largely disconnected from the student's state.",
-            "Tutor acknowledges the student's response but does not meaningfully adapt.",
-            "Tutor generally adapts to the student's state but misses some important details.",
-            "Tutor precisely responds to the student's current reasoning, misconception, or level of understanding.",
+            "Responses do not depend on what the student said. They follow a script, or repeat a move that already failed.",
+            'Acknowledges the student\'s response ("good," "not quite") but the next move is generic and could be given in reply to any answer.',
+            "Most replies address the student's specific error or step, but at least one important thing is missed: an error left unaddressed, a correct step not recognized, a failed approach repeated, or difficulty not adjusted.",
+            "Every reply is tied to the student's specific words or reasoning, targets the exact misconception, changes approach when something fails, and adjusts pace to the student's level. No important error or signal is missed.",
         ],
     },
     "diagnosis": {
         "type": "score",
         "instructions": (
-            "Evaluate how well the tutor identifies and investigates what the student currently understands, misunderstands, or is unable to do. "
-            "Assess the actual diagnostic behavior demonstrated, not the tutor's apparent intentions."
+            "Evaluate how well the tutor identifies and investigates what the student currently understands, misunderstands, or is unable to do."
         ),
         "criteria": [
-            "No meaningful diagnosis of the student's reasoning.",
-            "Limited or inaccurate diagnosis.",
-            "Generally identifies the relevant difficulty or understanding.",
-            "Clearly identifies the student's reasoning state and uses appropriate questions to uncover it."
+            "No attempt to find out what the student thinks. The tutor acts on assumptions.",
+            'Only generic checks ("Do you understand?"), or the tutor\'s inference about the difficulty is wrong or unsupported, or the tutor tells the student what is wrong without asking about their reasoning.',
+            "Accurately identifies the main difficulty from the student's answers, but does not confirm it by asking the student to explain, or does not distinguish a slip from a misconception.",
+            "Asks targeted questions that bring out the student's reasoning, accurately identifies the cause (slip, misconception, or missing prerequisite), and confirms it before intervening.",
         ],
     },
     "student_agency": {
         "type": "score",
         "instructions": (
             "Evaluate who performs the intellectual heavy lifting throughout the conversation. "
-            "Focus on whether the student generates, connects, tests, and articulates the important reasoning. "
-            "Do not use the number of tutor questions as the basis for this score."
+            "Focus on whether the student is the person generating, connecting, testing, and articulating the important reasoning. "
+            "Do not use the number of tutor questions as the basis for this score. "
+            "Evaluate who actually performs the reasoning."
         ),
         "criteria": [
-            "The tutor performs most of the important reasoning; the student mainly follows or confirms it.",
-            "The student contributes some reasoning, but the tutor performs or supplies many important reasoning steps.",
-            "The student performs a substantial portion of the reasoning, with the tutor providing meaningful support.",
-            "The student performs the central reasoning, makes important connections, and articulates the solution or understanding in their own words.",
+            'The tutor produces nearly all key reasoning. The student confirms, copies, or says "ok."',
+            "The student produces some steps, but the tutor chooses the strategy or makes the central inference. Student turns are short or echo the tutor.",
+            "The student produces most steps, including the strategy or the central inference, but the tutor supplies at least one important step, or the student's explanation depends on the tutor's wording.",
+            "The student produces the central reasoning, makes connections on their own, self-corrects, and explains in their own words. The tutor supplies no key reasoning step.",
         ],
     },
     "progression": {
         "type": "score",
         "instructions": (
-            "Evaluate whether the conversation moves the student meaningfully toward understanding and solving the problem. "
-            "Consider the initial response, intermediate reasoning, corrections, and final demonstrated understanding."
+            "Evaluate whether the conversation moves the student meaningfully toward understanding and solving the problem."
         ),
         "criteria": [
-            "Little or no meaningful progress.",
-            "Some progress, but important confusion or gaps remain.",
-            "Student makes substantial progress toward a correct solution or understanding.",
-            "Student reaches the correct solution and demonstrates meaningful understanding of the underlying reasoning or principle.",
+            "No progress, or the student ends more confused than they started.",
+            "Partial progress: some steps completed or a misconception partly addressed, but the solution is incomplete or a major gap remains at the end.",
+            "The student reaches, or is one step from, a correct solution, or the main misconception is resolved, but there is no evidence they understand why (no explanation, check, or transfer), or it happened only with heavy tutor support.",
+            "The student reaches the correct solution through their own reasoning and shows understanding: explains why it works, states the principle, or handles a check or variant.",
         ],
     },
     "coherence": {
         "type": "score",
         "instructions": (
-            "Evaluate the logical and conversational consistency of the dialogue as a whole. "
-            "Consider whether the tutor's responses form a connected progression that appropriately follows the student's responses."
+            "Evaluate the logical and conversational consistency of the dialogue."
         ),
         "criteria": [
-            "Conversation is substantially incoherent or contradictory.",
-            "Noticeable inconsistencies, repetition, or disconnected responses.",
-            "Generally coherent with minor issues.",
-            "Responses form a clear, logically connected progression throughout.",
+            "Frequently contradictory or off-topic. Replies are often unrelated to the previous turn.",
+            "Noticeable problems: a contradiction, an unanswered student question, purposeless repetition, or an uncorrected tutor error that affects the dialogue.",
+            "Mostly coherent, with one or two minor issues (slight redundancy, a brief tangent, a minor wording slip) that do not affect the logic.",
+            "Every turn follows from the previous one. No contradictions, repetition, or ignored questions.",
         ],
     },
 }
