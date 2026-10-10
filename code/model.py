@@ -471,3 +471,16 @@ class Model:
                 f"Unexpected error when attempting request: {e}"
             )
             return False, None, 0, "UNEXPECTED_ERROR"
+
+
+try:
+    from .jev_model import FIXED_QUESTIONS, call_jev, format_conversation_state
+except ImportError:  # pragma: no cover
+    from jev_model import FIXED_QUESTIONS, call_jev, format_conversation_state
+
+__all__ = [
+    "Model",
+    "call_jev",
+    "format_conversation_state",
+    "FIXED_QUESTIONS",
+]
