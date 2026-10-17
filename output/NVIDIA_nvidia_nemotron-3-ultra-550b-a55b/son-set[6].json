@@ -32,6 +32,37 @@
           "hallucination": "All tutor content is grounded in the problem; no fabricated facts are introduced."
         }
       }
+    },
+    "judge_1": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "beam:cloud"
+      },
+      "total_tokens": 7195,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 2,
+        "scaffolding": 2,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "All stated shifts and mappings are consistent with a Caesar shift of +1, including the final wraparound rule.",
+          "socratic_guidance": "Turns 2, 10, and 12 ask genuine questions, but turns 4 and 6 state letter mappings and turn 8 states 'Correct' before the student reaches each answer.",
+          "scaffolding": "Turns 4 and 6 give explicit letter mappings (A→B, P→Q, L→M) rather than only redirecting attention, though the student still computes the final words.",
+          "state_adaptation": "Turns 4, 6, and 10 specifically address the student's reverse-alphabet, vowel-only, and repeated +2 errors.",
+          "diagnosis": "Turns 2 and 10 ask the student why a particular shift was chosen, and turn 10 catches the reversion to +2 before the student self-corrects.",
+          "student_agency": "The student independently identifies the +1 pattern in turn 7 and states the wrapping rule in turn 13.",
+          "progression": "The student reaches GRAPE→HSBQF, CAT→DBU, and a general next-letter rule with Z→A wraparound.",
+          "coherence": "Each tutor move follows logically from the student's previous answer, with no contradictions or ignored questions.",
+          "premature_answer": "The tutor never reveals the final encoded words before the student states them.",
+          "hallucination": "The tutor's mappings and corrections are supported by the puzzle's +1 shift and contain no fabricated information."
+        }
+      }
     }
   }
 ]
