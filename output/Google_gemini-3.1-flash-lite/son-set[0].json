@@ -4,10 +4,10 @@
     "conversation_index": 0,
     "judge_2": {
       "model": {
-        "provider": "NVIDIA",
-        "model_name": "nvidia/nemotron-3-super-120b-a12b"
+        "provider": "Ollama",
+        "model_name": "gpt-oss:120b"
       },
-      "total_tokens": 5867,
+      "total_tokens": 5027,
       "evaluation": {
         "correctness": true,
         "socratic_guidance": 3,
@@ -20,28 +20,28 @@
         "premature_answer": false,
         "hallucination": false,
         "evidence": {
-          "correctness": "Tutor's guidance correctly identifies independent and dependent clauses, never providing false information (e.g., Turns 2,4,6,8,10).",
-          "socratic_guidance": "Tutor's substantive turns are primarily questions that elicit student reasoning (Turns 2,4,6,8,10) with only brief affirmations, never stating a solution step the student could have derived.",
-          "scaffolding": "Tutor gives minimal nudges such as asking to split the sentence (Turn2) and to test the clause aloud (Turn6), leaving the central inference to the student.",
-          "state_adaptation": "Each tutor response directly addresses the student's specific utterance, e.g., confirming the independent clause in Turn4 after Turn3, and challenging the misconception in Turn6 after Turn5.",
-          "diagnosis": "Tutor uses targeted questions to uncover the student's misunderstanding about the second clause (Turn6) and confirms it by asking the student to test the clause's completeness.",
-          "student_agency": "Student independently identifies the independent clause (Turn3), realizes the dependent clause's nature (Turn7), and formulates the definition (Turn11), with tutor only prompting.",
-          "progression": "By Turn11 the student correctly explains the difference between clause types, showing mastery of the concept.",
-          "coherence": "The dialogue follows a clear logical progression with each tutor turn building on the student's previous response, without contradictions or irrelevant remarks.",
-          "premature_answer": "Tutor never reveals the final answer or a complete solution; all conclusions are drawn by the student (e.g., Turn11).",
-          "hallucination": "Tutor's statements are factually accurate and based on the given sentence; no fabricated information is introduced."
+          "correctness": "All tutor statements about clause types and prompts are accurate, e.g., recognizing 'we decided to go for a walk' as independent (turn 4) and that 'Although it was raining' is dependent (turn 6).",
+          "socratic_guidance": "Every substantive tutor turn (turns 2,4,6,8,10) is a question prompting the student to reason.",
+          "scaffolding": "Tutor only gives hints via questions, leaving the identification and explanation of clause types entirely to the student (turns 2‑10).",
+          "state_adaptation": "Tutor’s responses directly address the student’s specific claims, such as challenging the idea that the second clause is independent (turn 6).",
+          "diagnosis": "Tutor repeatedly probes to uncover the student’s misunderstanding, e.g., asking if 'Although it was raining' feels complete (turn 6) before guiding further.",
+          "student_agency": "Student generates the key insights, naming the independent clause (turn 3), recognizing the dependent clause (turn 7), and formulating the rule (turn 11).",
+          "progression": "By turn 11 the student correctly explains the difference between independent and dependent clauses, showing full understanding.",
+          "coherence": "The dialogue proceeds without contradictions; each tutor question follows the student’s prior answer.",
+          "premature_answer": "Tutor never provides the final classification or rule; the student articulates them.",
+          "hallucination": "All tutor information aligns with standard grammar; no fabricated facts appear."
         }
       }
     },
     "judge_1": {
       "model": {
         "provider": "Ollama",
-        "model_name": "nemotron-3-ultra"
+        "model_name": "beam:cloud"
       },
-      "total_tokens": 5371,
+      "total_tokens": 4809,
       "evaluation": {
         "correctness": true,
-        "socratic_guidance": 3,
+        "socratic_guidance": 2,
         "scaffolding": 3,
         "state_adaptation": 3,
         "diagnosis": 3,
@@ -51,16 +51,16 @@
         "premature_answer": false,
         "hallucination": false,
         "evidence": {
-          "correctness": "All tutor explanations about independent and dependent clauses are accurate and logically consistent throughout the conversation.",
-          "socratic_guidance": "Turns 2, 4, 6, 8, and 10 use genuine questions that elicit student reasoning without providing answers.",
-          "scaffolding": "Each tutor intervention provides a minimal nudge (e.g., Turn 2's split suggestion, Turn 6's 'feel finished' test) and escalates only when the student is stuck.",
-          "state_adaptation": "Every tutor reply directly addresses the student's previous statement, from probing the initial claim (Turn 2) to challenging the misconception (Turn 6) and requesting synthesis (Turn 10).",
-          "diagnosis": "Turn 6's targeted question reveals the student's misconception that a subject and verb make a clause independent, and the tutor confirms the diagnosis through the student's response.",
-          "student_agency": "The student identifies the independent clause (Turn 3), recognizes the dependent clause (Turn 7), names it (Turn 9), and explains the distinction (Turn 11) without tutor supplying key steps.",
-          "progression": "The student moves from viewing the sentence as one clause (Turn 1) to correctly defining independent and dependent clauses (Turn 11), demonstrating full understanding.",
-          "coherence": "Each turn follows logically from the previous one, with no contradictions, repetitions, or unanswered questions.",
-          "premature_answer": "The tutor never provides the final answer; the student discovers the terminology and concept through guided questioning.",
-          "hallucination": "No tutor response contains fabricated or incorrect information; all content is factually correct and relevant."
+          "correctness": "The tutor's clause labels and prompts are consistent with standard grammar.",
+          "socratic_guidance": "Most turns use questions, but turns 4 and 8 also state conclusions such as “can stand alone” and “can’t stand alone.”",
+          "scaffolding": "The tutor uses small nudges (split at comma, say it aloud, name the clause) without giving the full explanation.",
+          "state_adaptation": "Replies specifically address the student’s turns, including the incorrect claim that subject plus verb makes a clause independent.",
+          "diagnosis": "Targeted questions expose and test the student’s misunderstanding about independent clauses before naming the label.",
+          "student_agency": "The student identifies the independent clause, recognizes dependence, labels it dependent, and explains the difference.",
+          "progression": "The student reaches the correct distinction and explains both clause types in their own words.",
+          "coherence": "Each tutor turn follows logically from the student’s previous response without contradiction or ignored questions.",
+          "premature_answer": "The tutor does not reveal the dependent/independent distinction before the student has worked through examples.",
+          "hallucination": "No fabricated or factually false information appears in the tutor’s responses."
         }
       }
     }
@@ -70,41 +70,10 @@
     "conversation_index": 1,
     "judge_2": {
       "model": {
-        "provider": "NVIDIA",
-        "model_name": "nvidia/nemotron-3-super-120b-a12b"
-      },
-      "total_tokens": 7835,
-      "evaluation": {
-        "correctness": true,
-        "socratic_guidance": 2,
-        "scaffolding": 3,
-        "state_adaptation": 3,
-        "diagnosis": 3,
-        "student_agency": 3,
-        "progression": 3,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "The tutor's statements are mathematically accurate (e.g., Turn 2 correctly notes 4+4=8, Turn 6 affirms the doubling pattern, and no incorrect facts are given).",
-          "socratic_guidance": "Most tutor turns are questions that elicit thinking (Turns 2,4,6,8,10), but the tutor sometimes states a simple arithmetic fact the student could compute themselves (Turn 2: 'If we add 4 to 4, we get 8').",
-          "scaffolding": "Each tutor turn provides only a small nudge (e.g., Turn 4 prompts the student to examine how numbers change) without giving the answer or central step.",
-          "state_adaptation": "Each tutor response directly addresses the student's immediate utterance, such as checking the add‑4 hypothesis in Turn 2 and probing the switch to addition in Turn 8.",
-          "diagnosis": "The tutor asks targeted questions that uncover the student's misunderstanding (Turn 2 tests the add‑4 rule, Turn 8 probes the unwarranted switch to addition) and confirms understanding before moving on.",
-          "student_agency": "The student identifies the pattern, self‑corrects the addition slip, and articulates the rule in their own words, while the tutor only asks questions.",
-          "progression": "The student progresses from an incorrect additive hypothesis to correctly explaining the doubling rule, demonstrating understanding by Turn 11.",
-          "coherence": "Every turn follows logically from the prior one, with no contradictions or irrelevant statements.",
-          "premature_answer": "The tutor never reveals the answer or the rule; all solutions are produced by the student.",
-          "hallucination": "All tutor statements are factually correct; no fabricated or false information is introduced."
-        }
-      }
-    },
-    "judge_1": {
-      "model": {
         "provider": "Ollama",
-        "model_name": "nemotron-3-ultra"
+        "model_name": "gpt-oss:120b"
       },
-      "total_tokens": 5890,
+      "total_tokens": 5220,
       "evaluation": {
         "correctness": true,
         "socratic_guidance": 3,
@@ -117,16 +86,47 @@
         "premature_answer": false,
         "hallucination": false,
         "evidence": {
-          "correctness": "The tutor's questions and confirmations are mathematically accurate; the pattern is correctly identified as multiplying by 2, and no errors are introduced.",
-          "socratic_guidance": "All substantive tutor turns (2,4,6,8,10) are genuine questions that elicit student reasoning, including turn 8 asking the student to justify their switch from multiplication to addition.",
-          "scaffolding": "Each tutor intervention provides a minimal nudge (e.g., turn 2 checks the first step, turn 4 redirects to comparing changes, turn 8 questions the strategy shift) and escalates only when the student is stuck, leaving the central inference to the student.",
-          "state_adaptation": "The tutor's replies directly address the student's specific statements: turn 2 tests the +4 hypothesis, turn 4 responds to 'lost' by focusing on gaps, turn 6 builds on the doubling insight, turn 8 targets the erroneous addition, and turn 10 requests a rule explanation after the correct term.",
-          "diagnosis": "The tutor identifies the initial misconception (turn 2), confirms the student's discovery of doubling (turn 6), detects the regression to addition (turn 8) and probes the reason, and finally verifies full understanding by asking for the rule (turn 10).",
-          "student_agency": "The student generates the doubling pattern (turn 5), self-corrects from addition back to multiplication (turn 9), computes the next term (32), and articulates the rule in their own words (turn 11) without the tutor supplying any key step.",
-          "progression": "The student progresses from an incorrect additive rule to the correct multiplicative rule, computes the next term correctly, and explains the underlying principle, demonstrating full understanding by the end.",
-          "coherence": "The dialogue flows logically: each tutor response follows naturally from the student's prior utterance, with no contradictions, ignored questions, or off-topic remarks.",
-          "premature_answer": "The tutor never provides the next term or the rule; the student discovers both independently through the tutor's questions.",
-          "hallucination": "No fabricated or false information appears in the tutor's responses; all content is grounded in the actual sequence and student's statements."
+          "correctness": "All tutor replies (turns 2,4,6,8,10,12) are mathematically accurate and do not contain incorrect statements.",
+          "socratic_guidance": "Turns 2,4,6,8,10 are genuine questions that require the student to think, with only brief affirmations otherwise.",
+          "scaffolding": "Each tutor turn gives only a minimal prompt (e.g., turn 4 asks to compare the changes) and leaves the central calculation to the student.",
+          "state_adaptation": "The tutor’s replies directly address the student’s latest comment, such as turn 8 responding to the student’s switch to addition.",
+          "diagnosis": "Turn 2 probes the student's additive idea, turn 8 probes the unintended switch, showing targeted identification of misconceptions.",
+          "student_agency": "The student generates the pattern, computes 16, corrects to 32, and articulates the rule, while the tutor only asks.",
+          "progression": "By turn 11 the student correctly states the rule and the next term, showing full resolution of the problem.",
+          "coherence": "The dialogue proceeds without contradictions; each tutor question follows the student’s previous answer.",
+          "premature_answer": "The tutor never supplies the next term or rule before the student derives them.",
+          "hallucination": "No fabricated or false information appears in any tutor response."
+        }
+      }
+    },
+    "judge_1": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "beam:cloud"
+      },
+      "total_tokens": 7402,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 2,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's arithmetic references and pattern checks are accurate throughout, and no incorrect method is introduced.",
+          "socratic_guidance": "Most turns are questions, but turn 2 states 'If we add 4 to 4, we get 8' and turn 10 says 'That's it,' stating a fact or conclusion the student could work out.",
+          "scaffolding": "The tutor redirects attention to the gaps and asks for the next term without providing the multiplication rule or final answer.",
+          "state_adaptation": "Each reply targets the student's specific claim or error, such as testing addition against the first step and questioning the later switch to adding 2.",
+          "diagnosis": "The tutor uses targeted questions to reveal that adding 4 fails at the first step and that the later addition switches away from multiplying by 2.",
+          "student_agency": "The student identifies doubling, finds 16 and 32, self-corrects the final addition error, and states the rule independently.",
+          "progression": "By the end, the student has correctly found 32 and explained the doubling rule.",
+          "coherence": "Every tutor turn follows logically from the student's prior statement without contradictions or ignored questions.",
+          "premature_answer": "The tutor never reveals the next number or rule before the student derives them.",
+          "hallucination": "No fabricated or unsupported information appears in the tutor's responses."
         }
       }
     }
@@ -136,13 +136,13 @@
     "conversation_index": 2,
     "judge_2": {
       "model": {
-        "provider": "NVIDIA",
-        "model_name": "nvidia/nemotron-3-super-120b-a12b"
+        "provider": "Ollama",
+        "model_name": "gpt-oss:120b"
       },
-      "total_tokens": 6879,
+      "total_tokens": 5553,
       "evaluation": {
         "correctness": true,
-        "socratic_guidance": 2,
+        "socratic_guidance": 3,
         "scaffolding": 3,
         "state_adaptation": 3,
         "diagnosis": 3,
@@ -152,456 +152,25 @@
         "premature_answer": false,
         "hallucination": false,
         "evidence": {
-          "correctness": "Tutor provided factually correct information about sealed cans, water vapor, condensation, and particle motion with no errors.",
-          "socratic_guidance": "Tutor used questions to elicit thinking in most turns but occasionally gave explanatory statements (e.g., turn 6 explaining sticking together) that the student could have worked out.",
-          "scaffolding": "Tutor offered small nudges (e.g., prompting to consider air, asking about particle motion) without giving the full solution or final answer.",
-          "state_adaptation": "Each tutor response directly addressed the student's specific idea, correcting misconceptions and building on their reasoning.",
-          "diagnosis": "Tutor asked targeted questions to uncover the student's misconception about the water source and confirmed understanding before proceeding.",
-          "student_agency": "Student generated the core reasoning (identifying air, vapor, cooling, condensation) while tutor mainly posed questions and gave brief feedback.",
-          "progression": "Student progressed from an initial misconception to a correct, complete explanation of condensation and expressed confidence.",
-          "coherence": "The dialogue remained logically connected, with each turn responding appropriately to the previous one, showing no contradictions or irrelevant remarks.",
-          "premature_answer": "Tutor never revealed the final answer or a complete solution before the student had a chance to reason through it.",
-          "hallucination": "All tutor statements were factually accurate; no fabricated or false information was introduced."
+          "correctness": "All tutor statements (e.g., turns 2, 4, 6, 8) correctly describe condensation on a cold can and contain no factual errors.",
+          "socratic_guidance": "Turns 2, 4, 6, and 8 each ask open questions that require the student to generate reasoning instead of giving direct answers.",
+          "scaffolding": "The tutor only provides minimal nudges via questions and never supplies the central explanation, leaving the core reasoning to the student.",
+          "state_adaptation": "Each tutor turn directly addresses the student's most recent idea, such as correcting the leakage belief in turn 2 and probing energy loss in turn 4.",
+          "diagnosis": "The tutor accurately identifies the student's misunderstanding about liquid leaking (turn 2) and later confirms their grasp of the phase change concept (turn 6) through targeted questions.",
+          "student_agency": "The student produces the key concepts—identifying air, describing cooling, naming condensation, and summarizing the process—while the tutor merely prompts.",
+          "progression": "By turn 9 the student delivers a correct, complete explanation of why droplets form, indicating full conceptual mastery.",
+          "coherence": "The dialogue proceeds logically with each response building on the previous one and no contradictions appear.",
+          "premature_answer": "The tutor never provides the final explanation before the student does so in turn 9.",
+          "hallucination": "No fabricated or factually false information is present in any tutor response."
         }
       }
     },
     "judge_1": {
       "model": {
         "provider": "Ollama",
-        "model_name": "nemotron-3-ultra"
+        "model_name": "beam:cloud"
       },
-      "total_tokens": 6454,
-      "evaluation": {
-        "correctness": true,
-        "socratic_guidance": 3,
-        "scaffolding": 3,
-        "state_adaptation": 3,
-        "diagnosis": 3,
-        "student_agency": 3,
-        "progression": 3,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "The tutor correctly explains condensation, water vapor in air, and particle motion without any factual errors across turns 2–10.",
-          "socratic_guidance": "The tutor uses genuine questions at every substantive turn (turns 2, 4, 6, 8, 10) to elicit reasoning and never states a step the student could reach.",
-          "scaffolding": "The tutor provides minimal nudges (redirecting to air in turn 2, particle motion in turn 4, phase change name in turn 6) and leaves the central reasoning to the student.",
-          "state_adaptation": "Each tutor reply directly addresses the student's specific idea: correcting the leak misconception in turn 2, confirming the air hypothesis in turn 4, building on the slowing particles in turn 6, and requesting synthesis in turn 8.",
-          "diagnosis": "The tutor identifies the initial misconception (turn 2), probes the student's reasoning with targeted questions (turns 4, 6), and confirms understanding before closing (turn 8).",
-          "student_agency": "The student generates the key ideas: air as source (turn 3), particle slowing (turn 5), condensation term (turn 7), and full explanation (turn 9) without tutor supplying reasoning steps.",
-          "progression": "The student moves from a leak misconception (turn 1) to a complete, self-generated explanation of condensation (turn 9) and expresses confidence (turn 11).",
-          "coherence": "The dialogue flows logically with each tutor response building on the student's prior answer; no contradictions or ignored questions occur.",
-          "premature_answer": "The tutor never reveals the answer; the student discovers condensation independently by turn 7 and explains it fully in turn 9.",
-          "hallucination": "All tutor statements are factually accurate and supported by the conversation; no fabricated information appears."
-        }
-      }
-    }
-  },
-  {
-    "source_file": "Google_gemini-3.1-flash-lite/son-set[0].json",
-    "conversation_index": 3,
-    "judge_2": {
-      "model": {
-        "provider": "NVIDIA",
-        "model_name": "nvidia/nemotron-3-super-120b-a12b"
-      },
-      "total_tokens": 7264,
-      "evaluation": {
-        "correctness": true,
-        "socratic_guidance": 3,
-        "scaffolding": 3,
-        "state_adaptation": 3,
-        "diagnosis": 3,
-        "student_agency": 3,
-        "progression": 3,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "The tutor's statements and questions are mathematically accurate; no factual errors are present (e.g., Turns 2, 4, 6, 8, 10, 12).",
-          "socratic_guidance": "Almost all tutor turns pose genuine questions that require the student to reason (Turns 2, 4, 6, 8, 10), with only brief affirmations, never stating solution steps.",
-          "scaffolding": "The tutor gives minimal nudges (e.g., Turn 2 asks for updated counts; Turn 4 asks what operation to use) and only escalates after student error, never providing the answer or key step.",
-          "state_adaptation": "Each tutor response directly addresses the student's specific input, such as correcting the addition misconception in Turn 6 after the student's Turn 5.",
-          "diagnosis": "The tutor uses targeted questions to uncover the student's misunderstanding (Turn 6) and confirms understanding before moving on (Turn 10).",
-          "student_agency": "The student derives the second probability, recognizes the addition error, chooses multiplication, computes the product, and articulates the rule, while the tutor only asks questions.",
-          "progression": "The student progresses from being unsure about the second draw to correctly computing 5/14 and explaining the general rule for dependent events.",
-          "coherence": "The dialogue flows logically with each turn building on the previous, containing no contradictions or off-topic remarks.",
-          "premature_answer": "The tutor never reveals the final answer or the multiplication step; all guidance remains in the form of questions.",
-          "hallucination": "All tutor statements are factually correct and grounded in the problem; no fabricated information is introduced."
-        }
-      }
-    },
-    "judge_1": {
-      "model": {
-        "provider": "Ollama",
-        "model_name": "nemotron-3-ultra"
-      },
-      "total_tokens": 5677,
-      "evaluation": {
-        "correctness": true,
-        "socratic_guidance": 3,
-        "scaffolding": 3,
-        "state_adaptation": 3,
-        "diagnosis": 3,
-        "student_agency": 3,
-        "progression": 3,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "All tutor guidance and calculations are mathematically accurate, with no errors in probability reasoning or arithmetic.",
-          "socratic_guidance": "Every substantive tutor turn (2, 4, 6, 8, 10) is a genuine question eliciting student reasoning, including Turn 8 asking the student to justify their own idea.",
-          "scaffolding": "The tutor provides minimal nudges (e.g., Turn 2 redirects to bag composition, Turn 6 prompts testing the sum) and never states a step the student could reach, leaving all central inferences to the student.",
-          "state_adaptation": "Each tutor response directly addresses the student's specific prior answer: Turn 2 targets the second-draw uncertainty, Turn 6 targets the addition error, Turn 8 builds on the self-correction, and Turn 10 requests synthesis after the correct calculation.",
-          "diagnosis": "The tutor uses targeted questions to uncover the student's reasoning (Turn 2, Turn 6, Turn 8), accurately identifies the addition misconception, and confirms understanding before moving on.",
-          "student_agency": "The student generates all key steps: both probabilities, the realization that addition yields >1, the switch to multiplication, the final calculation (5/14), and the general rule articulation.",
-          "progression": "The student progresses from initial uncertainty to a complete, self-derived solution with a valid explanation of dependent-event probability, demonstrating full understanding.",
-          "coherence": "The dialogue flows logically with each turn responding to the previous one, no contradictions, ignored questions, or tangents.",
-          "premature_answer": "The tutor never provides the final answer or a complete solution; the student calculates 5/14 independently in Turn 9.",
-          "hallucination": "No fabricated or factually false information appears in any tutor response."
-        }
-      }
-    }
-  },
-  {
-    "source_file": "Google_gemini-3.1-flash-lite/son-set[0].json",
-    "conversation_index": 4,
-    "judge_2": {
-      "model": {
-        "provider": "NVIDIA",
-        "model_name": "nvidia/nemotron-3-super-120b-a12b"
-      },
-      "total_tokens": 6767,
-      "evaluation": {
-        "correctness": true,
-        "socratic_guidance": 3,
-        "scaffolding": 3,
-        "state_adaptation": 3,
-        "diagnosis": 3,
-        "student_agency": 3,
-        "progression": 3,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "The tutor's guidance (turns 2,4,6,8,10) contained no factual errors; all statements and questions were mathematically accurate.",
-          "socratic_guidance": "The tutor's substantive turns were primarily questions (turns 2,4,6,8,10) that required the student to reason, with only brief affirmations that did not supply solution steps.",
-          "scaffolding": "Each tutor turn gave a minimal nudge (e.g., turn 2 asking about changed counts, turn 4 using an analogy) and waited for the student to produce the next step before offering further help.",
-          "state_adaptation": "The tutor's replies directly addressed the student's specific utterances—correcting the independence assumption (turn 2), challenging addition (turn 4), prompting computation (turn 6), simplification (turn 8), and explanation (turn 10).",
-          "diagnosis": "Through targeted questions (turns 2,4,6,8,10) the tutor uncovered the student's misunderstanding about replacement, then about operation, then checked computation and simplification, confirming each before proceeding.",
-          "student_agency": "The student generated the key insights—adjusting totals, rejecting addition, performing multiplication, simplifying, and articulating the dependent‑event rule—while the tutor only posed questions.",
-          "progression": "The student progressed from an incorrect independent‑probability guess to correctly computing 2/15 and explaining the rule for dependent events.",
-          "coherence": "Each turn followed logically from the previous one, with no contradictions or unrelated remarks.",
-          "premature_answer": "The tutor never stated the final answer or a near‑complete solution; they only asked the student to compute and simplify it.",
-          "hallucination": "All tutor statements were factually correct; no invented or false information was introduced."
-        }
-      }
-    },
-    "judge_1": {
-      "model": {
-        "provider": "Ollama",
-        "model_name": "nemotron-3-ultra"
-      },
-      "total_tokens": 5872,
-      "evaluation": {
-        "correctness": true,
-        "socratic_guidance": 3,
-        "scaffolding": 3,
-        "state_adaptation": 3,
-        "diagnosis": 3,
-        "student_agency": 3,
-        "progression": 3,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "The tutor correctly guides the student from independent to dependent probability, validates the adjusted fractions (4/10 and 3/9), multiplication, and simplification to 2/15 without any mathematical errors.",
-          "socratic_guidance": "All substantive tutor turns (2, 4, 6, 8, 10) are genuine questions that elicit the student's reasoning, and the tutor never states a step or conclusion the student could have reached.",
-          "scaffolding": "The tutor provides minimal nudges—redirecting attention to changing counts (turn 2), using a coin-flip analogy to elicit multiplication (turn 4), and asking for calculation and simplification—leaving all central reasoning to the student.",
-          "state_adaptation": "Each tutor response directly addresses the student's specific error or progress: the independence assumption (turn 2), the addition mistake (turn 4), the correct multiplication setup (turn 6), the fraction simplification (turn 8), and the final synthesis (turn 10).",
-          "diagnosis": "The tutor asks targeted questions that reveal the student's misunderstanding of independence (turn 2) and confusion between addition and multiplication for sequential events (turn 4), accurately identifies each cause, and confirms the correction through the student's own response.",
-          "student_agency": "The student generates the key insights—adjusting totals, choosing multiplication, computing 12/90, simplifying to 2/15, and articulating the dependent-events rule—while the tutor supplies no essential reasoning step.",
-          "progression": "The student moves from an incorrect independent-probability approach to a complete, correct solution and explains the underlying principle of dependent events, demonstrating full understanding.",
-          "coherence": "The dialogue flows logically with each tutor question building on the student's previous answer, no contradictions, ignored questions, or off-topic remarks.",
-          "premature_answer": "The tutor never provides the final answer or a complete solution; the student arrives at 2/15 through their own reasoning prompted by questions.",
-          "hallucination": "The tutor introduces no fabricated or false information; all guidance is mathematically accurate and grounded in the problem context."
-        }
-      }
-    }
-  },
-  {
-    "source_file": "Google_gemini-3.1-flash-lite/son-set[0].json",
-    "conversation_index": 5,
-    "judge_2": {
-      "model": {
-        "provider": "NVIDIA",
-        "model_name": "nvidia/nemotron-3-super-120b-a12b"
-      },
-      "total_tokens": 7695,
-      "evaluation": {
-        "correctness": true,
-        "socratic_guidance": 3,
-        "scaffolding": 3,
-        "state_adaptation": 3,
-        "diagnosis": 3,
-        "student_agency": 3,
-        "progression": 3,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "The tutor's statements are factually correct (e.g., acknowledging the $50 cost, affirming the $80 total, and confirming the student's definition) and contain no erroneous claims.",
-          "socratic_guidance": "The tutor's guidance is primarily through genuine questions (turns 2,4,6,8,10) that require the student to think, with only brief affirmational statements that do not provide solution steps.",
-          "scaffolding": "The tutor provides only small nudges (e.g., pointing to time in turn2, asking for components in turn4, prompting justification in turn6) and never supplies the answer or key steps, leaving the reasoning to the student.",
-          "state_adaptation": "Each tutor response directly addresses the student's specific utterance (e.g., turn2 responds to the omission of time, turn6 responds to the $80 sum) and adjusts based on the student's level.",
-          "diagnosis": "The tutor identifies the student's missing time-cost component via targeted questions (turn2) and confirms understanding by asking for justification (turn6) and definition (turn10).",
-          "student_agency": "The student generates the key insights—realizing the time cost, summing $80, justifying the combination, and defining opportunity cost—while the tutor mainly asks questions.",
-          "progression": "The student progresses from an incomplete view of opportunity cost (turn1) to a correct, articulated definition (turn11) demonstrating understanding.",
-          "coherence": "The conversation maintains logical flow with each tutor turn building on the student's prior statement, showing no contradictions or irrelevant remarks.",
-          "premature_answer": "The tutor never states the opportunity cost amount or definition before the student arrives at it themselves.",
-          "hallucination": "The tutor does not introduce any false or fabricated information; all statements are accurate or affirmational."
-        }
-      }
-    },
-    "judge_1": {
-      "model": {
-        "provider": "Ollama",
-        "model_name": "nemotron-3-ultra"
-      },
-      "total_tokens": 5434,
-      "evaluation": {
-        "correctness": true,
-        "socratic_guidance": 3,
-        "scaffolding": 3,
-        "state_adaptation": 3,
-        "diagnosis": 3,
-        "student_agency": 3,
-        "progression": 3,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "The tutor's questions and guidance accurately reflect the economic concept of opportunity cost, with no factual errors across turns 2–10.",
-          "socratic_guidance": "Every substantive tutor turn (2, 4, 6, 8, 10) is a genuine question that elicits the student's reasoning without stating steps or conclusions.",
-          "scaffolding": "The tutor provides minimal nudges—first about time (turn 2), then about combining costs (turn 4), then about the next best alternative (turn 8)—leaving the central calculations and definition to the student.",
-          "state_adaptation": "Each tutor response directly addresses the student's prior statement: turn 2 probes the missing time component, turn 4 follows up on the student's recognition of lost pay, turn 6 asks for justification of the combined figure, turn 8 redirects to the alternative, and turn 10 requests a synthesis.",
-          "diagnosis": "The tutor identifies the student's initial omission of foregone income (turn 2), confirms the emerging understanding (turn 6), and verifies the final definition (turn 10) through targeted questions.",
-          "student_agency": "The student independently calculates the total cost ($80) in turn 5, explains why both components matter in turn 7, and articulates the full definition of opportunity cost in turn 11.",
-          "progression": "The student moves from a narrow monetary view (turn 1) to a complete, self-generated definition of opportunity cost (turn 11), demonstrating clear conceptual advancement.",
-          "coherence": "The dialogue flows logically with each tutor question building on the student's previous answer, and no turns contradict or ignore prior content.",
-          "premature_answer": "The tutor never supplies the final answer or a complete solution; the student arrives at the correct definition through guided questioning.",
-          "hallucination": "All tutor statements are grounded in the conversation and economic principle; no unsupported or false information is introduced."
-        }
-      }
-    }
-  },
-  {
-    "source_file": "Google_gemini-3.1-flash-lite/son-set[0].json",
-    "conversation_index": 6,
-    "judge_2": {
-      "model": {
-        "provider": "NVIDIA",
-        "model_name": "nvidia/nemotron-3-super-120b-a12b"
-      },
-      "total_tokens": 5857,
-      "evaluation": {
-        "correctness": true,
-        "socratic_guidance": 3,
-        "scaffolding": 3,
-        "state_adaptation": 3,
-        "diagnosis": 3,
-        "student_agency": 3,
-        "progression": 3,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "The tutor's guidance about days in a week and modulo arithmetic is mathematically accurate, with no factual errors.",
-          "socratic_guidance": "The tutor's substantive turns are primarily questions (turns 2,4,6,8,10) that elicit the student's reasoning, never stating a solution step the student could derive themselves.",
-          "scaffolding": "The tutor provides minimal nudges—asking about week length, 7‑day cycle, and remaining days—leaving the central reasoning entirely to the student.",
-          "state_adaptation": "Each tutor response directly addresses the student's specific comment (e.g., turn 4 targets the 'almost a week' idea, turn 6 builds on the known 7‑day week).",
-          "diagnosis": "The tutor asks targeted questions to uncover the student's reasoning (turn 2) and confirms the misconception before guiding further (turns 4‑8).",
-          "student_agency": "The student generates the solution, explains the modulo logic in their own words (turn 11), while the tutor only asks questions.",
-          "progression": "The student arrives at the correct answer (Friday) and explains why 7 days makes a week and 3 extra days lead to Friday, demonstrating understanding.",
-          "coherence": "Every turn follows logically from the previous one, with no contradictions or unrelated statements.",
-          "premature_answer": "The tutor never reveals the answer; the student discovers it themselves through guided questioning.",
-          "hallucination": "All tutor statements are factually correct; no fabricated information is introduced."
-        }
-      }
-    },
-    "judge_1": {
-      "model": {
-        "provider": "Ollama",
-        "model_name": "nemotron-3-ultra"
-      },
-      "total_tokens": 5296,
-      "evaluation": {
-        "correctness": true,
-        "socratic_guidance": 3,
-        "scaffolding": 3,
-        "state_adaptation": 3,
-        "diagnosis": 3,
-        "student_agency": 3,
-        "progression": 3,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "The tutor's guidance correctly applies modulo 7 arithmetic to determine the day of the week, with no mathematical errors.",
-          "socratic_guidance": "Every substantive tutor turn (2, 4, 6, 8, 10) is a genuine question that elicits student reasoning without stating steps or conclusions.",
-          "scaffolding": "The tutor provides minimal nudges—first asking for the student's method, then the length of a week, then the 7-day cycle, then the remainder—leaving the central modulo inference to the student.",
-          "state_adaptation": "Each tutor response directly addresses the student's previous answer: probing the initial error (turn 2), confirming the week length (turn 4), establishing the 7-day cycle (turn 6), targeting the remaining days (turn 8), and requesting explanation (turn 10).",
-          "diagnosis": "The tutor investigates the student's reasoning with an open-ended question (turn 2), identifies the missing modulo concept, and confirms understanding through subsequent targeted questions.",
-          "student_agency": "The student generates the key steps—recognizing the 7-day cycle, subtracting 7 from 10, and counting 3 days forward—and articulates the full explanation in turn 11.",
-          "progression": "The student moves from an incorrect answer (Wednesday) to the correct answer (Friday) with a complete explanation of the modulo 7 logic.",
-          "coherence": "The dialogue flows logically with each turn building on the previous one, no contradictions or unanswered questions.",
-          "premature_answer": "The tutor never provides the answer; the student first states Friday in turn 9 after working through the steps.",
-          "hallucination": "The tutor introduces no fabricated or false information; all content is factually correct and grounded in the problem."
-        }
-      }
-    }
-  },
-  {
-    "source_file": "Google_gemini-3.1-flash-lite/son-set[0].json",
-    "conversation_index": 7,
-    "judge_2": {
-      "model": {
-        "provider": "NVIDIA",
-        "model_name": "nvidia/nemotron-3-super-120b-a12b"
-      },
-      "total_tokens": 7077,
-      "evaluation": {
-        "correctness": true,
-        "socratic_guidance": 2,
-        "scaffolding": 3,
-        "state_adaptation": 3,
-        "diagnosis": 3,
-        "student_agency": 3,
-        "progression": 3,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "Tutor's guidance aligns with correct logical reasoning; all statements about set relationships are accurate and no errors are introduced.",
-          "socratic_guidance": "Most tutor turns ask genuine questions (e.g., turns 2,4,6,8,10) to elicit reasoning, with occasional affirming statements that do not give away steps.",
-          "scaffolding": "Tutor gives minimal nudges, such as asking what the poet-dreamer containment forces (turn 4) and never provides the solution directly.",
-          "state_adaptation": "Each tutor response directly addresses the student's specific wording or misconception, e.g., turn 8 targets the student's inverse error about poets and dreamers.",
-          "diagnosis": "Tutor asks targeted questions to uncover reasoning, confirming the student's misunderstanding before guiding, as seen in turns 2,4,6,8.",
-          "student_agency": "Student generates the key inferences, visualizations, and final explanation, while tutor only questions and affirms (turns 1,3,5,7,9,11).",
-          "progression": "Student arrives at the correct conclusion and explains it in their own words by turn 11, demonstrating understanding.",
-          "coherence": "Dialogue maintains logical flow with each tutor turn building on the student's prior input, with no contradictions or irrelevant remarks.",
-          "premature_answer": "Tutor never reveals the conclusion or solution steps before the student formulates them; the student reaches the answer independently by turn 11.",
-          "hallucination": "All tutor statements are factually correct and grounded in the premises; no fabricated information is introduced."
-        }
-      }
-    },
-    "judge_1": {
-      "model": {
-        "provider": "Ollama",
-        "model_name": "nemotron-3-ultra"
-      },
-      "total_tokens": 6712,
-      "evaluation": {
-        "correctness": true,
-        "socratic_guidance": 3,
-        "scaffolding": 3,
-        "state_adaptation": 3,
-        "diagnosis": 3,
-        "student_agency": 3,
-        "progression": 3,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "The tutor correctly guides the student through the categorical syllogism (All poets are dreamers; No dreamers are realists; therefore No poets are realists) without any factual or logical errors across turns 2–10.",
-          "socratic_guidance": "The tutor uses only questions to elicit reasoning (turns 2, 4, 6, 8, 10), never stating a step or conclusion the student could reach, and asks the student to justify their understanding in turn 10.",
-          "scaffolding": "Each tutor intervention provides a minimal nudge (e.g., turn 2 asks for visualization, turn 4 highlights containment, turn 8 points to the premise) and escalates only when the student remains stuck, leaving the core inference to the student.",
-          "state_adaptation": "Every tutor reply directly addresses the student's specific statement: turn 4 builds on the student's Venn diagram, turn 6 responds to the student's question, turn 8 targets the inverse misconception, and turn 10 prompts synthesis after correction.",
-          "diagnosis": "The tutor asks targeted diagnostic questions (turns 2, 4, 6, 8) that reveal the student's mental model, identifies the misconception about the direction of the subset in turn 7, and confirms understanding before moving on in turn 10.",
-          "student_agency": "The student generates all key reasoning: initial hypothesis (turn 1), visualization (turn 3), realization of containment (turn 5), self-correction of the inverse error (turn 9), and final explanation (turn 11); the tutor supplies no reasoning steps.",
-          "progression": "The student moves from an incorrect assumption (turn 1) to a complete, self-generated explanation of the valid syllogism (turn 11), demonstrating understanding of why the conclusion follows.",
-          "coherence": "The dialogue flows logically with each turn responding directly to the previous one, no contradictions, ignored questions, or tangents.",
-          "premature_answer": "The tutor never provides the final answer or a complete solution; the student arrives at the conclusion independently by turn 9 and articulates it in turn 11.",
-          "hallucination": "The tutor's responses contain no fabricated or factually false information; all guidance is grounded in the premises given and the student's statements."
-        }
-      }
-    }
-  },
-  {
-    "source_file": "Google_gemini-3.1-flash-lite/son-set[0].json",
-    "conversation_index": 8,
-    "judge_2": {
-      "model": {
-        "provider": "NVIDIA",
-        "model_name": "nvidia/nemotron-3-super-120b-a12b"
-      },
-      "total_tokens": 6476,
-      "evaluation": {
-        "correctness": true,
-        "socratic_guidance": 2,
-        "scaffolding": 3,
-        "state_adaptation": 3,
-        "diagnosis": 3,
-        "student_agency": 3,
-        "progression": 3,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "The tutor correctly identifies premise indicators, confirms the student's correct mapping of premises and conclusion, and provides no factual errors (turns 2,4,6,8,10).",
-          "socratic_guidance": "The tutor mostly asks open-ended questions but occasionally states facts the student could have inferred, such as confirming 'since' as a premise indicator in turn 4.",
-          "scaffolding": "The tutor gives only small nudges, like prompting to spot indicator words (turn 2) and asking what follows (turn 4), leaving the reasoning to the student.",
-          "state_adaptation": "Each tutor response directly addresses the student's specific utterance, such as responding to the confusion about importance in turn 8 with a question about logical dependency.",
-          "diagnosis": "The tutor accurately identifies the student's main difficulty (e.g., reliance on 'importance' in turn 7) and asks targeted questions to clarify, confirming understanding before moving on.",
-          "student_agency": "The student generates the key reasoning, such as identifying premises and conclusion (turn 5) and explaining the premise-connection relationship (turn 11), while the tutor mainly asks questions.",
-          "progression": "By turn 11 the student correctly summarizes premises as reasons supporting a conclusion, demonstrating understanding and reaching the lesson goal.",
-          "coherence": "Every turn logically follows from the previous one, with no contradictions or off-topic remarks.",
-          "premature_answer": "The tutor never reveals the answer or a complete solution; all conclusions are drawn by the student through guided questioning.",
-          "hallucination": "The tutor provides no fabricated or false information; all statements about premise indicators and logical structure are accurate."
-        }
-      }
-    },
-    "judge_1": {
-      "model": {
-        "provider": "Ollama",
-        "model_name": "nemotron-3-ultra"
-      },
-      "total_tokens": 5224,
-      "evaluation": {
-        "correctness": true,
-        "socratic_guidance": 3,
-        "scaffolding": 3,
-        "state_adaptation": 3,
-        "diagnosis": 3,
-        "student_agency": 3,
-        "progression": 3,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "The tutor correctly identifies 'since' as a premise indicator (turn 4), validates the student's premise-conclusion mapping (turn 6), and accurately explains logical dependency (turn 8).",
-          "socratic_guidance": "Every substantive tutor turn uses genuine questions to elicit reasoning: turn 2 asks about bridging words, turn 4 asks what remains as the final point, turn 6 asks for a description in the student's own words, turn 8 asks which part depends on the others, and turn 10 asks for a summary.",
-          "scaffolding": "The tutor provides minimal nudges (turn 2: attention to indicator words; turn 4: confirmation and redirection; turn 6: request to generalize; turn 8: targeted question on dependency; turn 10: request to summarize), escalating only when the student expresses confusion at turn 7.",
-          "state_adaptation": "Each reply targets the student's specific state: turn 2 addresses structural uncertainty, turn 4 builds on the identified indicator, turn 6 responds to correct mapping, turn 8 directly addresses the 'importance' misconception, and turn 10 consolidates the realized foundation concept.",
-          "diagnosis": "The tutor infers the student's difficulty from their answers (turns 1, 3, 5, 7), confirms the misconception about 'importance' by asking a targeted dependency question at turn 8, and verifies understanding at turn 10 before closing.",
-          "student_agency": "The student identifies indicator words (turn 3), maps premises and conclusion (turn 5), discovers logical dependency (turn 9), and articulates the final definition (turn 11); the tutor supplies no key reasoning step.",
-          "progression": "The student moves from uncertainty about structure (turn 1) to a clear, self-generated definition of premises as reasons supporting a conclusion (turn 11), demonstrating understanding of the logical relationship.",
-          "coherence": "The dialogue flows logically with each tutor response directly building on the student's prior statement; no contradictions, ignored questions, or tangential remarks appear.",
-          "premature_answer": "The tutor never provides the final definition or solution; the student produces the complete correct explanation at turn 11 after guided reasoning.",
-          "hallucination": "All tutor statements are factually correct logical concepts; no fabricated or unsupported information is introduced."
-        }
-      }
-    }
-  },
-  {
-    "source_file": "Google_gemini-3.1-flash-lite/son-set[0].json",
-    "conversation_index": 9,
-    "judge_2": {
-      "model": {
-        "provider": "NVIDIA",
-        "model_name": "nvidia/nemotron-3-super-120b-a12b"
-      },
-      "total_tokens": 10603,
+      "total_tokens": 8029,
       "evaluation": {
         "correctness": true,
         "socratic_guidance": 2,
@@ -614,47 +183,478 @@
         "premature_answer": false,
         "hallucination": false,
         "evidence": {
-          "correctness": "Tutor correctly states linear search O(n), binary search O(log n), and efficient sorting O(n log n) with no factual errors observed.",
-          "socratic_guidance": "Tutor mixes statements and questions; e.g., turn 4 includes a correction statement before asking a question, showing not every turn is a pure question.",
-          "scaffolding": "Tutor often provides explanatory details (e.g., O(n) work in turn 2, 8‑book example in turn 4) before posing questions, offering more than a minimal nudge.",
-          "state_adaptation": "Each tutor reply directly addresses the student's prior utterance—for instance, turn 4 corrects the O(1) misconception right after the student's claim, and turn 8 builds on the student's trade‑off insight.",
-          "diagnosis": "Tutor accurately identifies the student's difficulties (e.g., O(1) mistake in turn 4, sorting cost in turn 6) but does not first ask the student to explain their reasoning before offering the correct information.",
-          "student_agency": "While the student derives the logarithmic growth and trade‑off reasoning themselves (turns 5,7,9,11), the tutor supplies key facts such as the 8‑book example (turn 4) and Merge Sort complexity (turn 6).",
-          "progression": "By turn 11 the student correctly contrasts O(n) linear search with O(log n) binary search and explains when sorting pays off, demonstrating full understanding.",
-          "coherence": "The dialogue stays on topic, each response follows logically from the previous turn with no contradictions or irrelevant remarks.",
-          "premature_answer": "Tutor never reveals the final answer or a complete solution before the student has articulated it; the student’s summary in turn 11 comes after tutor‑guided questioning.",
-          "hallucination": "All tutor statements about time complexities (O(n), O(log n), O(n log n)) are factually correct; no fabricated information is introduced."
+          "correctness": "Turns 2–9 correctly explain that sealed cans cannot leak and that water vapor in warm air condenses on the cold surface, with no factual errors.",
+          "socratic_guidance": "Turns 2, 4, 6, and 8 ask genuine questions, but turns 2, 4, and 6 also state facts or mechanisms that guide the student.",
+          "scaffolding": "Turns 4 and 6 provide partial explanations about water vapor, cooling, and particles sticking together rather than only minimal nudges.",
+          "state_adaptation": "Turn 2 targets the leak misconception, and turns 4, 6, and 8 follow directly from the student's prior answers.",
+          "diagnosis": "The tutor identifies the leaking-through-metal misconception in turn 2 but does not first ask the student to explain that belief before correcting it.",
+          "student_agency": "The student provides the final answer and synthesis, but the tutor supplies mechanistic wording about energy loss and sticking in turns 4 and 6.",
+          "progression": "By turn 9 the student explains vapor cooling and condensation in their own words, and turn 11 confirms confidence.",
+          "coherence": "Each tutor turn responds to the immediately preceding student statement without contradiction or ignored questions.",
+          "premature_answer": "The tutor does not state condensation or the full solution before the student produces them in turns 7 and 9.",
+          "hallucination": "No fabricated or unsupported facts appear; the can-sealing and condensation claims are ordinary correct statements."
+        }
+      }
+    }
+  },
+  {
+    "source_file": "Google_gemini-3.1-flash-lite/son-set[0].json",
+    "conversation_index": 3,
+    "judge_2": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "gpt-oss:120b"
+      },
+      "total_tokens": 5369,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "All tutor statements (turns 2,4,6,8,10,12) are mathematically accurate and guide the student correctly.",
+          "socratic_guidance": "Turns 2,4,6,8,10 each pose genuine questions that require the student to think, with no substantive step given.",
+          "scaffolding": "Each tutor turn provides only a minimal nudge (e.g., asking remaining marbles in turn 2) and lets the student carry out the calculation.",
+          "state_adaptation": "The tutor’s responses directly reference the student’s previous answer, such as correcting the addition in turn 6 after the student’s claim in turn 5.",
+          "diagnosis": "The tutor asks targeted questions about the bag composition (turn 2) and about the operation choice (turn 6), accurately pinpointing the misconception.",
+          "student_agency": "The student performs the key calculations (turn 3, 9) and formulates the rule (turn 11) while the tutor only prompts.",
+          "progression": "By turn 11 the student has the correct probability 5/14 and can explain the rule, showing full understanding.",
+          "coherence": "The dialogue proceeds logically without contradictions, each turn builds on the previous one.",
+          "premature_answer": "The tutor never provides the final probability; the student derives it in turn 9.",
+          "hallucination": "All tutor information is supported by the problem context; no fabricated facts appear."
         }
       }
     },
     "judge_1": {
       "model": {
         "provider": "Ollama",
-        "model_name": "nemotron-3-ultra"
+        "model_name": "beam:cloud"
       },
-      "total_tokens": 8663,
+      "total_tokens": 7401,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's prompts are mathematically consistent with without-replacement probability, and the student's final 5/14 is correct.",
+          "socratic_guidance": "Turns 2, 4, 6, 8, and 10 use questions that require the student to reason rather than stating solution steps.",
+          "scaffolding": "Each intervention is a small nudge, such as asking for remaining counts, while the calculations remain the student's work.",
+          "state_adaptation": "Turn 6 directly addresses the student's addition and OR misconception, and later turns build on the student's corrections.",
+          "diagnosis": "Targeted questions in turns 2 and 6 bring out the missing composition update and the OR-versus-AND error.",
+          "student_agency": "The student determines 4/7, decides to multiply, computes 5/14, and states the general rule.",
+          "progression": "The student reaches 5/14 and explains the dependent-events rule in their own words by turn 11.",
+          "coherence": "Every tutor response follows logically from the student's prior turn without contradictions or ignored questions.",
+          "premature_answer": "The tutor does not reveal 5/14 before the student derives it in turn 9.",
+          "hallucination": "The tutor introduces no fabricated or unsupported information."
+        }
+      }
+    }
+  },
+  {
+    "source_file": "Google_gemini-3.1-flash-lite/son-set[0].json",
+    "conversation_index": 4,
+    "judge_2": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "gpt-oss:120b"
+      },
+      "total_tokens": 5657,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "All tutor statements are mathematically accurate and lead to the correct probability 2/15 (turns 2‑10).",
+          "socratic_guidance": "Every substantive tutor turn (turns 2,4,6,8,10) is a question that requires the student to generate the next step.",
+          "scaffolding": "The tutor only provides minimal nudges via questions, leaving calculations and simplifications to the student (e.g., turn 6 asks for the product).",
+          "state_adaptation": "Each tutor reply directly addresses the student’s latest comment, correcting the addition error (turn 4) and guiding the subsequent calculation (turn 6, 8, 10).",
+          "diagnosis": "The tutor probes the student’s misunderstanding by asking about the marble counts (turn 2) and about adding probabilities (turn 4) before confirming the correction.",
+          "student_agency": "The student performs all core computations and explanations, while the tutor only prompts (turns 5‑9, 11).",
+          "progression": "The student proceeds from an initial incorrect method to the correct simplified probability 2/15 and a clear explanation of dependent events (turn 9‑11).",
+          "coherence": "The dialogue proceeds logically without contradictions, each turn building on the previous one.",
+          "premature_answer": "The tutor never supplies the final answer; the student derives it (turn 9).",
+          "hallucination": "The tutor does not introduce any fabricated or false information."
+        }
+      }
+    },
+    "judge_1": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "beam:cloud"
+      },
+      "total_tokens": 5269,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's count adjustments, multiplication rule, and simplification prompts are mathematically consistent with the student's 4 red of 10 marbles setup.",
+          "socratic_guidance": "Every substantive tutor turn uses a question (turns 2, 4, 6, 8, 10) to elicit student reasoning rather than stating steps.",
+          "scaffolding": "The tutor nudges only count changes, operation choice, calculation, and simplification without supplying central inferences.",
+          "state_adaptation": "Each reply targets the student's latest specific answer: independence in turn 2, addition in turn 4, then arithmetic and simplification.",
+          "diagnosis": "Targeted count and coin-flip-analogy questions reveal the student's with-replacement and addition misconceptions before intervention.",
+          "student_agency": "The student derives the count adjustment, corrects to multiplication, computes 12/90, simplifies to 2/15, and explains the rule.",
+          "progression": "The student reaches 2/15 and articulates why dependent probabilities are multiplied after adjusting counts.",
+          "coherence": "Each tutor turn follows from the preceding student response with no contradictions or ignored questions.",
+          "premature_answer": "The tutor never states the final probability or simplification before the student derives them.",
+          "hallucination": "The tutor introduces no unsupported facts beyond the student's stated marble counts."
+        }
+      }
+    }
+  },
+  {
+    "source_file": "Google_gemini-3.1-flash-lite/son-set[0].json",
+    "conversation_index": 5,
+    "judge_2": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "gpt-oss:120b"
+      },
+      "total_tokens": 5164,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "All tutor responses (turns 2,4,6,8,10,12) are factually accurate and correctly guide the concept of opportunity cost without error.",
+          "socratic_guidance": "Turns 2,4,6,8,10 each pose genuine questions that require the student to generate reasoning rather than providing statements.",
+          "scaffolding": "The tutor only offers minimal prompts (e.g., turn 2 asking about time) and never supplies the solution steps, leaving central reasoning to the student.",
+          "state_adaptation": "Each tutor reply directly addresses the student's preceding comment, such as turn 6 responding to the student's $80 calculation.",
+          "diagnosis": "The tutor identifies the student's misunderstanding about ignoring time (turn 2) and confirms comprehension before proceeding, using targeted questions.",
+          "student_agency": "The student performs the key calculations ($80) and composes the definition of opportunity cost (turn 11) while the tutor merely asks.",
+          "progression": "By turn 11 the student correctly defines opportunity cost, showing full understanding of the concept.",
+          "coherence": "The dialogue proceeds logically with each turn building on the previous without contradictions.",
+          "premature_answer": "The tutor never supplies the final answer before the student arrives at it; the definition is given by the student.",
+          "hallucination": "No fabricated or false information appears in any tutor response."
+        }
+      }
+    },
+    "judge_1": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "beam:cloud"
+      },
+      "total_tokens": 6005,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "Turns 2–12 contain factually consistent guidance that supports the student's correct $80 total and valid definition of opportunity cost.",
+          "socratic_guidance": "Turns 2, 4, 6, 8, and 10 are genuine questions, including Turn 6's request that the student justify combining costs.",
+          "scaffolding": "Turn 2 redirects attention only to the time/money trade-off while leaving enumeration, calculation, and definition to the student.",
+          "state_adaptation": "Each tutor reply references the student's prior answer, such as the $50 expense, lost $30, and next-best-alternative scenario.",
+          "diagnosis": "The tutor's questions bring out the student's price-only initial view and then prompt articulation of the missing foregone income before confirmation.",
+          "student_agency": "The student identifies both costs, calculates $80, and produces the final definition without the tutor stating the answer.",
+          "progression": "By Turn 11 the student has calculated the total sacrificed value and explained why opportunity cost includes foregone benefits.",
+          "coherence": "Each tutor turn follows directly from the student's previous reasoning without contradictions or ignored questions.",
+          "premature_answer": "The tutor never states the total opportunity cost or final definition before the student reaches them.",
+          "hallucination": "No unsupported or factually false information appears in the tutor's responses."
+        }
+      }
+    }
+  },
+  {
+    "source_file": "Google_gemini-3.1-flash-lite/son-set[0].json",
+    "conversation_index": 6,
+    "judge_2": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "gpt-oss:120b"
+      },
+      "total_tokens": 5148,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "All tutor statements (turns 2,4,6,8,10,12) are factually correct and lead to the correct answer Friday.",
+          "socratic_guidance": "Turns 2,4,6,8,10 are all questions that require the student to reason, with no step directly provided.",
+          "scaffolding": "Each tutor turn gives only a minimal prompt (e.g., ask about week length) and leaves the calculation to the student.",
+          "state_adaptation": "Tutor tailors each response to the student's previous answer, e.g., after the student notes 7 days returns to Tuesday, the tutor asks about the remaining 3 days.",
+          "diagnosis": "Turn 2 asks the student to explain their reasoning, enabling the tutor to identify the misconception about treating 10 days as \"almost a week.\"",
+          "student_agency": "The student performs the key calculations, decides that 10-7=3 and arrives at Friday without the tutor providing the answer.",
+          "progression": "By turn 11 the student correctly explains why 10 days from Tuesday is Friday, showing full understanding.",
+          "coherence": "All tutor replies directly follow the student’s statements, with no contradictions or irrelevant content.",
+          "premature_answer": "The tutor never reveals the answer before the student derives it; the correct day is arrived at by the student.",
+          "hallucination": "The tutor does not introduce any unsupported or false information."
+        }
+      }
+    },
+    "judge_1": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "beam:cloud"
+      },
+      "total_tokens": 5179,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "Turns 4–11 correctly establish that 10 days equals one full week plus 3 remaining days, landing on Friday.",
+          "socratic_guidance": "Turns 2, 4, 6, 8, and 10 use genuine questions that elicit the student's reasoning rather than stating solution steps.",
+          "scaffolding": "Turns 4, 6, and 8 provide small, successive nudges while leaving the modulo calculation and conclusion to the student.",
+          "state_adaptation": "Turn 4 targets the student's 'almost like a week' misconception by asking about the actual length of a week.",
+          "diagnosis": "Turn 2 asks the student to explain their reasoning, accurately revealing the faulty week-length assumption.",
+          "student_agency": "The student independently derives the remainder of 3 days and explains why 10 days from Tuesday is Friday.",
+          "progression": "The student moves from an incorrect Wednesday answer to the correct Friday answer with an explained rationale.",
+          "coherence": "Each tutor response directly follows the student's previous answer without contradiction or ignored questions.",
+          "premature_answer": "The tutor never states the final answer before the student derives Friday in turn 9.",
+          "hallucination": "No fabricated, unsupported, or factually false information appears in the tutor's responses."
+        }
+      }
+    }
+  },
+  {
+    "source_file": "Google_gemini-3.1-flash-lite/son-set[0].json",
+    "conversation_index": 7,
+    "judge_2": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "gpt-oss:120b"
+      },
+      "total_tokens": 5560,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor’s guidance leads the student to the correct conclusion that no poets are realists and contains no factual errors (e.g., turn 10 confirms the logical result).",
+          "socratic_guidance": "Turns 2, 4, 6, 8, and 10 are genuine questions that require the student to reason rather than providing statements.",
+          "scaffolding": "Each tutor turn offers only a minimal nudge—e.g., asking how the relationship forces poets concerning realists—leaving the central inference to the student.",
+          "state_adaptation": "Tutor’s responses directly reference the student’s previous description (e.g., turn 4 builds on the student’s circle picture, turn 8 addresses the inverse‑subset confusion).",
+          "diagnosis": "Tutor asks targeted questions like “If every poet is a dreamer, is there any possibility for a poet to exist outside the group of dreamers?” (turn 8) to uncover the student’s misconception.",
+          "student_agency": "The student generates the key inference that poets cannot be realists (turn 5) and later articulates the full explanation (turn 11) while the tutor only prompts.",
+          "progression": "By turn 11 the student correctly explains the syllogism, showing full understanding of why no poets are realists.",
+          "coherence": "All turns follow logically, with the tutor addressing each student point and no contradictions appear.",
+          "premature_answer": "Tutor never states the final conclusion; instead, it prompts the student to arrive at it (e.g., turn 10).",
+          "hallucination": "Tutor provides only accurate logical statements without fabricating any facts."
+        }
+      }
+    },
+    "judge_1": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "beam:cloud"
+      },
+      "total_tokens": 6828,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor consistently applies the syllogism's containment and exclusion premises and never introduces an invalid inference.",
+          "socratic_guidance": "Turns 2, 4, 6, 8, and 10 use questions that require the student to generate and articulate the logic rather than stating answers.",
+          "scaffolding": "The tutor gives conditional framing and attention redirects while leaving the exclusion inference to the student across turns 4, 6, and 8.",
+          "state_adaptation": "Each tutor reply addresses the student's specific visualization or hypothetical, such as the 'touch it' overlap idea in turn 3 and the non-dreamer poet case in turn 7.",
+          "diagnosis": "Turns 2 and 6 ask the student to expose their group relationships, and turn 8 specifically tests the claim that a poet could fall outside dreamers.",
+          "student_agency": "The student constructs the containment explanation, self-corrects at turn 9, and states the final rule in their own words at turn 11.",
+          "progression": "The student moves from an initial overlap misconception to the correct 'no poets are realists' conclusion and explains why.",
+          "coherence": "The dialogue follows a consistent sequence of clarification, correction, and synthesis without contradictions or ignored questions.",
+          "premature_answer": "The tutor does not state the final conclusion; the student first articulates it at turns 9 and 11.",
+          "hallucination": "No fabricated or unsupported claims appear in the tutor's responses."
+        }
+      }
+    }
+  },
+  {
+    "source_file": "Google_gemini-3.1-flash-lite/son-set[0].json",
+    "conversation_index": 8,
+    "judge_2": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "gpt-oss:120b"
+      },
+      "total_tokens": 4750,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "All tutor statements about premise indicators, logical dependence, and summary are factually accurate (e.g., turns 2, 4, 8).",
+          "socratic_guidance": "Turns 2, 4, 6, 8, and 10 each pose a genuine question that requires the student to generate reasoning.",
+          "scaffolding": "The tutor provides only small nudges, such as asking about indicator words (turn 2) and dependence (turn 8), leaving the core inference to the student.",
+          "state_adaptation": "Each tutor reply directly addresses the student's latest comment, e.g., confirming the use of 'since' (turn 4) and correcting the importance idea (turn 8).",
+          "diagnosis": "The tutor asks targeted questions to reveal the student's misconception about importance versus logical role (turn 8) and confirms understanding (turn 10).",
+          "student_agency": "The student identifies premises, formulates the conclusion, and articulates the relationship in their own words (turns 5, 7, 9, 11).",
+          "progression": "By turn 11 the student can accurately define premises and conclusion, showing full conceptual grasp.",
+          "coherence": "The dialogue proceeds logically without contradictions or irrelevant remarks.",
+          "premature_answer": "The tutor never gives the final explanation before the student constructs it; guidance remains incremental.",
+          "hallucination": "All information the tutor provides is supported by standard logical analysis; no fabricated facts appear."
+        }
+      }
+    },
+    "judge_1": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "beam:cloud"
+      },
+      "total_tokens": 6033,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 2,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "Turns 4–12 contain accurate statements about premise indicators, logical dependency, and the premise–conclusion relationship.",
+          "socratic_guidance": "Turns 2, 6, 8, and 10 use genuine reasoning questions, but turns 4 and 8 also state indicator and framing facts the student had largely identified.",
+          "scaffolding": "Turn 2 redirects attention to bridging words, and later prompts leave the mapping of components to the student.",
+          "state_adaptation": "Each tutor reply directly addresses the student’s current mapping, bridging-word discovery, or 'importance' misconception.",
+          "diagnosis": "Turn 8 targets the student’s 'most important' misconception with a dependency question before the student states the foundation idea.",
+          "student_agency": "The student identifies premises and conclusion in turn 5 and supplies the final summary in turn 11 without the tutor stating the solution.",
+          "progression": "The student moves from uncertainty to a correct definition of premises and conclusions by turn 11.",
+          "coherence": "Every turn follows logically from the student’s previous response, with no contradictions or ignored questions.",
+          "premature_answer": "The tutor confirms or summarizes only after the student has produced the relevant reasoning.",
+          "hallucination": "No fabricated or unsupported factual claims appear in the tutor’s responses."
+        }
+      }
+    }
+  },
+  {
+    "source_file": "Google_gemini-3.1-flash-lite/son-set[0].json",
+    "conversation_index": 9,
+    "judge_2": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "gpt-oss:120b"
+      },
+      "total_tokens": 6012,
       "evaluation": {
         "correctness": true,
         "socratic_guidance": 2,
         "scaffolding": 2,
         "state_adaptation": 3,
         "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "Tutor correctly states that binary search is O(log n) and that efficient sorts like Merge Sort are O(n log n) (turns 4 and 6) and never gives an inaccurate complexity.",
+          "socratic_guidance": "Most tutor turns (2,4,6,8,10) are questions prompting the student, but turns 4 and 6 also include explanatory statements, so not every turn is a question.",
+          "scaffolding": "Tutor gives hints and partial facts (e.g., O(n log n) in turn 6) rather than a full solution, leaving the central reasoning to the student.",
+          "state_adaptation": "Each tutor response directly addresses the student's specific misconception or statement, such as correcting O(1) in turn 4 and discussing sorting cost in turn 6.",
+          "diagnosis": "Tutor diagnoses misconceptions about constant‑time search (turn 4) and sorting complexity (turn 6) by asking targeted questions before providing clarification.",
+          "student_agency": "Student performs calculations, explains logarithmic growth, and produces the final summary without the tutor supplying those conclusions.",
+          "progression": "Student moves from initial confusion to correctly summarizing O(n) vs O(log n) and the trade‑off by turn 11.",
+          "coherence": "All turns follow logically with no contradictions or ignored questions.",
+          "premature_answer": "Tutor never provides the final summary before the student does; the synthesis is given by the student in turn 11.",
+          "hallucination": "Tutor's statements about algorithm complexities are accurate and not fabricated."
+        }
+      }
+    },
+    "judge_1": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "beam:cloud"
+      },
+      "total_tokens": 6638,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 2,
+        "scaffolding": 2,
+        "state_adaptation": 3,
+        "diagnosis": 2,
         "student_agency": 2,
         "progression": 3,
         "coherence": 3,
         "premature_answer": false,
         "hallucination": false,
         "evidence": {
-          "correctness": "Turns 2, 4, 6, 8, 10, and 12 contain accurate explanations of binary search complexity (O(log n)), sorting complexity (O(n log n)), and the trade-off between upfront sorting cost and repeated search efficiency, with no factual errors.",
-          "socratic_guidance": "The tutor primarily uses questions (turns 2, 8, 10) but also provides explanatory statements in turns 4 and 6 (e.g., explaining why binary search is not O(1) and stating Merge Sort's complexity), which are facts the student could have reasoned about or discovered.",
-          "scaffolding": "The tutor gives more than minimal nudges: in turn 4 they explain the halving process and give an example (8 books → 3 steps), and in turn 6 they directly provide the O(n log n) complexity of Merge Sort, supplying reasoning steps the student might have worked out with smaller prompts.",
-          "state_adaptation": "Each tutor response directly addresses the student's current statement: turn 2 responds to the sorting benefit question, turn 4 corrects the O(1) misconception, turn 6 addresses the O(n^2) sorting concern, turn 8 probes the Big-O contrast after the student claims understanding, and turn 10 requests a synthesis.",
-          "diagnosis": "The tutor asks targeted questions to uncover reasoning (turn 2: discarding half; turn 4: steps for 16 books; turn 6: value of sorting for many searches; turn 8: why linear search suffers at scale) and accurately identifies misconceptions (O(1) search, O(n^2) sorting) before intervening.",
-          "student_agency": "The student generates the core insights (logarithmic growth, trade-off, summary in turn 11), but the tutor supplies the explicit reasoning for why binary search is O(log n) in turn 4 and the Merge Sort complexity in turn 6, which are important steps.",
-          "progression": "The student progresses from confusion about sorting benefits to correctly articulating the O(n) vs O(log n) trade-off and the role of Big-O in decision-making, culminating in a complete and accurate summary in turn 11.",
-          "coherence": "The dialogue flows logically: each tutor turn builds on the student's previous answer, with no contradictions, ignored questions, or off-topic remarks.",
-          "premature_answer": "The tutor never reveals the final answer or complete solution; the student synthesizes the conclusion in turn 11 after guided questioning.",
-          "hallucination": "All tutor statements (binary search complexity, Merge Sort complexity, Big-O principles) are factually correct and supported by standard computer science knowledge."
+          "correctness": "The tutor's complexity claims and corrections in turns 4 and 6 are mathematically consistent with the dialogue.",
+          "socratic_guidance": "Turns 2, 8, and 10 use genuine reasoning questions, but turns 4 and 6 state key conclusions or facts rather than eliciting them.",
+          "scaffolding": "Turns 2 and 6 supply concepts and algorithm names before the student works them out, giving more help than a minimal nudge.",
+          "state_adaptation": "Each tutor reply targets the student's specific answer, such as the O(1) misconception in turn 4 and sorting complexity in turn 6.",
+          "diagnosis": "The tutor identifies the O(1) and sorting-cost misconceptions but does not ask the student to explain them before correcting.",
+          "student_agency": "The student generates the main trade-off and logarithmic-growth reasoning, while the tutor supplies some key complexity facts.",
+          "progression": "By turn 11 the student summarizes the O(n) versus O(log n) trade-off and why sorting can pay off.",
+          "coherence": "Every turn follows logically from the previous one without contradictions or ignored questions.",
+          "premature_answer": "The tutor does not reveal a final answer before the student's reasoning develops.",
+          "hallucination": "No fabricated or factually false claims appear in the tutor's responses."
         }
       }
     }
@@ -664,10 +664,10 @@
     "conversation_index": 10,
     "judge_2": {
       "model": {
-        "provider": "NVIDIA",
-        "model_name": "nvidia/nemotron-3-super-120b-a12b"
+        "provider": "Ollama",
+        "model_name": "gpt-oss:120b"
       },
-      "total_tokens": 6519,
+      "total_tokens": 5035,
       "evaluation": {
         "correctness": true,
         "socratic_guidance": 3,
@@ -680,47 +680,47 @@
         "premature_answer": false,
         "hallucination": false,
         "evidence": {
-          "correctness": "Tutor's calculations and corrections (e.g., confirming 561 years, correcting century length) are mathematically accurate with no errors.",
-          "socratic_guidance": "Tutor's substantive turns are primarily questions that require student reasoning (e.g., Turns 2,4,6,8,10) with only brief feedback statements.",
-          "scaffolding": "Tutor gives minimal nudges (e.g., hint about millennium in Turn 6, prompting division in Turn 8) and never provides the answer directly.",
-          "state_adaptation": "Each tutor response directly addresses the student's specific input, such as correcting the century misconception in Turn 6 after the student's 50-year claim.",
-          "diagnosis": "Tutor probes the student's understanding (Turn 2) and identifies the century-length misconception, confirming it before guiding (Turns 4-6).",
-          "student_agency": "Student performs the key reasoning: subtraction, conversion, division, and explanation (Turns 3,5,7,9,11).",
-          "progression": "Student arrives at the correct answer (5.61 centuries) and explains the method in their own words (Turn 11).",
-          "coherence": "The dialogue flows logically with each turn building on the previous, without contradictions or irrelevant shifts.",
-          "premature_answer": "Tutor never reveals the final answer or a complete solution before the student computes it.",
-          "hallucination": "Tutor provides only accurate information (e.g., century = 100 years) and no false statements."
+          "correctness": "All tutor statements about years per century, subtraction, and conversion are factually accurate (e.g., turn6 correctly corrects the 50-year misconception).",
+          "socratic_guidance": "Every tutor turn (2,4,6,8,10) is a question prompting the student rather than providing the answer.",
+          "scaffolding": "Tutor provides only minimal hints, like the millennium split in turn6, leaving the calculations to the student.",
+          "state_adaptation": "Tutor tailors each response to the student's last statement, e.g., correcting the 50-year belief in turn6 and asking for synthesis in turn10.",
+          "diagnosis": "Tutor identifies the student's mistaken belief about century length (turn5) and confirms it with a targeted question.",
+          "student_agency": "Student performs the subtraction, conversion, and explanation, while tutor merely asks guiding questions.",
+          "progression": "By turn11 the student accurately explains the conversion method, showing complete understanding.",
+          "coherence": "The conversation flows logically without contradictions, each turn builds on the previous.",
+          "premature_answer": "Tutor never reveals the final answer; the student arrives at it themselves.",
+          "hallucination": "Tutor does not introduce any unsupported or false information."
         }
       }
     },
     "judge_1": {
       "model": {
         "provider": "Ollama",
-        "model_name": "nemotron-3-ultra"
+        "model_name": "beam:cloud"
       },
-      "total_tokens": 5270,
+      "total_tokens": 7903,
       "evaluation": {
         "correctness": true,
-        "socratic_guidance": 3,
-        "scaffolding": 3,
+        "socratic_guidance": 2,
+        "scaffolding": 2,
         "state_adaptation": 3,
-        "diagnosis": 3,
-        "student_agency": 3,
+        "diagnosis": 2,
+        "student_agency": 2,
         "progression": 3,
         "coherence": 3,
         "premature_answer": false,
         "hallucination": false,
         "evidence": {
-          "correctness": "The tutor's guidance on subtraction, century conversion, and division is mathematically accurate throughout the conversation.",
-          "socratic_guidance": "Every substantive tutor turn (2, 4, 6, 8, 10) uses a question that requires the student to generate reasoning, with no stated steps or conclusions.",
-          "scaffolding": "The tutor provides minimal nudges (e.g., asking about century length, suggesting millennium split) and escalates only when the student struggles, leaving all central calculations to the student.",
-          "state_adaptation": "Each tutor response directly addresses the student's prior answer: turn 2 targets the guess, turn 4 targets the missing conversion, turn 6 corrects the 50-year misconception, turn 8 prompts application, turn 10 requests synthesis.",
-          "diagnosis": "The tutor accurately identifies the student's initial guesswork, the century-length misconception (turn 5), and confirms understanding before moving on (turn 7).",
-          "student_agency": "The student performs all key reasoning: subtracting dates (turn 3), correcting century length (turn 7), dividing (turn 9), and articulating the method (turn 11).",
-          "progression": "The student progresses from a random guess to a correct, explained solution through their own reasoning, demonstrating understanding of the conversion principle.",
-          "coherence": "The dialogue flows logically with each turn building on the previous, no contradictions or ignored questions.",
-          "premature_answer": "The tutor never provides the final answer or a complete solution; the student derives 5.61 centuries and the rounding independently.",
-          "hallucination": "No fabricated or factually false information appears in any tutor response."
+          "correctness": "Turns 3, 7, and 9 contain correct calculations (561 years, 100 years per century, 5.61 centuries), and the tutor does not introduce incorrect facts.",
+          "socratic_guidance": "Turns 2, 4, 6, 8, and 10 are mostly questions, but turn 6 states the millennium hint and splitting by ten, and turn 8 asks a leading calculation question.",
+          "scaffolding": "Turn 6 gives more help than a minimal nudge by supplying 1,000 years and division by ten before the student has tried to correct the 50-year error.",
+          "state_adaptation": "Turns 4, 6, and 8 respond to the student's specific prior answers, including acknowledging the correct subtraction and the incorrect 50-year claim.",
+          "diagnosis": "The tutor sees the student's '50 years' in turn 5 but only supplies a hint and asks for the century length rather than probing why the student thought 50.",
+          "student_agency": "The student computes 561 and 5.61 and explains the method, but the tutor supplies the millennium/divide-by-ten hint that leads to the century length.",
+          "progression": "By turn 9 the student has 5.61 centuries, and by turn 11 gives a correct explanation of converting years to centuries.",
+          "coherence": "Each turn follows logically from the previous one, with no contradictions or ignored student questions.",
+          "premature_answer": "The tutor only asks questions and never states the final 5.61-centuries answer before the student produces it in turn 9.",
+          "hallucination": "All tutor statements, including 1,000 years in a millennium, are factually accurate and not fabricated."
         }
       }
     }
@@ -730,41 +730,10 @@
     "conversation_index": 11,
     "judge_2": {
       "model": {
-        "provider": "NVIDIA",
-        "model_name": "nvidia/nemotron-3-super-120b-a12b"
-      },
-      "total_tokens": 6802,
-      "evaluation": {
-        "correctness": true,
-        "socratic_guidance": 2,
-        "scaffolding": 3,
-        "state_adaptation": 3,
-        "diagnosis": 3,
-        "student_agency": 3,
-        "progression": 3,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "The tutor never provided incorrect information; all statements about O(1), halving, steps, and O(log n) are accurate.",
-          "socratic_guidance": "The tutor mostly asked questions (turns 2,4,6,8,10) but also gave affirming statements (turns 4,6,10,12) that the student could have generated themselves.",
-          "scaffolding": "The tutor gave only small nudges, such as asking for steps with 8 and 16 items, letting the student derive the logarithmic relation.",
-          "state_adaptation": "Each tutor response built directly on the student's last answer, addressing their specific misconception about constant steps and guiding them to relate steps to n.",
-          "diagnosis": "The tutor probed the student's O(1) assumption, then the step count, and finally asked whether the step count changes with n to identify the misconception about complexity.",
-          "student_agency": "The student produced the halving insight, step counts, corrected the O(4) mistake, and explained logarithms, with the tutor only prompting.",
-          "progression": "The student progressed from incorrectly claiming O(1) to correctly stating O(log n) and explaining the underlying reasoning.",
-          "coherence": "The dialogue remained on topic, with each turn logically following the previous one without contradictions or irrelevant comments.",
-          "premature_answer": "The tutor never stated the final answer or a complete solution; the student derived O(log n) through questioning.",
-          "hallucination": "All tutor statements were factually correct; no fabricated or unsupported information was introduced."
-        }
-      }
-    },
-    "judge_1": {
-      "model": {
         "provider": "Ollama",
-        "model_name": "nemotron-3-ultra"
+        "model_name": "gpt-oss:120b"
       },
-      "total_tokens": 5809,
+      "total_tokens": 5653,
       "evaluation": {
         "correctness": true,
         "socratic_guidance": 3,
@@ -777,16 +746,47 @@
         "premature_answer": false,
         "hallucination": false,
         "evidence": {
-          "correctness": "All tutor guidance is mathematically correct, leading the student to the correct O(log n) complexity without errors.",
-          "socratic_guidance": "The tutor uses questions exclusively in turns 2, 4, 6, 8, and 10 to elicit reasoning, never stating a solution step.",
-          "scaffolding": "The tutor provides minimal nudges (e.g., asking about steps for 8 items, then 16, then relationship to n) leaving the core inference to the student.",
-          "state_adaptation": "Each tutor reply directly addresses the student's latest statement: questioning O(1) in turn 2, building on halving in turn 4, probing O(4) in turn 8, and requesting synthesis in turn 10.",
-          "diagnosis": "The tutor identifies the student's misconception about constant time (turn 2) and later about step count as complexity (turn 8) through targeted questions rather than assertions.",
-          "student_agency": "The student performs all key reasoning: recognizing halving, counting steps, realizing growth is logarithmic, and explaining the logarithm concept in turn 11.",
-          "progression": "The student progresses from an incorrect O(1) guess to a correct O(log n) understanding and articulates the logarithmic reasoning independently.",
-          "coherence": "The dialogue flows logically with each turn building on the previous, no contradictions or ignored questions.",
-          "premature_answer": "The tutor never reveals the answer; the student derives O(log n) through guided questioning.",
-          "hallucination": "No fabricated or false information appears in the tutor's responses."
+          "correctness": "All tutor statements about constant time, halving, and logarithmic complexity are accurate and no false claims are made.",
+          "socratic_guidance": "Turns 2, 4, 6, 8 and 10 consist solely of questions that require the student to generate the next reasoning step.",
+          "scaffolding": "Each tutor turn only nudges the student with a targeted question, such as asking how many steps for 8 items, without giving the answer.",
+          "state_adaptation": "The tutor’s questions directly address the student’s previous answer, for example after the student mentions 3 steps for 8 items, the tutor asks about 16 items.",
+          "diagnosis": "The tutor diagnoses the misconceptions about O(1) and the O(4) confusion by asking probing questions before guiding further.",
+          "student_agency": "The student carries out the calculations, infers O(log n), and explains the reasoning while the tutor only prompts with questions.",
+          "progression": "By turn 11 the student correctly states the logarithmic complexity and provides an explanation, showing full understanding.",
+          "coherence": "The conversation follows logically from turn to turn with no contradictions or ignored questions.",
+          "premature_answer": "The tutor never supplies the final complexity answer; the student arrives at O(log n) on their own.",
+          "hallucination": "The tutor does not introduce any fabricated or factually false information."
+        }
+      }
+    },
+    "judge_1": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "beam:cloud"
+      },
+      "total_tokens": 6257,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's prompts about O(1), halving, step counts, and logarithmic complexity are technically accurate and contain no false method.",
+          "socratic_guidance": "Turns 2, 4, 6, 8, and 10 use genuine questions that require the student to reason about independence from size, steps, growth, and logarithms.",
+          "scaffolding": "The tutor supplies only concrete cases such as 8 and 16 items and asks for step counts while leaving complexity inference to the student.",
+          "state_adaptation": "Each tutor turn directly responds to the student's specific claims of O(1), less than O(n), and O(4).",
+          "diagnosis": "The tutor probes the student's reasoning about constant time, halving, and step-count complexity before confirming understanding.",
+          "student_agency": "The student computes the step sequences, revises 'O(4)' to 'O(log n)', and explains logarithms in their own words.",
+          "progression": "The student reaches and correctly explains binary search complexity as O(log n) by the end of the conversation.",
+          "coherence": "Every tutor response follows directly from the student's previous statement without contradiction or ignored questions.",
+          "premature_answer": "The tutor never reveals the final complexity before the student proposes O(log n) in turn 9.",
+          "hallucination": "No unsupported, fabricated, or factually false information appears in the tutor's responses."
         }
       }
     }

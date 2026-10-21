@@ -4,10 +4,10 @@
     "conversation_index": 0,
     "judge_2": {
       "model": {
-        "provider": "NVIDIA",
-        "model_name": "nvidia/nemotron-3-super-120b-a12b"
+        "provider": "Ollama",
+        "model_name": "gpt-oss:120b"
       },
-      "total_tokens": 6008,
+      "total_tokens": 5199,
       "evaluation": {
         "correctness": true,
         "socratic_guidance": 3,
@@ -20,25 +20,25 @@
         "premature_answer": false,
         "hallucination": false,
         "evidence": {
-          "correctness": "The tutor's guidance and student's calculations are mathematically accurate; no errors appear in any turn.",
-          "socratic_guidance": "Tutor turns 2,4,6,8,10,12 are open-ended questions that require the student to compute or reason, with no tutor-provided steps or answers.",
-          "scaffolding": "Each tutor turn offers only a minimal nudge (e.g., asking for a division result or conversion), leaving the full computation and reasoning to the student.",
-          "state_adaptation": "Every tutor response directly addresses the student's prior turn, such as asking for the division result after the student suggests dividing 10 by 4.",
-          "diagnosis": "The tutor asks targeted questions that elicit the student's reasoning at each step, confirming understanding before proceeding (turns 2,4,6,8,10,12).",
-          "student_agency": "The student performs all calculations, applies the multiplier, converts units, and summarizes the process, while the tutor only poses questions.",
-          "progression": "By turn 13 the student correctly explains the scaling procedure, demonstrating full understanding and a complete solution.",
-          "coherence": "Each turn follows logically from the previous one, with no contradictions, repetition, or ignored questions.",
-          "premature_answer": "The tutor never provides the final answer or a complete solution before the student's reasoning develops; all answers come from the student.",
-          "hallucination": "All tutor statements are accurate or questions; no fabricated or false information is introduced."
+          "correctness": "All tutor prompts (turns 2,4,6,8,10,12) are accurate and contain no incorrect statements.",
+          "socratic_guidance": "Turns 2,4,6,8,10,12 are questions that require the student to produce the next step.",
+          "scaffolding": "Each tutor turn gives only a minimal nudge (e.g., turn 6 asks for the flour amount) without providing the answer.",
+          "state_adaptation": "Tutor’s questions directly follow the student's prior response, such as asking about flour after the student computes the 2.5 multiplier (turn 5).",
+          "diagnosis": "Targeted questions reveal the student's current reasoning, like asking for the division result in turn 4 to confirm understanding of scaling.",
+          "student_agency": "The student performs all calculations and the final summary, while the tutor only asks guiding questions.",
+          "progression": "By turn 13 the student correctly states the full scaling process, indicating complete solution achievement.",
+          "coherence": "The dialogue proceeds logically with each question building on the previous answer and no contradictions.",
+          "premature_answer": "The tutor never provides the final scaled quantities, only prompts the student to compute them.",
+          "hallucination": "No fabricated or false information appears in any tutor response."
         }
       }
     },
     "judge_1": {
       "model": {
-        "provider": "NVIDIA",
-        "model_name": "nvidia/nemotron-3-ultra-550b-a55b"
+        "provider": "Ollama",
+        "model_name": "beam:cloud"
       },
-      "total_tokens": 5363,
+      "total_tokens": 6728,
       "evaluation": {
         "correctness": true,
         "socratic_guidance": 3,
@@ -51,16 +51,16 @@
         "premature_answer": false,
         "hallucination": false,
         "evidence": {
-          "correctness": "All tutor guidance and calculations (turns 2,4,6,8,10,12) are mathematically correct and align with the problem.",
-          "socratic_guidance": "Every tutor turn (2,4,6,8,10,12) is a question that elicits student reasoning without providing steps.",
-          "scaffolding": "Tutor provides minimal nudges (e.g., turn 2 asks how to compare servings, turn 10 asks how to convert tablespoons) leaving all calculations and conversions to the student.",
-          "state_adaptation": "Each tutor response directly follows the student's previous answer (e.g., turn 6 follows flour calculation, turn 8 follows multiplier deduction) and advances to the next needed step.",
-          "diagnosis": "Tutor asks targeted questions to uncover student thinking (turn 2 to diagnose starting difficulty, turn 4 to confirm multiplier) and acts on the student's demonstrated understanding.",
-          "student_agency": "Student performs all key reasoning: computes scale factor (turn 5), scales flour (turn 7), scales butter (turn 9), converts units (turn 11), and summarizes process (turn 13).",
-          "progression": "Student progresses from uncertainty to a complete, self-explained solution, culminating in a correct summary of the scaling method (turn 13).",
-          "coherence": "Dialogue flows logically with each tutor question building on the student's prior response, no contradictions or ignored questions.",
-          "premature_answer": "Tutor never provides the final answer or a full solution; all numerical results and the final summary are produced by the student.",
-          "hallucination": "No fabricated or incorrect information appears in any tutor response."
+          "correctness": "The tutor's questions and prompts track the 10/4 = 2.5 scale factor and lead to correct results: 3.75 cups flour, 15 tablespoons butter, and 15/16 cup butter.",
+          "socratic_guidance": "Every substantive tutor turn (2, 4, 6, 8, 10, 12) is a question that requires the student to generate a calculation or summary.",
+          "scaffolding": "The tutor supplies no computed values or formulas, asking only for one quantity or synthesis at a time.",
+          "state_adaptation": "Each reply follows directly from the student's immediately preceding result, progressing from scale factor to ingredients to unit conversion and finally synthesis.",
+          "diagnosis": "The tutor's opening question targets the student's stated uncertainty about where to start, then uses follow-up questions to expose reasoning at each step.",
+          "student_agency": "The student derives the 2.5 multiplier, computes 3.75 cups flour, 15 tablespoons butter, 15/16 cup butter, and summarizes the complete scaling process.",
+          "progression": "By turn 13, the student has completed all calculations and articulated how to scale the recipe.",
+          "coherence": "Each tutor question directly follows the student's prior answer, with no contradictions or ignored questions.",
+          "premature_answer": "The tutor never reveals a final quantity or complete solution before the student computes it.",
+          "hallucination": "The tutor introduces no unsupported, fabricated, or factually false information."
         }
       }
     }
