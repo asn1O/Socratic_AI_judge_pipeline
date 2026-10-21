@@ -4,41 +4,10 @@
     "conversation_index": 0,
     "judge_2": {
       "model": {
-        "provider": "NVIDIA",
-        "model_name": "nvidia/nemotron-3-super-120b-a12b"
+        "provider": "Ollama",
+        "model_name": "gpt-oss:120b"
       },
-      "total_tokens": 6832,
-      "evaluation": {
-        "correctness": true,
-        "socratic_guidance": 2,
-        "scaffolding": 3,
-        "state_adaptation": 3,
-        "diagnosis": 3,
-        "student_agency": 3,
-        "progression": 3,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "The tutor's guidance was mathematically accurate; no false statements or incorrect calculations were made, e.g., turn 10's checking question correctly uses the inverse operation.",
-          "socratic_guidance": "Most tutor turns are questions that elicit reasoning, but turn 4 includes the statement 'Since an hour is a larger unit than a minute' which is a step the student could have inferred themselves.",
-          "scaffolding": "The tutor gave only small nudges (e.g., turn 2 asking the relationship, turn 6 asking multiply/divide) and never provided the answer or performed central steps for the student.",
-          "state_adaptation": "Each tutor response directly followed the student's utterance, addressing their specific uncertainty or error, such as turn 10 prompting a check after the student's miscalculation.",
-          "diagnosis": "The tutor identified the student's slip in turn 9 by asking them to verify with multiplication in turn 10, confirming the nature of the error.",
-          "student_agency": "The student generated the key reasoning steps—choosing division, performing the calculation, self-correcting via inverse operation, and articulating the general rule—while the tutor only prompted.",
-          "progression": "The student progressed from confusion about conversion to correctly computing 3 hours and explaining the general principle for unit conversion.",
-          "coherence": "Every turn logically follows from the previous one, with no contradictions or irrelevant statements, maintaining a clear focus on the conversion task.",
-          "premature_answer": "The tutor never disclosed the final answer or a near-complete solution; the student derived the answer themselves in turn 11.",
-          "hallucination": "All tutor statements are factually correct and supported by the conversation; no fabricated information is introduced."
-        }
-      }
-    },
-    "judge_1": {
-      "model": {
-        "provider": "NVIDIA",
-        "model_name": "nvidia/nemotron-3-ultra-550b-a55b"
-      },
-      "total_tokens": 5681,
+      "total_tokens": 5156,
       "evaluation": {
         "correctness": true,
         "socratic_guidance": 3,
@@ -51,16 +20,47 @@
         "premature_answer": false,
         "hallucination": false,
         "evidence": {
-          "correctness": "The tutor correctly guides the student to divide 180 by 60, identifies the arithmetic error, and confirms the general conversion rule without any factual mistakes.",
-          "socratic_guidance": "Every substantive tutor turn (2, 4, 6, 8, 10, 12) is a question that elicits the student's reasoning; the tutor never states a solution step the student could have worked out.",
-          "scaffolding": "The tutor provides minimal nudges—first about unit size, then operation choice, then calculation, then inverse check—escalating only when the student errs, leaving central reasoning to the student.",
-          "state_adaptation": "Each tutor response directly addresses the student's current state: acknowledging the known conversion factor, targeting the operation confusion, catching the division mistake with an inverse prompt, and moving to synthesis only after mastery.",
-          "diagnosis": "The tutor identifies the student's uncertainty about multiplication vs division (turn 5) and the arithmetic slip (turn 9) through targeted questions, confirms the cause via inverse multiplication (turn 10), and intervenes appropriately.",
-          "student_agency": "The student supplies the conversion factor, chooses division, attempts the calculation, self-corrects using the inverse operation, and articulates the general rule, with the tutor providing no key reasoning step.",
-          "progression": "The student progresses from confusion to a correct answer (3 hours), demonstrates understanding by checking with multiplication, and states the general conversion principle, showing full comprehension.",
-          "coherence": "The dialogue flows logically with each turn building on the previous; no contradictions, unanswered questions, or irrelevant tangents appear.",
-          "premature_answer": "The tutor never reveals the final answer or a complete solution before the student's reasoning develops; all guidance is via questions.",
-          "hallucination": "No fabricated or factually false information is introduced by the tutor; all content is accurate and grounded in the problem."
+          "correctness": "All tutor statements and guidance are mathematically accurate, and the final answer 3 hours is correct.",
+          "socratic_guidance": "Turns 2,4,6,8,10,12 are genuine questions that require the student to generate the next step.",
+          "scaffolding": "Each tutor turn gives only a minimal nudge (a question) and leaves the core calculation to the student.",
+          "state_adaptation": "Tutor responses directly address the student’s preceding statements, e.g., after the student’s doubt about operation the tutor asks whether to multiply or divide.",
+          "diagnosis": "The tutor probes the student’s knowledge (e.g., asks the minute‑hour relationship) and detects the calculation error by prompting a check multiplication.",
+          "student_agency": "The student performed the division, corrected the mistake, and articulated the general conversion rule, while the tutor only asked prompting questions.",
+          "progression": "The student progressed from confusion to the correct conversion (3 hours) and then expressed the underlying rule.",
+          "coherence": "All turns follow logically with no contradictions or ignored questions.",
+          "premature_answer": "The tutor never states the final answer before the student arrives at it.",
+          "hallucination": "No fabricated or false information appears in the tutor’s replies."
+        }
+      }
+    },
+    "judge_1": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "beam:cloud"
+      },
+      "total_tokens": 6241,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor’s unit comparison, operation prompt, inverse check (30×60=1800), and synthesis are all mathematically consistent.",
+          "socratic_guidance": "Turns 2, 4, 6, 8, 10, and 12 use genuine questions that require the student to generate the next reasoning step.",
+          "scaffolding": "The tutor gives small directional nudges, such as comparing unit size and checking the inverse, while calculations and the general rule remain the student’s.",
+          "state_adaptation": "Each tutor reply follows the student’s prior answer, including prompting an inverse check after the student proposed 30 hours.",
+          "diagnosis": "Turns 2 and 10 target the student’s unit relationship and arithmetic slip, with the multiplication check confirming the error’s cause.",
+          "student_agency": "The student chooses division, computes 3 hours, self-corrects from 30, and states the general conversion rule independently.",
+          "progression": "The student ends with the correct 3-hour answer and an accurate general rule for scaling units.",
+          "coherence": "Every turn follows logically from the previous one with no contradictions or ignored questions.",
+          "premature_answer": "The tutor never states the final 3-hour answer before the student derives and checks it.",
+          "hallucination": "No fabricated or unsupported factual claims appear in the tutor’s responses."
         }
       }
     }
@@ -70,63 +70,63 @@
     "conversation_index": 1,
     "judge_2": {
       "model": {
-        "provider": "NVIDIA",
-        "model_name": "nvidia/nemotron-3-super-120b-a12b"
+        "provider": "Ollama",
+        "model_name": "gpt-oss:120b"
       },
-      "total_tokens": 8110,
+      "total_tokens": 5191,
       "evaluation": {
         "correctness": true,
         "socratic_guidance": 3,
         "scaffolding": 3,
         "state_adaptation": 3,
-        "diagnosis": 2,
+        "diagnosis": 3,
         "student_agency": 3,
         "progression": 3,
         "coherence": 3,
         "premature_answer": false,
         "hallucination": false,
         "evidence": {
-          "correctness": "The tutor's statements about probability definition, total marbles, and the ratio are mathematically accurate; no errors are present.",
-          "socratic_guidance": "The tutor's guidance consists mainly of open-ended questions (turns 2,4,6,8,10,12) that elicit the student's reasoning, with only brief affirmational statements.",
-          "scaffolding": "The tutor's sole substantive input is the definition of probability in turn 4, after which all steps (total, ratio, generalization) are left for the student to derive.",
-          "state_adaptation": "Each tutor response directly addresses the student's previous utterance, adjusting from conceptual confusion to procedural steps and finally to generalization.",
-          "diagnosis": "The tutor identifies the student's difficulty in setting up probability (turn 1) and probes their intuition with a targeted question (turn 2), but does not fully confirm the nature of the difficulty before offering the definition.",
-          "student_agency": "The student independently computes the total (turn 5), forms the fraction (turn 7), and articulates the general rule (turn 11), while the tutor only provides definitions and affirmations.",
-          "progression": "The student arrives at the correct probability (3/10) and successfully states the general principle (turn 11), demonstrating complete understanding.",
-          "coherence": "Every turn logically follows from the prior one, with no contradictions or irrelevant statements.",
-          "premature_answer": "The tutor never supplies the answer or a near-complete solution; all numeric steps are elicited from the student.",
-          "hallucination": "The tutor provides no fabricated or factually false information; all statements about marbles and probability are accurate."
+          "correctness": "Tutor’s explanations of probability and the steps (turns 4,6,8,10) are mathematically accurate and no incorrect statements are made.",
+          "socratic_guidance": "Turns 2,4,6,8,10 are genuine questions that require the student to generate the next step.",
+          "scaffolding": "Tutor only nudges attention to total marbles and formulation (turns 4 and 6) leaving calculations to the student.",
+          "state_adaptation": "Each tutor reply references the student’s immediate answer (e.g., “Exactly, 10…” turn6, “That is correct!” turn8) and adjusts the next question accordingly.",
+          "diagnosis": "Turn 2 asks the student’s concept of probability, correctly identifying their lack of formal definition before proceeding.",
+          "student_agency": "Student performs the core calculations (total 10, probability 3/10) and formulates the general rule (turn11).",
+          "progression": "Student moves from uncertainty to correctly stating 3/10 and the general formula, demonstrating full understanding by the end.",
+          "coherence": "All turns build logically on the previous ones with no contradictions or off‑topic statements.",
+          "premature_answer": "Tutor never supplies the final probability or general formula before the student does so.",
+          "hallucination": "All tutor statements are factual and pertain directly to the problem; no fabricated information appears."
         }
       }
     },
     "judge_1": {
       "model": {
-        "provider": "NVIDIA",
-        "model_name": "nvidia/nemotron-3-ultra-550b-a55b"
+        "provider": "Ollama",
+        "model_name": "beam:cloud"
       },
-      "total_tokens": 8094,
+      "total_tokens": 5471,
       "evaluation": {
         "correctness": true,
         "socratic_guidance": 2,
         "scaffolding": 2,
         "state_adaptation": 3,
-        "diagnosis": 3,
+        "diagnosis": 2,
         "student_agency": 2,
         "progression": 3,
         "coherence": 3,
         "premature_answer": false,
         "hallucination": false,
         "evidence": {
-          "correctness": "The tutor correctly defines probability as favorable outcomes over total outcomes, guides the student to compute 10 total marbles and 3/10, and confirms the general rule.",
-          "socratic_guidance": "The tutor primarily uses questions (turns 2, 6, 8, 10) but in turn 4 states the definition of probability, which is a step the student could have worked out.",
-          "scaffolding": "In turn 4 the tutor provides the full definition of probability before the student attempts to formulate it, which is more assistance than a minimal nudge, though the student still performs the calculation.",
-          "state_adaptation": "Each tutor response directly addresses the student's previous answer: turn 2 elicits intuition, turn 4 gives definition and asks for total, turn 6 asks for the probability comparison, turn 8 requests a general rule, and turn 10 asks for an abstract formula.",
-          "diagnosis": "The tutor identifies the student's missing structural definition in turn 2, confirms it by having the student apply it in turns 5–7, and then probes for generalization in turns 8–11.",
-          "student_agency": "The student supplies the total count, the fraction 3/10, and the general rule, but the tutor supplies the key definition of probability in turn 4.",
-          "progression": "The student progresses from uncertainty to correctly computing 3/10 and articulating the general probability formula, demonstrating understanding.",
-          "coherence": "The dialogue flows logically with each turn building on the last, no contradictions or ignored questions.",
-          "premature_answer": "The tutor never gives the final answer 3/10; the student produces it in turn 7.",
-          "hallucination": "All tutor statements are factually correct and grounded in the problem; no fabricated information appears."
+          "correctness": "Turns 2–12 use the correct favorable-over-total definition of probability and correctly lead to 3/10.",
+          "socratic_guidance": "Turns 2, 6, 8, and 10 ask genuine questions, but turns 4 and 6 also state facts or steps the student could infer.",
+          "scaffolding": "Turn 4 gives the probability relationship before the student has attempted to use it, while later turns leave the calculations to the student.",
+          "state_adaptation": "Each tutor reply targets the student's current answer, from qualitative uncertainty to total count to general formula.",
+          "diagnosis": "The tutor identifies the student's formula uncertainty through dialogue but does not explicitly distinguish a slip from the missing general concept before intervening.",
+          "student_agency": "The student supplies the total, probability, and general formula, while the tutor provides the initial probability relationship.",
+          "progression": "By turn 11 the student gives the correct general rule in their own words after reaching 3/10.",
+          "coherence": "Every turn follows logically from the previous student response without contradiction or ignored questions.",
+          "premature_answer": "The tutor asks for the comparison and general rule rather than revealing 3/10 as the final answer before the student's reasoning develops.",
+          "hallucination": "No fabricated, unsupported, or factually false information appears in the tutor's responses."
         }
       }
     }
@@ -136,63 +136,63 @@
     "conversation_index": 2,
     "judge_2": {
       "model": {
-        "provider": "NVIDIA",
-        "model_name": "nvidia/nemotron-3-super-120b-a12b"
+        "provider": "Ollama",
+        "model_name": "gpt-oss:120b"
       },
-      "total_tokens": 9797,
+      "total_tokens": 6670,
       "evaluation": {
         "correctness": true,
         "socratic_guidance": 2,
-        "scaffolding": 1,
+        "scaffolding": 3,
         "state_adaptation": 3,
         "diagnosis": 3,
         "student_agency": 3,
         "progression": 3,
         "coherence": 3,
-        "premature_answer": true,
+        "premature_answer": false,
         "hallucination": false,
         "evidence": {
-          "correctness": "Tutor correctly confirmed the positional shift rules, identified the wrap‑around slip on 'A', and gave the correct encoded result TOXVY; all subsequent decoding guidance was mathematically sound.",
-          "socratic_guidance": "Tutor often combines affirming statements with questions (e.g., Turn 2 gives the answer then asks how to reverse; Turn 4 explains the test‑both‑hypotheses method then asks for positions 4‑5), showing guidance is not purely question‑driven.",
-          "scaffolding": "In Turn 2 tutor gave the full corrected answer for Part A, and in Turn 4 provided a worked example of the decoding method before asking the student to apply it, supplying more than a minimal nudge.",
-          "state_adaptation": "Each tutor response directly addresses the student’s specific turn—correcting the wrap‑around slip in Turn 2, explaining the consonant/vowel hypothesis test after the student’s contradiction in Turn 3, and requesting explanations after successful decoding in Turns 6 and 8.",
-          "diagnosis": "Tutor pinpointed the wrap‑around error from the student’s answer, identified the decoding ambiguity when a consonant assumption yielded a vowel, and confirmed understanding by asking the student to justify their choices.",
-          "student_agency": "The student generated the rule identification, corrected the slip, applied the test‑both‑hypotheses method to decode positions 4‑5, explained their reasoning, and articulated the general strategy, while the tutor only offered feedback and examples.",
-          "progression": "By Turn 5 the student correctly decoded 'UTXES' to 'TRAIN', and by Turn 11 they articulated a complete general strategy, demonstrating full problem resolution and understanding.",
-          "coherence": "Every tutor turn follows logically from the student’s preceding utterance, with no contradictions, repetitions, or ignored questions throughout the dialogue.",
-          "premature_answer": "In Turn 2 the tutor revealed the final encoded answer TOXVY for Part A immediately after noting the slip, before the student had a chance to self‑correct the wrap‑around error.",
-          "hallucination": "All tutor statements are accurate and supported by the given examples; no fabricated or false information is introduced."
+          "correctness": "All tutor explanations (e.g., wrap‑around correction in turn 2 and hypothesis testing in turn 4) are mathematically accurate.",
+          "socratic_guidance": "Except for the wrap‑around correction in turn 2, the tutor’s substantive turns are questions that require the student to reason (turns 2, 4, 6, 8, 10).",
+          "scaffolding": "The tutor only nudges the student toward the next step (e.g., suggesting to add the index in turn 4) and never supplies the full solution.",
+          "state_adaptation": "Each tutor reply directly addresses the student’s specific error or observation, such as correcting the A wrap‑around in turn 2 and guiding the contradiction in turn 4.",
+          "diagnosis": "The tutor pinpoints the student’s slip (wrap‑around) and the ambiguity in decoding, then asks targeted questions to confirm understanding (turn 4).",
+          "student_agency": "The student performs the core calculations, decides between consonant/vowel branches, and formulates the general strategy, while the tutor only prompts.",
+          "progression": "Through the dialogue the student moves from an initial guess to the correct encoded word TOXVY and correctly decodes TRAIN, then articulates a full general method.",
+          "coherence": "All turns follow logically, with no contradictions or ignored questions, maintaining a consistent focus on the cipher problem.",
+          "premature_answer": "The tutor does not supply the final decoded word TRAIN before the student works it out; the answer appears only after the student’s reasoning.",
+          "hallucination": "The tutor’s statements are all grounded in the cipher rules and contain no invented or false information."
         }
       }
     },
     "judge_1": {
       "model": {
-        "provider": "NVIDIA",
-        "model_name": "nvidia/nemotron-3-ultra-550b-a55b"
+        "provider": "Ollama",
+        "model_name": "beam:cloud"
       },
-      "total_tokens": 10105,
+      "total_tokens": 10572,
       "evaluation": {
         "correctness": true,
         "socratic_guidance": 1,
-        "scaffolding": 2,
+        "scaffolding": 1,
         "state_adaptation": 3,
-        "diagnosis": 3,
+        "diagnosis": 2,
         "student_agency": 2,
         "progression": 3,
         "coherence": 3,
         "premature_answer": false,
         "hallucination": false,
         "evidence": {
-          "correctness": "The tutor correctly validates the student's encoding rules, fixes the wrap-around error for 'A' (Turn 2), and accurately explains the hypothesis-testing decoding method (Turn 4), leading to the correct solution 'TRAIN' (Turn 6).",
-          "socratic_guidance": "The tutor frequently states steps and explanations (e.g., direct correction in Turn 2, full explanation of hypothesis testing in Turn 4) rather than eliciting reasoning solely through questions; genuine questions are present but statements constitute a large portion of guidance.",
-          "scaffolding": "The tutor provides the key decoding strategy (testing both consonant/vowel hypotheses) and demonstrates it for position 3 (Turn 4), which is more assistance than a minimal nudge, though the student still applies it to positions 4–5.",
-          "state_adaptation": "Each tutor reply directly addresses the student's specific output: correcting the exact wrap-around slip (Turn 2), resolving the contradiction at position 3 (Turn 4), probing the consistency check (Turn 6), checking for ambiguity (Turn 8), and requesting generalization (Turn 10).",
-          "diagnosis": "The tutor identifies the wrap-around as a slip and the decoding ambiguity as a missing method, confirms understanding by asking the student to explain the consistency check (Turn 6) and whether any position had multiple consistent results (Turn 8).",
-          "student_agency": "The student generates the initial encoding rules, spots the decoding contradiction, applies the tutor's hypothesis-testing method to positions 4–5, and articulates the general framework (Turn 11), but the tutor supplies the central decoding strategy and the position-3 calculation.",
-          "progression": "The student progresses from a near-correct encoding to a fully correct decoding, explains the consistency mechanism, and generalizes the strategy, demonstrating clear understanding by the end.",
-          "coherence": "The dialogue flows logically with each turn building on the previous; no contradictions, ignored questions, or off-topic remarks occur.",
-          "premature_answer": "The tutor never reveals the final decoded word 'TRAIN' or the complete decoding process before the student works it out; only a minor correction for Part A is given.",
-          "hallucination": "All tutor statements about the cipher mechanics, wrap-around arithmetic, and decoding logic are factually correct and grounded in the problem."
+          "correctness": "Turns 2, 4, and 5 contain correct wrap-around arithmetic and decoding results, including TOXVY, A, and TRAIN.",
+          "socratic_guidance": "The tutor frequently supplies corrections and explanations in Turns 2 and 4 alongside questions, so guidance is not predominantly question-based.",
+          "scaffolding": "The tutor directly supplies Part A's corrected result in Turn 2 and the key decoding hypothesis test in Turn 4, leaving only remaining positions to the student.",
+          "state_adaptation": "Turns 2, 4, and 8 target the student's specific wrap-around slip, category contradiction, and ambiguity check rather than using generic prompts.",
+          "diagnosis": "The tutor accurately identifies the arithmetic wrap slip and unknown-category ambiguity, but it states the correction and method before asking the student to explain their reasoning.",
+          "student_agency": "The student computes and verifies Parts A and B, but the tutor provides the corrected wrap result and decoding strategy.",
+          "progression": "By Turns 5, 7, and 11 the student reaches TRAIN and articulates a general position- and category-dependent cipher strategy.",
+          "coherence": "Each tutor response follows from the student's prior turn without contradictions or ignored questions.",
+          "premature_answer": "The tutor only corrects partial work or supplies one decoding example while the student still determines the final word and general method.",
+          "hallucination": "No fabricated or unsupported factual claims appear in the tutor's responses."
         }
       }
     }
