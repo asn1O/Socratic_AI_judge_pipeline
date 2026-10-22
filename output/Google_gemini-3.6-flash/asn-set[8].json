@@ -63,6 +63,37 @@
           "hallucination": "No fabricated or unsupported factual claims appear in the tutor’s responses."
         }
       }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 5175,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "Turns 2–13 correctly use the 60-minutes-per-hour factor, guide division rather than multiplication, and lead to the correct result of 3 hours.",
+          "socratic_guidance": "Turns 2, 4, 6, 8, 10, and 12 use successive questions that require the student to recall, reason, calculate, check, and generalize rather than supplying the solution.",
+          "scaffolding": "The tutor provides only minimal nudges, such as comparing unit sizes and checking with the inverse operation, while leaving the central reasoning and arithmetic to the student.",
+          "state_adaptation": "Each intervention directly responds to the student's current need: prior knowledge in turn 2, operation uncertainty in turn 6, and the erroneous quotient in turn 10.",
+          "diagnosis": "The tutor probes the student's known conversion factor in turn 2, distinguishes uncertainty about the operation in turn 6, and uses an inverse-calculation question to expose and confirm the arithmetic slip in turn 10.",
+          "student_agency": "The student independently identifies the factor, chooses division, performs and corrects the calculation, and articulates the general conversion rule in turns 3, 7, 11, and 13.",
+          "progression": "The student progresses from uncertainty to obtaining 3 hours, recognizing the correction from 30 to 3, and explaining the small-to-large versus large-to-small conversion principle.",
+          "coherence": "Every tutor turn follows directly from the preceding student response, and the dialogue progresses logically from diagnosis through support and synthesis to closure.",
+          "premature_answer": "The tutor never states the quotient or final answer; the student derives 3 hours through the guided check in turns 8–11.",
+          "hallucination": "The tutor introduces no fabricated or unsupported facts, and all stated conversion relationships and reasoning are accurate."
+        }
+      }
     }
   },
   {
@@ -129,6 +160,37 @@
           "hallucination": "No fabricated, unsupported, or factually false information appears in the tutor's responses."
         }
       }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 6412,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 2,
+        "scaffolding": 2,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 2,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "Turns 4–11 correctly use the favorable-outcomes-over-total-outcomes rule, and the student obtains the correct probability of 3/10.",
+          "socratic_guidance": "Most tutor turns use questions that prompt counting, comparison, and generalization, but turn 4 directly states the structural definition of probability.",
+          "scaffolding": "Turn 4 supplies the favorable-over-total framework before the student constructs the calculation, although the student still performs the counting, forms 3/10, and states the general rule.",
+          "state_adaptation": "The tutor consistently responds to the student's current work, recognizing the correct total in turn 6, the correct probability in turn 8, and the need to generalize beyond the example in turn 10.",
+          "diagnosis": "Turn 2 elicits the student's initial understanding, turn 4 addresses the revealed gap in translating likelihood into a formula, and turn 10 identifies the remaining instance-specific explanation.",
+          "student_agency": "The student computes the total, proposes 3/10, and articulates the general rule in turns 5, 7, and 11, though the key favorable-over-total structure is supplied by the tutor in turn 4.",
+          "progression": "By turns 7 and 11, the student has both the correct probability and an explanation of the general favorable-outcomes-over-total-outcomes principle in their own words.",
+          "coherence": "Each tutor turn follows directly from the preceding student response, and the dialogue progresses coherently from diagnosis through calculation, generalization, and closure.",
+          "premature_answer": "The tutor does not reveal the numerical answer before the student proposes 3/10 in turn 7 and instead prompts the student to derive and explain it.",
+          "hallucination": "The tutor introduces no fabricated or factually false information beyond the elementary probability framework appropriate to the marble setup."
+        }
+      }
     }
   },
   {
@@ -193,6 +255,37 @@
           "coherence": "Each tutor response follows from the student's prior turn without contradictions or ignored questions.",
           "premature_answer": "The tutor only corrects partial work or supplies one decoding example while the student still determines the final word and general method.",
           "hallucination": "No fabricated or unsupported factual claims appear in the tutor's responses."
+        }
+      }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 14069,
+      "evaluation": {
+        "correctness": false,
+        "socratic_guidance": 2,
+        "scaffolding": 2,
+        "state_adaptation": 2,
+        "diagnosis": 2,
+        "student_agency": 2,
+        "progression": 2,
+        "coherence": 1,
+        "premature_answer": false,
+        "hallucination": true,
+        "evidence": {
+          "correctness": "Turns 8-10 incorrectly claim that category consistency leaves one valid inverse at every position; for example, U at position 1 can decode to consonant T or vowel V.",
+          "socratic_guidance": "Turns 2, 4, 6, 8, and 10 use substantive follow-up questions, but turns 2 and 4 also state the correction and method directly.",
+          "scaffolding": "Turns 2 and 4 provide the corrected Part A result and a worked position-3 branch, while the student performs the remaining decoding and the generalization.",
+          "state_adaptation": "Turns 2 and 4 adapt precisely to the wraparound slip and the student's contradiction, but turns 8-10 fail to address the student's false uniqueness claim.",
+          "diagnosis": "The tutor targets the student's contradiction in turn 4 and probes the reasoning in turns 6 and 8, but accepts turn 9 without checking the two-branch ambiguity at positions 1 and 2.",
+          "student_agency": "The student derives the inverse operations, solves positions 4-5 to obtain TRAIN, and generalizes the method, although the tutor supplies the position-3 resolution and corrected Part A result.",
+          "progression": "The conversation reaches TOXVY and TRAIN, and the student explains a usable framework, but the unresolved two-branch ambiguity in positions 1 and 2 leaves a material conceptual gap.",
+          "coherence": "Turns 8-10 repeat and endorse the false exactly-one-consistent-choice claim, an uncorrected error that affects the closing synthesis.",
+          "premature_answer": "The tutor supplies Part A's correction only after the student's initial attempt, and the student independently produces TRAIN in turn 5.",
+          "hallucination": "Turn 8 presents as general fact that candidate elimination leaves exactly one valid pathway, although U at position 1 and T at position 2 each have two consistent inverse candidates."
         }
       }
     }

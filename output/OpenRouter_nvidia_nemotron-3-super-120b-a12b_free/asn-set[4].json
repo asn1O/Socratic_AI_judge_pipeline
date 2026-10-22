@@ -63,6 +63,37 @@
           "hallucination": "No fabricated or unsupported facts appear in the tutor's responses."
         }
       }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 7066,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 2,
+        "scaffolding": 2,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 2,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "Turns 8–11 correctly use the decreasing comparison counts and nested-loop reasoning to obtain quadratic time complexity.",
+          "socratic_guidance": "Turns 2, 4, 6, and 10 ask the student to explain their reasoning, but turn 8 directly supplies the comparison-count pattern.",
+          "scaffolding": "After several student attempts, turn 8 provides a useful comparison pattern while leaving the student to sum the work and infer O(n²) in turns 9 and 11.",
+          "state_adaptation": "The tutor consistently targets the student's evolving misconception, moving from one-pass sufficiency to halving, comparison counts, and finally the nested-loop explanation.",
+          "diagnosis": "Turn 6 directly probes the source of the student's halving idea, and turn 8 responds specifically to the mismatch between ignoring one element and the actual comparison pattern.",
+          "student_agency": "The student derives the comparison sum in turn 9 and articulates the O(n²) conclusion in turn 11, though the tutor provides the key comparison pattern in turn 8.",
+          "progression": "The student progresses from uncertain O(n) and O(n log n) claims to a correct O(n²) conclusion with an explanation of why the nested loops yield quadratic work.",
+          "coherence": "Each prompt follows directly from the preceding student response and advances the diagnosis without contradictions, repetition, or ignored questions.",
+          "premature_answer": "The tutor never states O(n²) as the final answer; the student reaches and explains that conclusion in turn 11.",
+          "hallucination": "The tutor introduces no unsupported or false factual claims, and turn 8's comparison counts are consistent with the described bubble-sort process."
+        }
+      }
     }
   },
   {
@@ -127,6 +158,37 @@
           "coherence": "The dialogue remains logically focused on the elasticity calculation and interpretation from turn 1 through turn 14 without contradictions.",
           "premature_answer": "The tutor never reveals the final elasticity value or complete worked solution before the student derives it in turn 7.",
           "hallucination": "No unsupported or factually false information appears in the tutor's turns."
+        }
+      }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 17778,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 2,
+        "scaffolding": 2,
+        "state_adaptation": 2,
+        "diagnosis": 3,
+        "student_agency": 2,
+        "progression": 3,
+        "coherence": 2,
+        "premature_answer": false,
+        "hallucination": true,
+        "evidence": {
+          "correctness": "The midpoint formula, calculation of approximately -1.22, and interpretation of the negative sign and magnitude as elastic demand are substantively correct.",
+          "socratic_guidance": "Turns 2, 4, 8, 10, and 12 elicit explanation, calculation, or synthesis, but turn 6 embeds the midpoint choice and turn 12 supplies the exact formula.",
+          "scaffolding": "Turn 6 confirms the midpoint-average base after the student has already recalled averaging, and turn 12 adds explicit notation after the student's verbal method, so the assistance is useful but occasionally more explicit than necessary.",
+          "state_adaptation": "Most replies target the student's specific uncertainty, especially the base choice in turns 4–6 and the sign in turn 8, but turn 12 incorrectly treats the already-stated averaging step as missing.",
+          "diagnosis": "Turns 2 and 4 probe the student's formula and percent-change reasoning, while turn 8 tests the sign and magnitude interpretation, accurately exposing the base-choice misconception before changing methods.",
+          "student_agency": "The student computes the percentage changes, obtains -1.22, interprets the sign and magnitude, and teaches the method, though the tutor supplies the midpoint choice and exact formula.",
+          "progression": "The student moves from the incorrect raw-difference ratio in turn 1 to the correct midpoint result by turn 7 and explains both the method and interpretation in turns 9 and 13.",
+          "coherence": "The exchange is otherwise tightly sequenced, but turn 12's rationale says averaging was omitted even though turn 11 explicitly included it, creating a minor internal inconsistency.",
+          "premature_answer": "The student derives the numerical result of -1.22 in turn 7, and the later formula prompt in turn 12 follows the student's own verbal solution rather than revealing the completed solution prematurely.",
+          "hallucination": "Turn 12 falsely states that the student's explanation omitted the role of averaging, although turn 11 explicitly says to divide each change by the average."
         }
       }
     }
@@ -195,6 +257,37 @@
           "hallucination": "No fabricated or unsupported facts are introduced by the tutor."
         }
       }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 5945,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 2,
+        "scaffolding": 1,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 2,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's remainders, reversal rule, binary results for 13 and 6, and least-significant-bit explanation are all mathematically correct.",
+          "socratic_guidance": "Most turns use questions that prompt reasoning, but Turn 4 supplies the reversal step and Turn 6 directly states the key least-significant-bit rationale.",
+          "scaffolding": "Turn 4 effectively identifies reading bottom-up and Turn 6 supplies the underlying rationale, making the central reading decision for the student.",
+          "state_adaptation": "The tutor responds specifically to the student's uncertainty in Turn 1, checks the generated remainders in Turn 2, addresses ordering in Turns 4–6, and then tests transfer in Turn 10.",
+          "diagnosis": "Turns 2, 8, and 12 ask targeted questions that reveal how the student obtained the remainders, why reversal is used, and how the student formulates the rule.",
+          "student_agency": "The student performs the calculations, proposes 1101, applies the method to 6, and states the rule, although the tutor supplies the crucial least-significant-bit explanation in Turn 6.",
+          "progression": "The student correctly converts 13, explains the reason for reversal, successfully converts 6, and articulates the procedure independently in Turn 13.",
+          "coherence": "Each tutor response follows the student's preceding work and advances the dialogue from calculation through explanation, transfer, and summary.",
+          "premature_answer": "The student already proposed 1101 in Turn 5 before the tutor supplied its confirming rationale in Turn 6.",
+          "hallucination": "The tutor introduces no unsupported or factually false information."
+        }
+      }
     }
   },
   {
@@ -259,6 +352,37 @@
           "coherence": "Each turn follows logically from the previous one with no contradictions or ignored questions.",
           "premature_answer": "The tutor never reveals the final definition before the student independently articulates it.",
           "hallucination": "No fabricated or unsupported factual content appears in the tutor's responses."
+        }
+      }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 4597,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's questions accurately probe the definition and evidential requirements of a slippery slope argument without introducing any false claims.",
+          "socratic_guidance": "Every substantive tutor turn in turns 2–12 is an open question that requires the student to reason, explain, distinguish, or formulate a rule.",
+          "scaffolding": "The tutor supplies only targeted prompts, such as turns 4 and 10, and leaves the student to identify the relevant evidence and formulate the definition.",
+          "state_adaptation": "Each question directly builds on the preceding student response, progressing from the initial label in turn 3 to distinction and synthesis in turns 9–13.",
+          "diagnosis": "The tutor uses targeted questions to elicit and confirm the student's reasoning about missing links, evidence, and causal prediction rather than assuming what the student understands.",
+          "student_agency": "The student independently supplies the key reasoning in turns 3, 5, 7, 9, 11, and 13, while the tutor only asks prompts.",
+          "progression": "The student moves from an uncertain label to an accurate distinction in turn 11 and a complete general definition in turn 13.",
+          "coherence": "Each tutor question follows naturally from the student's latest explanation, and the dialogue proceeds logically toward synthesis and closure.",
+          "premature_answer": "The tutor never states the definition or final conclusion; the student derives both through successive questions.",
+          "hallucination": "The tutor introduces no fabricated or factually unsupported information."
         }
       }
     }
@@ -327,6 +451,37 @@
           "hallucination": "All figures and methods used by the tutor match the student's supplied problem data and standard present-value calculations."
         }
       }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 5411,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "Turns 4–11 correctly guide discounting the $100k net annuity, calculating the approximately –$1.23 million NPV, and comparing present-value benefits with costs.",
+          "socratic_guidance": "In turns 2, 4, 6, 8, and 10, the tutor asks open questions that elicit omitted cash flows, discounting, the annuity formula, the calculation, and synthesis without supplying the next step.",
+          "scaffolding": "Each intervention in turns 2–10 provides only a targeted next-step question, leaving the student to identify the omissions, correct the discounting reasoning, retrieve the formula, calculate, and explain the principle.",
+          "state_adaptation": "Turn 4 directly addresses the student's failure to discount in turn 3, and turns 6, 8, and 10 adapt successively to the student's demonstrated understanding and progress.",
+          "diagnosis": "Turn 2 probes the omissions in the student's initial comparison, turn 4 isolates the discounting misconception, and subsequent responses confirm the student's corrected reasoning in turns 5 and 7.",
+          "student_agency": "The student independently identifies the net cash flow, explains which flows to discount, supplies the annuity formula, performs the calculation, and articulates the governing principle.",
+          "progression": "The student progresses from an undiscounted comparison to a correct NPV calculation and then explains in turn 11 why present-value comparison is appropriate.",
+          "coherence": "Every tutor question follows directly from the preceding student response, producing a logically sequenced dialogue with no contradictions or ignored questions.",
+          "premature_answer": "The tutor does not reveal the formula, numerical result, decision, or governing principle before the student develops each through questioning.",
+          "hallucination": "The tutor introduces no fabricated or factually false information beyond the problem's stated costs, benefits, discount rate, and horizon."
+        }
+      }
     }
   },
   {
@@ -391,6 +546,37 @@
           "coherence": "Each tutor response follows logically from the student's prior reasoning without contradictions.",
           "premature_answer": "The tutor never reveals the final amounts before the student computes them.",
           "hallucination": "No fabricated or unsupported information appears in the tutor's responses."
+        }
+      }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 6998,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "Turns 4–15 consistently use the desired-to-original serving ratio, and the student's calculation of 15/6 = 2.5 and the resulting scaled amounts are correct.",
+          "socratic_guidance": "Turns 2, 4, 6, 8, 10, 12, and 14 use substantive questions to prompt reasoning, calculation, justification, and synthesis rather than presenting the solution.",
+          "scaffolding": "Turn 4 offers only a doubling analogy as a minimal nudge, while the later turns leave the ratio calculation, application, and generalization to the student.",
+          "state_adaptation": "Each intervention directly responds to the student's current step, shifting from the reversed-ratio misconception in turns 2–6 to applying the factor in turn 8 and addressing fractional eggs in turns 10–12.",
+          "diagnosis": "Turn 2 elicits the student's reasoning about the reversed fraction, and turn 10 asks why the student rounded down, allowing the tutor to distinguish the directional misconception from the later practical measurement issue.",
+          "student_agency": "The student independently identifies the correct ratio, computes the scaled ingredients, evaluates the egg options, and articulates the general scaling rule in turns 7, 9, 13, and 15.",
+          "progression": "By turn 15, the student has corrected the misconception, calculated the scaled recipe, and explained a transferable procedure in their own words.",
+          "coherence": "Every tutor turn follows directly from the preceding student response, and the dialogue progresses logically from diagnosis through application and synthesis.",
+          "premature_answer": "The tutor does not reveal the ratio, final scaled amounts, or general rule; the student derives these in turns 7, 9, and 15.",
+          "hallucination": "No false or fabricated information is introduced; the doubling analogy and suggestions for handling a fractional egg are mathematically and practically sound."
         }
       }
     }
@@ -459,6 +645,37 @@
           "hallucination": "No fabricated, unsupported, or factually false information is introduced."
         }
       }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 7983,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 2,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "Turns 2–10 consistently use the multiplier model, correct proportion, and cross-multiplication, leading to x=4 and 16 boys, 20 girls, and 36 students.",
+          "socratic_guidance": "Turns 2, 4, 8, and 10 ask the student to generate or explain reasoning, but turn 6 supplies the cross-product method and the equation structure, so the guidance is not entirely student-led.",
+          "scaffolding": "Across turns 2–8 the tutor gives targeted conceptual nudges after each attempt while the student independently constructs the equation, solves it, and maps x to the quantities.",
+          "state_adaptation": "Each prompt directly addresses the student's current issue—multiplier use, direct ratio equating, equation formation, and the boys/girls swap—and adjusts as the student progresses.",
+          "diagnosis": "Turns 2, 4, 6, and 8 use targeted questions that uncover the student's mistaken representations, and the student's following explanations confirm each diagnosis.",
+          "student_agency": "The student independently proposes 4x and 5x, forms the proportion, cross-multiplies, solves x=4, self-corrects the swapped counts, and gives a full explanation in turn 11.",
+          "progression": "By turn 11 the student correctly explains the multiplier setup, proportion, algebra, and final count of 36, demonstrating conceptual understanding rather than merely copying a result.",
+          "coherence": "Every tutor turn follows the student's latest attempt, and the dialogue proceeds coherently from diagnosis through correction and synthesis without contradictions.",
+          "premature_answer": "The tutor never reveals the numerical solution, and although turn 6 supplies the equation structure, the student had already proposed that proportion and independently derived x=4 and the final count.",
+          "hallucination": "No tutor turn introduces fabricated information or a false claim; the ratio interpretation, algebra, and supporting hints are consistent with the problem."
+        }
+      }
     }
   },
   {
@@ -523,6 +740,37 @@
           "coherence": "The dialogue is logical, with a minor redundant request in turn 4 after the student already gave the 8-bit representation.",
           "premature_answer": "The tutor never reveals the final answer before the student computes it; turns 6 and 8 describe transformations rather than the result.",
           "hallucination": "The described two's complement steps are mathematically consistent and no unsupported facts are introduced."
+        }
+      }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 8518,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 1,
+        "scaffolding": 1,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 1,
+        "progression": 2,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "Turns 5–9 correctly compute 45 as 00101101, its bitwise inverse as 11010010, and adding 1 to obtain 11010011, the 8-bit two's-complement representation of -45.",
+          "socratic_guidance": "Only turns 2 and 10 ask genuine eliciting questions, while turns 4, 6, and 8 state each next procedural step.",
+          "scaffolding": "Turns 4, 6, and 8 supply the complete sequence—write the 8-bit positive value, invert, and add 1—so the student mainly performs the bit operations.",
+          "state_adaptation": "Turn 2 probes the initial idea, turns 4–8 respond to the student's current bit pattern and missed addition, and turn 10 appropriately shifts to synthesis.",
+          "diagnosis": "Turn 2's walk-through request exposes the sign-magnitude misconception in turn 3, turn 7 reveals the omitted +1 step, and turn 10 checks the corrected understanding.",
+          "student_agency": "The student carries out the bit operations and summarizes them, but the tutor supplies every algorithmic step in turns 4, 6, and 8.",
+          "progression": "The student reaches 11010011 and states the governing rule in turn 11, but the tutor supplied the complete procedure in turns 4, 6, and 8, so the success depended on heavy support.",
+          "coherence": "Each tutor turn follows the preceding student step, progressing logically from diagnosis through correction to synthesis without contradiction.",
+          "premature_answer": "The tutor does not state the final result before the student derives 11010011 in turn 9, instead giving one procedural step at a time.",
+          "hallucination": "All tutor claims about 8-bit two's complement are supported and factually correct, with no fabricated information."
         }
       }
     }
@@ -591,6 +839,37 @@
           "hallucination": "No fabricated or factually false information appears in the tutor's responses."
         }
       }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 7009,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "Turns 2, 4, 6, 8, and 10 accurately distinguish a binomial count from the fifth-success-on-the-eighth-trial event and use the correct negative-binomial reasoning.",
+          "socratic_guidance": "Turns 2, 4, 6, 8, and 10 use genuine questions to prompt the student to examine assumptions, interpret counts, derive a condition, check arithmetic, and explain the principle.",
+          "scaffolding": "The tutor gives only targeted redirects toward the event interpretation, the first-seven-shot condition, and arithmetic plausibility, leaving the derivation, computation, and generalization to the student.",
+          "state_adaptation": "Turn 4 targets the student's misunderstanding of what the binomial probability represents, turn 6 responds to the incorrect multiplication by 0.7, and turn 8 specifically addresses the later arithmetic slip.",
+          "diagnosis": "The targeted questions in turns 4 and 6 surface the event-counting misconception, while turn 8 isolates the numerical slip and prompts the student to confirm and correct it.",
+          "student_agency": "The student derives C(7,4), recognizes the need for a final success, self-corrects the arithmetic, and independently articulates the general negative-binomial formula in turn 11.",
+          "progression": "The student progresses from a mistaken binomial interpretation to the correct setup and value, then demonstrates understanding by deriving and explaining the general formula in turn 11.",
+          "coherence": "Each tutor prompt directly follows and addresses the student's preceding reasoning, with no contradictions, repetition, or ignored questions.",
+          "premature_answer": "The tutor does not reveal the final probability or a complete solution early; by turn 10 the student has already derived the answer and is asked to explain it.",
+          "hallucination": "The tutor introduces no fabricated or factually false information, and all stated binomial and negative-binomial relationships are supported by the dialogue."
+        }
+      }
     }
   },
   {
@@ -657,6 +936,37 @@
           "hallucination": "No fabricated or unsupported information appears in the tutor's responses."
         }
       }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 5864,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "Turns 4–13 correctly guide the student to include j=6, derive the per-i counts summing to 12, and explain the same-parity and i≤j constraints.",
+          "socratic_guidance": "Turns 2, 4, 6, 8, 10, and 12 all use questions that require the student to investigate a case, correct a count, or articulate the underlying principle.",
+          "scaffolding": "Turn 4 offers only a focused endpoint nudge and Turn 6 asks for one numerical check, leaving the central counting, correction, and explanation to the student.",
+          "state_adaptation": "Each response targets the student's current issue: the missed endpoint in Turn 4, the addition error in Turn 6, the missing parity explanation in Turn 8, and the omitted loop-bound interpretation in Turn 10.",
+          "diagnosis": "Turn 2 elicits the student's counting method, Turn 4 tests the specific missed endpoint, and Turn 6 probes the erroneous addition before further intervention.",
+          "student_agency": "The student independently recounts the cases, self-corrects the total from 11 to 12, and explains the parity and ordering rules in their own words in Turns 3–13.",
+          "progression": "By Turn 13, the student has reached the correct count and accurately states both the counted pairs and the roles of parity and the loop bounds.",
+          "coherence": "Every tutor question follows directly from the preceding student response, and the dialogue progresses logically from diagnosis through correction to synthesis and closure.",
+          "premature_answer": "The tutor never states the final count or a complete solution; the student derives the total and conceptual explanation through the prompted checks.",
+          "hallucination": "The tutor introduces no fabricated facts or unsupported claims, and each hinted endpoint, count, and algorithmic interpretation is grounded in the student's work."
+        }
+      }
     }
   },
   {
@@ -721,6 +1031,37 @@
           "coherence": "Each tutor turn follows directly from the student's preceding reasoning, with no contradictions or ignored questions.",
           "premature_answer": "The tutor never states the complete final seating; the student derives it across turns 9–11.",
           "hallucination": "The tutor's statements about row ends, immediate left, and left/right ordering are supported by the puzzle terms and dialogue."
+        }
+      }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 6821,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 2,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "Turns 4 and 6 accurately define \"immediately left\" and identify chairs 1 and 6 as the ends of the six-chair row.",
+          "socratic_guidance": "Turns 2, 4, 6, 8, 10, and 12 use targeted questions, but turns 4 and 6 also directly state the relevant definitions.",
+          "scaffolding": "The tutor discloses only the meanings of the misused conditions and leaves the placement, case elimination, and final arrangement to the student in turns 4–11.",
+          "state_adaptation": "Each hint targets the misconception just stated—immediate left in turn 4, ends in turn 6, somewhere left in turn 8, and the Casey–Dylan pair in turn 10.",
+          "diagnosis": "Turn 2 asks the student to explain each condition, and turns 3–10 use the resulting explicit misconceptions to choose targeted diagnostic questions.",
+          "student_agency": "The student independently corrects the definitions, tests possible chair pairs, and derives the 4–5/6 placement in turns 5–11 while the tutor supplies no arrangement.",
+          "progression": "By turn 11 the student has the correct arrangement and explains why 5–6 is impossible and 4–5 is forced, and turn 12 seeks a synthesis.",
+          "coherence": "Each tutor turn directly responds to the preceding student misconception or solution step, with no contradictions or ignored questions.",
+          "premature_answer": "The tutor never states a full arrangement, limiting support to definitions and targeted questions through turn 12.",
+          "hallucination": "The tutor's statements about adjacency and the end chairs are consistent with the six-chair setup and introduce no fabricated facts."
         }
       }
     }
