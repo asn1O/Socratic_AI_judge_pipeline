@@ -151,8 +151,8 @@ def _load_json_array(path: Path) -> List[Any]:
 
 
 def _state_path_for_source_dir(source_dir: Path, judge_number: int = 1) -> Path:
-    if judge_number == 2:
-        return source_dir / "evaluation_state_2.json"
+    if judge_number > 1:
+        return source_dir / f"evaluation_state_{judge_number}.json"
     return source_dir / "evaluation_state.json"
 
 
@@ -403,7 +403,7 @@ def _maybe_evaluate_model(
                     _call_failed = True
                 finally:
                     if _call_failed:
-                        time.sleep(MODEL_WAIT_SECONDS)
+                        # time.sleep(MODEL_WAIT_SECONDS)
                         continue
 
                 if not success or reply is None:
@@ -432,11 +432,11 @@ def _maybe_evaluate_model(
                                 consecutive_http_errors,
                                 error_code,
                             )
-                            time.sleep(MODEL_WAIT_SECONDS)
+                            # time.sleep(MODEL_WAIT_SECONDS)
                             return stats
                     else:
                         consecutive_http_errors = 0
-                    time.sleep(MODEL_WAIT_SECONDS)
+                    # time.sleep(MODEL_WAIT_SECONDS)
                     continue
 
                 try:
@@ -455,7 +455,7 @@ def _maybe_evaluate_model(
                         attempt,
                         exc,
                     )
-                    time.sleep(MODEL_WAIT_SECONDS)
+                    # time.sleep(MODEL_WAIT_SECONDS)
                     continue
 
                 consecutive_http_errors = 0
@@ -508,7 +508,7 @@ def _maybe_evaluate_model(
                 output_file,
             )
 
-            time.sleep(MODEL_WAIT_SECONDS)
+            # time.sleep(MODEL_WAIT_SECONDS)
 
     return stats
 
@@ -532,8 +532,8 @@ def run_pipeline(
         raise ValueError("source_model_dir is required")
     if judge_index is None:
         raise ValueError("judge_index is required")
-    if judge_number is None or judge_number not in (1, 2):
-        raise ValueError("judge_number is required and must be 1 or 2")
+    if judge_number is None or judge_number not in (1, 2, 3):
+        raise ValueError("judge_number is required and must be 1, 2, or 3")
 
     if models_path is None:
         models_path = str(Path(__file__).resolve().parent / "model.json")
@@ -632,8 +632,8 @@ def _parse_args() -> argparse.Namespace:
         "--judge-number",
         type=int,
         required=True,
-        choices=[1, 2],
-        help="Which judge slot this run fills (1 or 2). Controls the state file and output field used.",
+        choices=[1, 2, 3],
+        help="Which judge slot this run fills (1, 2, or 3). Controls the state file and output field used.",
     )
     return parser.parse_args()
 
