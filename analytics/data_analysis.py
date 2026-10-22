@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""data_analysis.py - Comprehensive evaluation and data analysis on judge outputs.
+"""data_analysis.py - Comprehensive evaluation and data analysis on 3-judge outputs.
 
 Processes all model evaluation folders in `output/`, filters set files (*-set[*.json),
-ignores state tracking files (evaluation_state*.json), extracts scores from Judge 1 and Judge 2,
-converts evaluations to standard CSV format per model, computes statistical metrics,
-benchmarks model performance, and evaluates inter-judge agreement.
+ignores state tracking files (evaluation_state*.json), extracts scores from Judge 1, Judge 2,
+and Judge 3, converts evaluations to standard CSV format per model (stored solely under analytics/),
+computes statistical metrics, benchmarks model performance, and evaluates inter-judge agreement.
 """
 
 from __future__ import annotations
@@ -43,6 +43,7 @@ BOOLEAN_METRICS = [
 ]
 
 ALL_METRICS = NUMERIC_METRICS + BOOLEAN_METRICS
+JUDGES = [1, 2, 3]
 
 
 def natural_sort_key(s: str) -> list[Any]:
@@ -58,13 +59,6 @@ def is_set_file(filename: str) -> bool:
     if "evaluation_state" in lower:
         return False
     return "set" in lower and ("[" in lower or "set_" in lower or "set-" in lower)
-
-
-def safe_float(val: Any) -> Optional[float]:
-    try:
-        return float(val)
-    except (ValueError, TypeError):
-        return None
 
 
 def calculate_pearson_r(x: list[float], y: list[float]) -> float:
@@ -95,7 +89,6 @@ def calculate_cohen_kappa(x: list[bool], y: list[bool]) -> float:
     if n == 0 or len(y) != n:
         return 0.0
     
-    # Contingency table: [both True, x True & y False, x False & y True, both False]
     tt = sum(1 for xi, yi in zip(x, y) if xi and yi)
     tf = sum(1 for xi, yi in zip(x, y) if xi and not yi)
     ft = sum(1 for xi, yi in zip(x, y) if not xi and yi)
@@ -114,7 +107,7 @@ def calculate_cohen_kappa(x: list[bool], y: list[bool]) -> float:
 def process_model_folder(
     model_dir: Path,
 ) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
-    """Process a single model folder and extract evaluation rows and summary stats."""
+    """Process a single model folder and extract evaluation rows across all 3 judges."""
     model_name = model_dir.name
     set_files = sorted(
         [f for f in model_dir.iterdir() if f.is_file() and is_set_file(f.name)],
@@ -141,13 +134,17 @@ def process_model_folder(
             convo_idx = item.get("conversation_index", idx)
             convo_id = f"{file_path.name}:{convo_idx}"
 
-            j1 = item.get("judge_1", {})
-            j2 = item.get("judge_2", {})
-            j1_eval = j1.get("evaluation", {}) if isinstance(j1, dict) else {}
-            j2_eval = j2.get("evaluation", {}) if isinstance(j2, dict) else {}
+            j1 = item.get("judge_1", {}) if isinstance(item.get("judge_1"), dict) else {}
+            j2 = item.get("judge_2", {}) if isinstance(item.get("judge_2"), dict) else {}
+            j3 = item.get("judge_3", {}) if isinstance(item.get("judge_3"), dict) else {}
 
-            j1_tokens = j1.get("total_tokens", 0) if isinstance(j1, dict) else 0
-            j2_tokens = j2.get("total_tokens", 0) if isinstance(j2, dict) else 0
+            j1_eval = j1.get("evaluation", {}) if isinstance(j1.get("evaluation"), dict) else {}
+            j2_eval = j2.get("evaluation", {}) if isinstance(j2.get("evaluation"), dict) else {}
+            j3_eval = j3.get("evaluation", {}) if isinstance(j3.get("evaluation"), dict) else {}
+
+            j1_tokens = j1.get("total_tokens", 0) or 0
+            j2_tokens = j2.get("total_tokens", 0) or 0
+            j3_tokens = j3.get("total_tokens", 0) or 0
 
             row: Dict[str, Any] = {
                 "conversation_id": convo_id,
@@ -155,56 +152,49 @@ def process_model_folder(
                 "conversation_index": convo_idx,
             }
 
-            # Numerical metrics: consensus average + individual judges
+            # Numerical metrics: Mean across all present judges
             for nm in NUMERIC_METRICS:
                 v1 = j1_eval.get(nm)
                 v2 = j2_eval.get(nm)
+                v3 = j3_eval.get(nm)
+
                 row[f"judge_1_{nm}"] = v1
                 row[f"judge_2_{nm}"] = v2
+                row[f"judge_3_{nm}"] = v3
 
-                if v1 is not None and v2 is not None:
-                    avg_v = round((float(v1) + float(v2)) / 2.0, 2)
-                    row[nm] = avg_v
-                elif v1 is not None:
-                    row[nm] = float(v1)
-                elif v2 is not None:
-                    row[nm] = float(v2)
+                vals = [float(v) for v in (v1, v2, v3) if v is not None]
+                if vals:
+                    row[nm] = round(statistics.mean(vals), 2)
                 else:
                     row[nm] = None
 
-            # Boolean metrics: consensus + individual judges
+            # Boolean metrics: Majority vote across all present judges + rate
             for bm in BOOLEAN_METRICS:
                 b1 = j1_eval.get(bm)
                 b2 = j2_eval.get(bm)
+                b3 = j3_eval.get(bm)
+
                 row[f"judge_1_{bm}"] = b1
                 row[f"judge_2_{bm}"] = b2
+                row[f"judge_3_{bm}"] = b3
 
-                if b1 is not None and b2 is not None:
-                    # For correctness: both agree True => True; otherwise False
-                    if bm == "correctness":
-                        row[bm] = bool(b1 and b2)
-                        row[f"{bm}_rate"] = 1.0 if (b1 and b2) else (0.5 if (b1 or b2) else 0.0)
-                    else:
-                        # For risk metrics (premature_answer, hallucination): flagged if either detects
-                        row[bm] = bool(b1 or b2)
-                        row[f"{bm}_rate"] = 1.0 if (b1 and b2) else (0.5 if (b1 or b2) else 0.0)
-                elif b1 is not None:
-                    row[bm] = bool(b1)
-                    row[f"{bm}_rate"] = 1.0 if b1 else 0.0
-                elif b2 is not None:
-                    row[bm] = bool(b2)
-                    row[f"{bm}_rate"] = 1.0 if b2 else 0.0
+                bool_vals = [bool(b) for b in (b1, b2, b3) if b is not None]
+                if bool_vals:
+                    true_count = sum(1 for b in bool_vals if b)
+                    # Majority consensus
+                    row[bm] = true_count >= (len(bool_vals) / 2.0)
+                    row[f"{bm}_rate"] = round(true_count / len(bool_vals), 3)
                 else:
                     row[bm] = None
                     row[f"{bm}_rate"] = None
 
             row["judge_1_tokens"] = j1_tokens
             row["judge_2_tokens"] = j2_tokens
-            row["total_tokens"] = j1_tokens + j2_tokens
+            row["judge_3_tokens"] = j3_tokens
+            row["total_tokens"] = j1_tokens + j2_tokens + j3_tokens
 
             rows.append(row)
 
-    # Compute model-level summary statistics
     summary = compute_summary_statistics(model_name, rows, len(set_files))
     return rows, summary
 
@@ -212,7 +202,7 @@ def process_model_folder(
 def compute_summary_statistics(
     model_name: str, rows: List[Dict[str, Any]], num_set_files: int
 ) -> Dict[str, Any]:
-    """Compute comprehensive statistical metrics for a model's evaluations."""
+    """Compute statistical metrics across 3-judge evaluations."""
     total_convos = len(rows)
     if total_convos == 0:
         return {
@@ -228,7 +218,7 @@ def compute_summary_statistics(
         "metrics": {},
     }
 
-    # Numerical metrics stats
+    # Numerical metrics stats (mean of the 3-judge average)
     for nm in NUMERIC_METRICS:
         vals = [r[nm] for r in rows if r.get(nm) is not None]
         if vals:
@@ -260,21 +250,23 @@ def compute_summary_statistics(
             summary["metrics"][bm] = None
 
     # Token stats
-    t1_vals = [r["judge_1_tokens"] for r in rows if r.get("judge_1_tokens")]
-    t2_vals = [r["judge_2_tokens"] for r in rows if r.get("judge_2_tokens")]
-    tot_vals = [r["total_tokens"] for r in rows if r.get("total_tokens")]
+    t1 = [r["judge_1_tokens"] for r in rows if r.get("judge_1_tokens")]
+    t2 = [r["judge_2_tokens"] for r in rows if r.get("judge_2_tokens")]
+    t3 = [r["judge_3_tokens"] for r in rows if r.get("judge_3_tokens")]
+    tot = [r["total_tokens"] for r in rows if r.get("total_tokens")]
 
     summary["tokens"] = {
-        "avg_judge_1_tokens": round(statistics.mean(t1_vals), 1) if t1_vals else 0,
-        "avg_judge_2_tokens": round(statistics.mean(t2_vals), 1) if t2_vals else 0,
-        "avg_total_tokens_per_convo": round(statistics.mean(tot_vals), 1) if tot_vals else 0,
+        "avg_judge_1_tokens": round(statistics.mean(t1), 1) if t1 else 0,
+        "avg_judge_2_tokens": round(statistics.mean(t2), 1) if t2 else 0,
+        "avg_judge_3_tokens": round(statistics.mean(t3), 1) if t3 else 0,
+        "avg_total_tokens_per_convo": round(statistics.mean(tot), 1) if tot else 0,
     }
 
     return summary
 
 
 def write_csv(filepath: Path, rows: List[Dict[str, Any]], fieldnames: List[str]) -> None:
-    """Write list of dict rows to CSV file."""
+    """Write dict rows to CSV file."""
     filepath.parent.mkdir(parents=True, exist_ok=True)
     with open(filepath, "w", newline="", encoding="utf-8") as fp:
         writer = csv.DictWriter(fp, fieldnames=fieldnames, extrasaction="ignore")
@@ -282,82 +274,159 @@ def write_csv(filepath: Path, rows: List[Dict[str, Any]], fieldnames: List[str])
         writer.writerows(rows)
 
 
-def compute_inter_judge_agreement(all_rows: List[Dict[str, Any]]) -> Dict[str, Any]:
-    """Compute agreement metrics between Judge 1 (beam:cloud) and Judge 2 (gpt-oss:120b)."""
+def compute_inter_judge_agreement_3judges(all_rows: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Compute pairwise and 3-judge agreement metrics across all conversations."""
+    total_convos = len(all_rows)
     agreement_report: Dict[str, Any] = {
-        "total_evaluated_conversations": len(all_rows),
+        "total_evaluated_conversations": total_convos,
+        "judge_models": {
+            "judge_1": "beam:cloud",
+            "judge_2": "gpt-oss:120b",
+            "judge_3": "minimax-m3.1-flash",
+        },
         "numerical_metrics": {},
         "boolean_metrics": {},
     }
 
-    # Numerical metrics agreement
     for nm in NUMERIC_METRICS:
-        j1_scores = []
-        j2_scores = []
-        exact = 0
-        within_1 = 0
+        j1_vals, j2_vals, j3_vals = [], [], []
+        exact_all_3 = 0
+        within_1_span = 0
+
+        exact_12, within_12 = 0, 0
+        exact_13, within_13 = 0, 0
+        exact_23, within_23 = 0, 0
 
         for r in all_rows:
             v1 = r.get(f"judge_1_{nm}")
             v2 = r.get(f"judge_2_{nm}")
-            if v1 is not None and v2 is not None:
-                j1_scores.append(float(v1))
-                j2_scores.append(float(v2))
-                diff = abs(float(v1) - float(v2))
-                if diff == 0:
-                    exact += 1
-                if diff <= 1.0:
-                    within_1 += 1
+            v3 = r.get(f"judge_3_{nm}")
 
-        n = len(j1_scores)
+            if v1 is not None and v2 is not None and v3 is not None:
+                f1, f2, f3 = float(v1), float(v2), float(v3)
+                j1_vals.append(f1)
+                j2_vals.append(f2)
+                j3_vals.append(f3)
+
+                if f1 == f2 == f3:
+                    exact_all_3 += 1
+                if max(f1, f2, f3) - min(f1, f2, f3) <= 1.0:
+                    within_1_span += 1
+
+                if f1 == f2: exact_12 += 1
+                if abs(f1 - f2) <= 1.0: within_12 += 1
+
+                if f1 == f3: exact_13 += 1
+                if abs(f1 - f3) <= 1.0: within_13 += 1
+
+                if f2 == f3: exact_23 += 1
+                if abs(f2 - f3) <= 1.0: within_23 += 1
+
+        n = len(j1_vals)
         if n > 0:
-            mae = round(calculate_mae(j1_scores, j2_scores), 3)
-            r_val = round(calculate_pearson_r(j1_scores, j2_scores), 3)
             agreement_report["numerical_metrics"][nm] = {
                 "n": n,
-                "exact_match_pct": round(exact / n * 100.0, 2),
-                "within_1_pct": round(within_1 / n * 100.0, 2),
-                "mae": mae,
-                "pearson_r": r_val,
-                "j1_mean": round(statistics.mean(j1_scores), 3),
-                "j2_mean": round(statistics.mean(j2_scores), 3),
+                "all_3_exact_match_pct": round(exact_all_3 / n * 100.0, 2),
+                "all_3_within_1_pct": round(within_1_span / n * 100.0, 2),
+                "j1_mean": round(statistics.mean(j1_vals), 3),
+                "j2_mean": round(statistics.mean(j2_vals), 3),
+                "j3_mean": round(statistics.mean(j3_vals), 3),
+                "pairwise": {
+                    "j1_vs_j2": {
+                        "exact_match_pct": round(exact_12 / n * 100.0, 2),
+                        "within_1_pct": round(within_12 / n * 100.0, 2),
+                        "mae": round(calculate_mae(j1_vals, j2_vals), 3),
+                        "pearson_r": round(calculate_pearson_r(j1_vals, j2_vals), 3),
+                    },
+                    "j1_vs_j3": {
+                        "exact_match_pct": round(exact_13 / n * 100.0, 2),
+                        "within_1_pct": round(within_13 / n * 100.0, 2),
+                        "mae": round(calculate_mae(j1_vals, j3_vals), 3),
+                        "pearson_r": round(calculate_pearson_r(j1_vals, j3_vals), 3),
+                    },
+                    "j2_vs_j3": {
+                        "exact_match_pct": round(exact_23 / n * 100.0, 2),
+                        "within_1_pct": round(within_13 / n * 100.0, 2),
+                        "mae": round(calculate_mae(j2_vals, j3_vals), 3),
+                        "pearson_r": round(calculate_pearson_r(j2_vals, j3_vals), 3),
+                    },
+                },
             }
 
-    # Boolean metrics agreement
     for bm in BOOLEAN_METRICS:
-        j1_bools = []
-        j2_bools = []
-        matches = 0
+        b1_vals, b2_vals, b3_vals = [], [], []
+        unanimous = 0
+        agree_12, agree_13, agree_23 = 0, 0, 0
 
         for r in all_rows:
-            b1 = r.get(f"judge_1_{bm}")
-            b2 = r.get(f"judge_2_{bm}")
-            if b1 is not None and b2 is not None:
-                b1 = bool(b1)
-                b2 = bool(b2)
-                j1_bools.append(b1)
-                j2_bools.append(b2)
-                if b1 == b2:
-                    matches += 1
+            v1 = r.get(f"judge_1_{bm}")
+            v2 = r.get(f"judge_2_{bm}")
+            v3 = r.get(f"judge_3_{bm}")
 
-        n = len(j1_bools)
+            if v1 is not None and v2 is not None and v3 is not None:
+                b1, b2, b3 = bool(v1), bool(v2), bool(v3)
+                b1_vals.append(b1)
+                b2_vals.append(b2)
+                b3_vals.append(b3)
+
+                if b1 == b2 == b3:
+                    unanimous += 1
+                if b1 == b2: agree_12 += 1
+                if b1 == b3: agree_13 += 1
+                if b2 == b3: agree_23 += 1
+
+        n = len(b1_vals)
         if n > 0:
-            kappa = round(calculate_cohen_kappa(j1_bools, j2_bools), 3)
             agreement_report["boolean_metrics"][bm] = {
                 "n": n,
-                "agreement_pct": round(matches / n * 100.0, 2),
-                "cohen_kappa": kappa,
-                "j1_positive_pct": round(sum(j1_bools) / n * 100.0, 2),
-                "j2_positive_pct": round(sum(j2_bools) / n * 100.0, 2),
+                "all_3_unanimous_pct": round(unanimous / n * 100.0, 2),
+                "j1_true_pct": round(sum(b1_vals) / n * 100.0, 2),
+                "j2_true_pct": round(sum(b2_vals) / n * 100.0, 2),
+                "j3_true_pct": round(sum(b3_vals) / n * 100.0, 2),
+                "pairwise_cohen_kappa": {
+                    "j1_vs_j2": round(calculate_cohen_kappa(b1_vals, b2_vals), 3),
+                    "j1_vs_j3": round(calculate_cohen_kappa(b1_vals, b3_vals), 3),
+                    "j2_vs_j3": round(calculate_cohen_kappa(b2_vals, b3_vals), 3),
+                },
             }
 
     return agreement_report
 
 
+def generate_overall_score_distribution_csv(all_rows: List[Dict[str, Any]], filepath: Path) -> None:
+    """Generate overall distribution table for Judge 1, Judge 2, Judge 3, and 3-judge mean."""
+    total = len(all_rows)
+    dist_rows = []
+
+    for m in NUMERIC_METRICS:
+        j1_c = Counter([r.get(f"judge_1_{m}") for r in all_rows if r.get(f"judge_1_{m}") is not None])
+        j2_c = Counter([r.get(f"judge_2_{m}") for r in all_rows if r.get(f"judge_2_{m}") is not None])
+        j3_c = Counter([r.get(f"judge_3_{m}") for r in all_rows if r.get(f"judge_3_{m}") is not None])
+
+        for score in [3, 2, 1, 0]:
+            dist_rows.append({
+                "metric": m,
+                "score": score,
+                "judge_1_count": j1_c.get(score, 0),
+                "judge_1_pct": f"{j1_c.get(score, 0) / total * 100:.2f}%",
+                "judge_2_count": j2_c.get(score, 0),
+                "judge_2_pct": f"{j2_c.get(score, 0) / total * 100:.2f}%",
+                "judge_3_count": j3_c.get(score, 0),
+                "judge_3_pct": f"{j3_c.get(score, 0) / total * 100:.2f}%",
+            })
+
+    write_csv(
+        filepath,
+        dist_rows,
+        ["metric", "score", "judge_1_count", "judge_1_pct", "judge_2_count", "judge_2_pct", "judge_3_count", "judge_3_pct"],
+    )
+    logger.info("Saved 3-judge overall score distribution to %s", filepath)
+
+
 def run_analysis(
     output_dir: Path, analytics_dir: Path
 ) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
-    """Run full analysis across all model output folders and generate all CSVs and summaries."""
+    """Execute analysis across output folders and persist all results strictly under analytics/."""
     logger.info("Scanning model folders in %s...", output_dir)
 
     model_subdirs = sorted(
@@ -371,6 +440,7 @@ def run_analysis(
 
     logger.info("Found %d model directories.", len(model_subdirs))
 
+    # All fields for the per-model CSV
     csv_fields = (
         ["conversation_id", "file_name", "conversation_index"]
         + NUMERIC_METRICS
@@ -378,7 +448,9 @@ def run_analysis(
         + [f"judge_1_{m}" for m in NUMERIC_METRICS + BOOLEAN_METRICS]
         + ["judge_1_tokens"]
         + [f"judge_2_{m}" for m in NUMERIC_METRICS + BOOLEAN_METRICS]
-        + ["judge_2_tokens", "total_tokens"]
+        + ["judge_2_tokens"]
+        + [f"judge_3_{m}" for m in NUMERIC_METRICS + BOOLEAN_METRICS]
+        + ["judge_3_tokens", "total_tokens"]
     )
 
     all_models_summary: List[Dict[str, Any]] = []
@@ -397,7 +469,7 @@ def run_analysis(
             logger.warning("No conversation records found in %s", model_name)
             continue
 
-        # Write CSV in analytics directory only: analytics/models/<model_folder>.csv
+        # Save solely in analytics/models/<model_folder>.csv (NOT inside output directory)
         analytics_model_csv = models_analytics_dir / f"{model_name}.csv"
         write_csv(analytics_model_csv, rows, csv_fields)
 
@@ -409,7 +481,7 @@ def run_analysis(
             analytics_model_csv,
         )
 
-    # 3. Build Benchmark Comparison Table across all models
+    # 1. Benchmark Comparison Table across all models (sorted by sample size N descending)
     benchmark_rows = []
     for s in all_models_summary:
         m_name = s["model_name"]
@@ -434,11 +506,11 @@ def run_analysis(
             "hallucination_pct": m_metrics.get("hallucination", {}).get("percentage"),
             "avg_judge_1_tokens": s.get("tokens", {}).get("avg_judge_1_tokens"),
             "avg_judge_2_tokens": s.get("tokens", {}).get("avg_judge_2_tokens"),
+            "avg_judge_3_tokens": s.get("tokens", {}).get("avg_judge_3_tokens"),
             "avg_total_tokens": s.get("tokens", {}).get("avg_total_tokens_per_convo"),
         }
         benchmark_rows.append(row)
 
-    # Sort benchmark by sample size descending, then by model_name
     benchmark_rows.sort(
         key=lambda r: (r["conversations_evaluated"], r["model_name"]),
         reverse=True,
@@ -460,15 +532,19 @@ def run_analysis(
         "hallucination_pct",
         "avg_judge_1_tokens",
         "avg_judge_2_tokens",
+        "avg_judge_3_tokens",
         "avg_total_tokens",
     ]
-
     benchmark_csv = analytics_dir / "model_benchmark_comparison.csv"
     write_csv(benchmark_csv, benchmark_rows, benchmark_fields)
     logger.info("Saved benchmark comparison to %s", benchmark_csv)
 
-    # 4. Inter-Judge Agreement Analysis
-    agreement = compute_inter_judge_agreement(all_conversations)
+    # 2. Score distribution CSV for Judge 1, Judge 2, and Judge 3
+    distribution_csv = analytics_dir / "overall_score_distribution.csv"
+    generate_overall_score_distribution_csv(all_conversations, distribution_csv)
+
+    # 3. Inter-Judge Agreement Analysis across all 3 judges
+    agreement = compute_inter_judge_agreement_3judges(all_conversations)
     agreement_json = analytics_dir / "inter_judge_agreement.json"
     with open(agreement_json, "w", encoding="utf-8") as fp:
         json.dump(agreement, fp, indent=2)
@@ -480,13 +556,20 @@ def run_analysis(
                 "metric": nm,
                 "type": "numerical",
                 "sample_size": stats["n"],
-                "exact_match_pct": stats["exact_match_pct"],
-                "within_1_pct": stats["within_1_pct"],
-                "mae": stats["mae"],
-                "pearson_r": stats["pearson_r"],
+                "all_3_exact_pct": stats["all_3_exact_match_pct"],
+                "all_3_within_1_pct": stats["all_3_within_1_pct"],
                 "judge_1_mean": stats["j1_mean"],
                 "judge_2_mean": stats["j2_mean"],
-                "cohen_kappa": "N/A",
+                "judge_3_mean": stats["j3_mean"],
+                "j1_vs_j2_exact_pct": stats["pairwise"]["j1_vs_j2"]["exact_match_pct"],
+                "j1_vs_j2_within_1_pct": stats["pairwise"]["j1_vs_j2"]["within_1_pct"],
+                "j1_vs_j2_r": stats["pairwise"]["j1_vs_j2"]["pearson_r"],
+                "j1_vs_j3_exact_pct": stats["pairwise"]["j1_vs_j3"]["exact_match_pct"],
+                "j1_vs_j3_within_1_pct": stats["pairwise"]["j1_vs_j3"]["within_1_pct"],
+                "j1_vs_j3_r": stats["pairwise"]["j1_vs_j3"]["pearson_r"],
+                "j2_vs_j3_exact_pct": stats["pairwise"]["j2_vs_j3"]["exact_match_pct"],
+                "j2_vs_j3_within_1_pct": stats["pairwise"]["j2_vs_j3"]["within_1_pct"],
+                "j2_vs_j3_r": stats["pairwise"]["j2_vs_j3"]["pearson_r"],
             }
         )
     for bm, stats in agreement["boolean_metrics"].items():
@@ -495,13 +578,20 @@ def run_analysis(
                 "metric": bm,
                 "type": "boolean",
                 "sample_size": stats["n"],
-                "exact_match_pct": stats["agreement_pct"],
-                "within_1_pct": "100.0",
-                "mae": "N/A",
-                "pearson_r": "N/A",
-                "judge_1_mean": f"{stats['j1_positive_pct']}%",
-                "judge_2_mean": f"{stats['j2_positive_pct']}%",
-                "cohen_kappa": stats["cohen_kappa"],
+                "all_3_exact_pct": stats["all_3_unanimous_pct"],
+                "all_3_within_1_pct": "100.0",
+                "judge_1_mean": f"{stats['j1_true_pct']}%",
+                "judge_2_mean": f"{stats['j2_true_pct']}%",
+                "judge_3_mean": f"{stats['j3_true_pct']}%",
+                "j1_vs_j2_exact_pct": "N/A",
+                "j1_vs_j2_within_1_pct": "N/A",
+                "j1_vs_j2_r": f"kappa={stats['pairwise_cohen_kappa']['j1_vs_j2']}",
+                "j1_vs_j3_exact_pct": "N/A",
+                "j1_vs_j3_within_1_pct": "N/A",
+                "j1_vs_j3_r": f"kappa={stats['pairwise_cohen_kappa']['j1_vs_j3']}",
+                "j2_vs_j3_exact_pct": "N/A",
+                "j2_vs_j3_within_1_pct": "N/A",
+                "j2_vs_j3_r": f"kappa={stats['pairwise_cohen_kappa']['j2_vs_j3']}",
             }
         )
 
@@ -509,19 +599,26 @@ def run_analysis(
         "metric",
         "type",
         "sample_size",
-        "exact_match_pct",
-        "within_1_pct",
-        "mae",
-        "pearson_r",
+        "all_3_exact_pct",
+        "all_3_within_1_pct",
         "judge_1_mean",
         "judge_2_mean",
-        "cohen_kappa",
+        "judge_3_mean",
+        "j1_vs_j2_exact_pct",
+        "j1_vs_j2_within_1_pct",
+        "j1_vs_j2_r",
+        "j1_vs_j3_exact_pct",
+        "j1_vs_j3_within_1_pct",
+        "j1_vs_j3_r",
+        "j2_vs_j3_exact_pct",
+        "j2_vs_j3_within_1_pct",
+        "j2_vs_j3_r",
     ]
     agreement_csv = analytics_dir / "inter_judge_reliability.csv"
     write_csv(agreement_csv, agreement_csv_rows, agreement_csv_fields)
-    logger.info("Saved inter-judge reliability to %s", agreement_csv)
+    logger.info("Saved 3-judge inter-judge reliability to %s", agreement_csv)
 
-    # 5. Save comprehensive summary JSON
+    # 4. Save comprehensive summary JSON
     summary_path = analytics_dir / "full_analysis_summary.json"
     full_report = {
         "benchmark_summary": benchmark_rows,
@@ -539,11 +636,12 @@ def print_cli_summary(
     benchmark_rows: List[Dict[str, Any]], agreement: Dict[str, Any]
 ) -> None:
     """Print clean terminal report for the user."""
-    print("\n" + "=" * 135)
-    print("SOCRATIC AI EVALUATION BENCHMARK - MODEL RANKINGS & DATA ANALYSIS")
-    print("=" * 135)
+    print("\n" + "=" * 140)
+    print("SOCRATIC AI EVALUATION BENCHMARK - 3-JUDGE MODEL EVALUATIONS")
+    print("Judges: 1 = beam:cloud | 2 = gpt-oss:120b | 3 = minimax-m3.1-flash")
+    print("=" * 140)
 
-    hdr = "%-46s | %-4s | %-7s | %-7s | %-7s | %-7s | %-7s | %-7s | %-8s | %-7s | %-7s" % (
+    hdr = "%-45s | %-4s | %-7s | %-7s | %-7s | %-7s | %-7s | %-7s | %-8s | %-7s | %-7s" % (
         "Model Name",
         "N",
         "Guidnc",
@@ -557,7 +655,7 @@ def print_cli_summary(
         "Halluc",
     )
     print(hdr)
-    print("-" * 135)
+    print("-" * 140)
 
     for r in benchmark_rows:
         g = "%.2f" % r["socratic_guidance_mean"] if r["socratic_guidance_mean"] else "N/A"
@@ -571,9 +669,9 @@ def print_cli_summary(
         hal = "%.1f%%" % r["hallucination_pct"] if r["hallucination_pct"] is not None else "N/A"
 
         print(
-            "%-46s | %4d | %7s | %7s | %7s | %7s | %7s | %7s | %8s | %7s | %7s"
+            "%-45s | %4d | %7s | %7s | %7s | %7s | %7s | %7s | %8s | %7s | %7s"
             % (
-                r["model_name"][:46],
+                r["model_name"][:45],
                 r["conversations_evaluated"],
                 g,
                 sc,
@@ -587,50 +685,50 @@ def print_cli_summary(
             )
         )
 
-    print("-" * 135)
-    print("\nINTER-JUDGE AGREEMENT (Judge 1: beam:cloud vs Judge 2: gpt-oss:120b | N = %d)" % agreement["total_evaluated_conversations"])
-    print("-" * 105)
+    print("-" * 140)
+    print("\nTRI-JUDGE RELIABILITY & CALIBRATION (N = %d)" % agreement["total_evaluated_conversations"])
+    print("-" * 115)
     print(
-        "%-22s | %-12s | %-12s | %-8s | %-10s | %-12s | %-12s"
-        % ("Metric", "Exact Match", "Within ±1", "MAE", "Pearson r", "Judge 1 Mean", "Judge 2 Mean")
+        "%-20s | %-12s | %-14s | %-10s | %-10s | %-10s | %-10s"
+        % ("Metric", "All 3 Exact", "All 3 Within±1", "J1 Mean", "J2 Mean", "J3 Mean", "J1-J2 r")
     )
-    print("-" * 105)
+    print("-" * 115)
     for nm, s in agreement["numerical_metrics"].items():
         print(
-            "%-22s | %10.1f%% | %10.1f%% | %8.3f | %10.3f | %12.2f | %12.2f"
+            "%-20s | %10.1f%% | %12.1f%% | %10.2f | %10.2f | %10.2f | %10.3f"
             % (
                 nm,
-                s["exact_match_pct"],
-                s["within_1_pct"],
-                s["mae"],
-                s["pearson_r"],
+                s["all_3_exact_match_pct"],
+                s["all_3_within_1_pct"],
                 s["j1_mean"],
                 s["j2_mean"],
+                s["j3_mean"],
+                s["pairwise"]["j1_vs_j2"]["pearson_r"],
             )
         )
-    print("-" * 105)
+    print("-" * 115)
     print(
-        "%-22s | %-12s | %-12s | %-12s | %-14s"
-        % ("Boolean Metric", "Agreement", "Cohen Kappa", "Judge 1 True%", "Judge 2 True%")
+        "%-20s | %-16s | %-10s | %-10s | %-10s"
+        % ("Boolean Metric", "All 3 Unanimous", "J1 True%", "J2 True%", "J3 True%")
     )
-    print("-" * 105)
+    print("-" * 115)
     for bm, s in agreement["boolean_metrics"].items():
         print(
-            "%-22s | %10.1f%% | %12.3f | %11.1f%% | %11.1f%%"
+            "%-20s | %14.1f%% | %9.1f%% | %9.1f%% | %9.1f%%"
             % (
                 bm,
-                s["agreement_pct"],
-                s["cohen_kappa"],
-                s["j1_positive_pct"],
-                s["j2_positive_pct"],
+                s["all_3_unanimous_pct"],
+                s["j1_true_pct"],
+                s["j2_true_pct"],
+                s["j3_true_pct"],
             )
         )
-    print("=" * 105 + "\n")
+    print("=" * 115 + "\n")
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Run data analysis and generate CSV reports for all model evaluation outputs."
+        description="Run 3-judge data analysis and generate CSV reports strictly under analytics/."
     )
     parser.add_argument(
         "--output-dir",

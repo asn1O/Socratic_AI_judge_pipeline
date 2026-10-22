@@ -86,7 +86,7 @@ def plot_model_rankings():
 
 
 # -----------------------------------------------------------------------------
-# Chart 2: Judge 1 vs Judge 2 Score Distribution Comparison
+# Chart 2: 3-Judge Score Distribution Comparison
 # -----------------------------------------------------------------------------
 def plot_score_distributions():
     metrics = [
@@ -94,9 +94,9 @@ def plot_score_distributions():
         "student_agency", "progression", "state_adaptation", "coherence"
     ]
     
-    # We want to compare Score 3 % between Judge 1 and Judge 2
     j1_s3 = []
     j2_s3 = []
+    j3_s3 = []
     labels = []
     
     for m in metrics:
@@ -105,34 +105,39 @@ def plot_score_distributions():
         if not s3_row.empty:
             j1_val = float(s3_row["judge_1_pct"].values[0].replace("%", ""))
             j2_val = float(s3_row["judge_2_pct"].values[0].replace("%", ""))
+            j3_val = float(s3_row["judge_3_pct"].values[0].replace("%", ""))
             j1_s3.append(j1_val)
             j2_s3.append(j2_val)
+            j3_s3.append(j3_val)
             labels.append(m.replace("_", " ").title())
             
     x = np.arange(len(labels))
-    width = 0.35
+    width = 0.26
     
-    fig, ax = plt.subplots(figsize=(12, 6))
-    bars1 = ax.bar(x - width/2, j1_s3, width, label="Judge 1 (beam:cloud)", color="#3182ce")
-    bars2 = ax.bar(x + width/2, j2_s3, width, label="Judge 2 (gpt-oss:120b)", color="#805ad5")
+    fig, ax = plt.subplots(figsize=(13, 6.5))
+    bars1 = ax.bar(x - width, j1_s3, width, label="Judge 1 (beam:cloud)", color="#3182ce")
+    bars2 = ax.bar(x, j2_s3, width, label="Judge 2 (gpt-oss:120b)", color="#805ad5")
+    bars3 = ax.bar(x + width, j3_s3, width, label="Judge 3 (minimax-m3.1-flash)", color="#38a169")
     
     ax.set_ylabel("% of Conversations Awarded Top Score (3 / 3)", fontsize=11, fontweight="bold")
-    ax.set_title("Inter-Judge Calibration: Proportion of Perfect Scores (Score 3) Awarded", fontsize=14, fontweight="bold", pad=15)
+    ax.set_title("Tri-Judge Calibration: Proportion of Perfect Scores (Score 3) Awarded", fontsize=14, fontweight="bold", pad=15)
     ax.set_xticks(x)
     ax.set_xticklabels(labels, rotation=15, ha="right", fontsize=10)
-    ax.set_ylim(0, 112)
+    ax.set_ylim(0, 115)
     ax.legend(loc="upper left", frameon=True, fontsize=10)
     
     for bar in bars1:
-        ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 1.5, f"{bar.get_height():.1f}%", ha="center", va="bottom", fontsize=8.5, color="#2b6cb0")
+        ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 1.2, f"{bar.get_height():.0f}%", ha="center", va="bottom", fontsize=8, color="#2b6cb0")
     for bar in bars2:
-        ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 1.5, f"{bar.get_height():.1f}%", ha="center", va="bottom", fontsize=8.5, color="#6b46c1")
+        ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 1.2, f"{bar.get_height():.0f}%", ha="center", va="bottom", fontsize=8, color="#6b46c1")
+    for bar in bars3:
+        ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 1.2, f"{bar.get_height():.0f}%", ha="center", va="bottom", fontsize=8, color="#276749")
         
     save_plot(fig, "chart2_judge_calibration.png")
 
 
 # -----------------------------------------------------------------------------
-# Chart 3: Socratic Quality vs Premature Answering Trade-off
+# Chart 3: Socratic Guidance vs Premature Answering Trade-off
 # -----------------------------------------------------------------------------
 def plot_quality_vs_premature():
     df = benchmark_df[benchmark_df["conversations_evaluated"] >= 20].copy()
@@ -170,45 +175,45 @@ def plot_quality_vs_premature():
             alpha=0.9
         )
         
-    # Shaded optimal quadrant
-    ax.axvspan(0, 3, color="#48bb78", alpha=0.1, label="Low Premature Risk Zone (< 3%)")
+    ax.axvspan(0, 2, color="#48bb78", alpha=0.1, label="Low Premature Risk Zone (< 2%)")
     ax.legend(loc="lower left", frameon=True)
     
     save_plot(fig, "chart3_socratic_vs_premature.png")
 
 
 # -----------------------------------------------------------------------------
-# Chart 4: Inter-Judge Reliability Metrics Matrix
+# Chart 4: Tri-Judge Reliability Metrics Matrix
 # -----------------------------------------------------------------------------
 def plot_inter_judge_matrix():
     num_df = agreement_df[agreement_df["type"] == "numerical"].copy()
     
     metrics = [m.replace("_", " ").title() for m in num_df["metric"]]
-    exact_match = [float(v) for v in num_df["exact_match_pct"]]
-    within_1 = [float(v) for v in num_df["within_1_pct"]]
-    pearson_r = [float(v) * 100 for v in num_df["pearson_r"]]
+    exact_match = [float(v) for v in num_df["all_3_exact_pct"]]
+    within_1 = [float(v) for v in num_df["all_3_within_1_pct"]]
+    j1_mean = [float(v) * (100 / 3.0) for v in num_df["judge_1_mean"]]
+    j2_mean = [float(v) * (100 / 3.0) for v in num_df["judge_2_mean"]]
+    j3_mean = [float(v) * (100 / 3.0) for v in num_df["judge_3_mean"]]
     
-    matrix = np.array([exact_match, within_1, pearson_r])
+    matrix = np.array([exact_match, within_1, j1_mean, j2_mean, j3_mean])
     
-    fig, ax = plt.subplots(figsize=(10, 4.5))
+    fig, ax = plt.subplots(figsize=(11, 5))
     
-    cmap = sns.light_palette("#2b6cb0", as_cmap=True)
     sns.heatmap(
         matrix,
         annot=True,
         fmt=".1f",
         cmap="YlGnBu",
         xticklabels=metrics,
-        yticklabels=["Exact Match %", "Within ±1 %", "Pearson r (×100)"],
-        cbar_kws={"label": "Percentage / Scaled Score"},
+        yticklabels=["All 3 Exact %", "All 3 Within ±1 %", "Judge 1 Mean (Scaled)", "Judge 2 Mean (Scaled)", "Judge 3 Mean (Scaled)"],
+        cbar_kws={"label": "Percentage / Scaled Score (0-100)"},
         ax=ax,
         linewidths=1.0,
         linecolor="white",
-        vmin=0,
+        vmin=40,
         vmax=100
     )
     
-    ax.set_title("Inter-Judge Agreement & Correlation Metrics (N = 3,007)", fontsize=13, fontweight="bold", pad=12)
+    ax.set_title("Tri-Judge Agreement & Mean Calibration Matrix (N = 3,007)", fontsize=13, fontweight="bold", pad=12)
     plt.xticks(rotation=20, ha="right", fontsize=9.5)
     plt.yticks(rotation=0, fontsize=10)
     

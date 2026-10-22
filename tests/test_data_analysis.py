@@ -5,7 +5,7 @@ from analytics.data_analysis import (
     is_set_file,
     natural_sort_key,
     process_model_folder,
-    compute_inter_judge_agreement,
+    compute_inter_judge_agreement_3judges,
     NUMERIC_METRICS,
     BOOLEAN_METRICS,
 )
@@ -57,6 +57,11 @@ def test_process_model_folder(tmp_path: Path):
             "total_tokens": 1200,
             "evaluation": sample_eval,
         },
+        "judge_3": {
+            "model": {"provider": "Ollama", "model_name": "minimax-m3.1-flash"},
+            "total_tokens": 800,
+            "evaluation": sample_eval,
+        },
     }
 
     set_file = model_dir / "asn-set[0].json"
@@ -81,7 +86,8 @@ def test_process_model_folder(tmp_path: Path):
     assert rows[0]["hallucination"] is False
     assert rows[0]["judge_1_tokens"] == 1000
     assert rows[0]["judge_2_tokens"] == 1200
-    assert rows[0]["total_tokens"] == 2200
+    assert rows[0]["judge_3_tokens"] == 800
+    assert rows[0]["total_tokens"] == 3000
 
     assert summary["total_conversations"] == 1
     assert summary["total_files"] == 1
