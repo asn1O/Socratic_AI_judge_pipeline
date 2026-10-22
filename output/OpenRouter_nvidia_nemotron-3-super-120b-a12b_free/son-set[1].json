@@ -104,103 +104,6 @@
         "provider": "Ollama",
         "model_name": "gpt-oss:120b"
       },
-      "total_tokens": 5340,
-      "evaluation": {
-        "correctness": true,
-        "socratic_guidance": 3,
-        "scaffolding": 3,
-        "state_adaptation": 3,
-        "diagnosis": 3,
-        "student_agency": 3,
-        "progression": 3,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "All tutor guidance (turns 2,4,6,8,10,12) correctly leads to the two's complement and contains no factual errors.",
-          "socratic_guidance": "From turn 2 through turn 12, every substantive tutor turn is a question that requires the student to generate the next step.",
-          "scaffolding": "The tutor only gives minimal nudges (e.g., “represent +45 in 8‑bit”, “what happens if you flip the bits?”) and lets the student perform the calculations.",
-          "state_adaptation": "Each tutor response directly addresses the student’s last statement, e.g., turn 4 follows the student’s uncertainty about 8‑bit length.",
-          "diagnosis": "Turn 2 asks the student to explain their plan, revealing they know to flip bits; the tutor then targets the bit‑length confusion, confirming the diagnosis.",
-          "student_agency": "The student carries out all core steps—binary expansion, bit inversion, addition, procedure formulation, and explanation—while the tutor only prompts.",
-          "progression": "By turn 13 the student can state the complete procedure and explain why it works, showing full understanding.",
-          "coherence": "The dialogue proceeds logically without contradictions, and every tutor question follows the preceding student answer.",
-          "premature_answer": "The tutor never supplies the final two’s‑complement answer; the student derives it themselves.",
-          "hallucination": "All tutor statements are factual; no fabricated or false information appears."
-        }
-      }
-    },
-    "judge_1": {
-      "model": {
-        "provider": "Ollama",
-        "model_name": "beam:cloud"
-      },
-      "total_tokens": 6238,
-      "evaluation": {
-        "correctness": true,
-        "socratic_guidance": 2,
-        "scaffolding": 2,
-        "state_adaptation": 3,
-        "diagnosis": 2,
-        "student_agency": 3,
-        "progression": 3,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "Turns 4-9 use correct 8-bit values (00101101, 11010010, 11010011) and the addition check correctly yields zero modulo 256.",
-          "socratic_guidance": "Turns 2, 4, 6, 8, 10, and 12 use questions, but turn 4 also states the first step to consider, so not every turn is a pure question.",
-          "scaffolding": "Turn 4 tells the student to represent +45 in 8-bit binary first, a partial setup before the student has independently addressed the bit-width issue.",
-          "state_adaptation": "Turns 4 and 8 target the student's specific 8-bit uncertainty and then their addition check rather than using generic prompts.",
-          "diagnosis": "Turn 2 elicits the student's approach and turn 3 reveals uncertainty about 8 bits, but the tutor does not probe that uncertainty further before directing the student.",
-          "student_agency": "Turns 5, 9, 11, and 13 show the student generating the binary representation, flip, addition check, general procedure, and explanation.",
-          "progression": "By turn 13 the student states and explains the complete two's complement procedure correctly.",
-          "coherence": "Each tutor turn follows from the student's prior response, and there are no contradictions or ignored questions.",
-          "premature_answer": "The tutor does not reveal the final two's complement value before the student works through it in turn 5.",
-          "hallucination": "No fabricated or unsupported factual claims appear in the tutor's responses."
-        }
-      }
-    },
-    "judge_3": {
-      "model": {
-        "provider": "Ollama",
-        "model_name": "minimax-m3.1-flash"
-      },
-      "total_tokens": 17567,
-      "evaluation": {
-        "correctness": false,
-        "socratic_guidance": 2,
-        "scaffolding": 3,
-        "state_adaptation": 2,
-        "diagnosis": 2,
-        "student_agency": 2,
-        "progression": 2,
-        "coherence": 1,
-        "premature_answer": false,
-        "hallucination": true,
-        "evidence": {
-          "correctness": "Turn 8's verification is mathematically flawed: adding the one's complement 11010010 to 00101101 does not verify the two's complement; the required addend is 11010011.",
-          "socratic_guidance": "Turns 2, 6, 8, 10, and 12 pose genuine questions, but Turns 4 and 8 also state the 8-bit setup and verification step rather than leaving every inference to the student.",
-          "scaffolding": "After the student names flip-and-add, Turn 4 gives only a narrow nudge about using an 8-bit form, leaving the conversion, generalization, and explanation to the student.",
-          "state_adaptation": "Turn 4 directly targets the stated 8-bit uncertainty, but after Turn 9's incorrect arithmetic, Turn 10 moves to generalization without diagnosing or correcting the error.",
-          "diagnosis": "Turns 2–4 elicit the student's uncertainty and target bit width, but the tutor never investigates the cause of the Turn 9 arithmetic error before intervening.",
-          "student_agency": "The student produces the binary representation, complement, general rule, and conceptual explanation in Turns 5, 11, and 13, although the tutor supplies the 8-bit setup and directs the verification.",
-          "progression": "The student reaches 11010011 and states the general rule, but the sole numerical check is wrong and the final explanation only restates definitions, so conceptual understanding is not securely demonstrated.",
-          "coherence": "Turn 6 needlessly repeats the already answered flip question, and Turns 8–10 move from a false verification to generalization without reconciling the arithmetic.",
-          "premature_answer": "The tutor never states 11010011 or supplies the final procedure; the student derives both in Turns 5 and 11.",
-          "hallucination": "Turn 10's reasoning asserts that the student 'verified correctness' despite the contradictory arithmetic in Turn 9, making an unsupported and factually false claim."
-        }
-      }
-    }
-  },
-  {
-    "source_file": "OpenRouter_nvidia_nemotron-3-super-120b-a12b_free/son-set[1].json",
-    "conversation_index": 2,
-    "judge_2": {
-      "model": {
-        "provider": "Ollama",
-        "model_name": "gpt-oss:120b"
-      },
       "total_tokens": 5872,
       "evaluation": {
         "correctness": true,
@@ -292,7 +195,7 @@
   },
   {
     "source_file": "OpenRouter_nvidia_nemotron-3-super-120b-a12b_free/son-set[1].json",
-    "conversation_index": 3,
+    "conversation_index": 2,
     "judge_2": {
       "model": {
         "provider": "Ollama",
@@ -389,7 +292,7 @@
   },
   {
     "source_file": "OpenRouter_nvidia_nemotron-3-super-120b-a12b_free/son-set[1].json",
-    "conversation_index": 4,
+    "conversation_index": 3,
     "judge_2": {
       "model": {
         "provider": "Ollama",
@@ -486,104 +389,7 @@
   },
   {
     "source_file": "OpenRouter_nvidia_nemotron-3-super-120b-a12b_free/son-set[1].json",
-    "conversation_index": 5,
-    "judge_2": {
-      "model": {
-        "provider": "Ollama",
-        "model_name": "gpt-oss:120b"
-      },
-      "total_tokens": 5678,
-      "evaluation": {
-        "correctness": true,
-        "socratic_guidance": 2,
-        "scaffolding": 3,
-        "state_adaptation": 3,
-        "diagnosis": 3,
-        "student_agency": 3,
-        "progression": 3,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "All tutor statements (turns 4,6,8,10,12) are factually accurate and contain no errors.",
-          "socratic_guidance": "Turns 2,6,8,10 are genuine questions, while turns 4 and 12 are statements, so most guidance is via questions.",
-          "scaffolding": "The tutor only nudges the student (e.g., turn4’s reminder about earning interest on interest) without doing the calculations.",
-          "state_adaptation": "Each tutor reply directly addresses the student’s previous mistake, such as turn6 noting the lingering simple‑interest use.",
-          "diagnosis": "The tutor asks targeted questions (turn2,6) that uncover the student’s reasoning and confirms the misconception before helping.",
-          "student_agency": "The student performed all calculations and explanations, while the tutor only prompted and clarified.",
-          "progression": "By turn11 the student correctly computed and explained compound vs simple interest, showing full understanding.",
-          "coherence": "All turns follow logically from the previous ones with no contradictions or ignored questions.",
-          "premature_answer": "The tutor never supplies the final computed amount before the student arrives at it.",
-          "hallucination": "The tutor’s content is all standard finance concepts and contains no fabricated information."
-        }
-      }
-    },
-    "judge_1": {
-      "model": {
-        "provider": "Ollama",
-        "model_name": "beam:cloud"
-      },
-      "total_tokens": 7970,
-      "evaluation": {
-        "correctness": true,
-        "socratic_guidance": 2,
-        "scaffolding": 2,
-        "state_adaptation": 3,
-        "diagnosis": 2,
-        "student_agency": 3,
-        "progression": 3,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "The tutor's statements about compound interest and responses to the student's work align with the calculations and corrections shown in turns 4–11.",
-          "socratic_guidance": "The tutor asks genuine questions in turns 2, 6, 8, and 10, but also states the compound-interest principle in turn 4 and uses a leading question in turn 6.",
-          "scaffolding": "The tutor gives direct conceptual help in turn 4 and identifies the second-block error in turn 6 while leaving the final calculations to the student.",
-          "state_adaptation": "Each tutor response specifically addresses the student's prior reasoning, including the first-block and second-block simple-interest errors in turns 4 and 6.",
-          "diagnosis": "The tutor elicits the first misconception in turns 2–3 and identifies the second error from turn 5, but does not fully investigate why the second block used simple interest before intervening.",
-          "student_agency": "The student performs the calculations, self-corrects both errors, and explains the difference between simple and compound interest in turns 9 and 11.",
-          "progression": "The student reaches the correct final amount for Option B and explains why annual compounding is necessary.",
-          "coherence": "The conversation follows logically from the initial attempt through diagnosis, correction, and final explanation without contradictions.",
-          "premature_answer": "The tutor never reveals the final answer or a complete solution before the student works through it.",
-          "hallucination": "The tutor introduces no fabricated or unsupported information."
-        }
-      }
-    },
-    "judge_3": {
-      "model": {
-        "provider": "Ollama",
-        "model_name": "minimax-m3.1-flash"
-      },
-      "total_tokens": 16482,
-      "evaluation": {
-        "correctness": false,
-        "socratic_guidance": 2,
-        "scaffolding": 2,
-        "state_adaptation": 2,
-        "diagnosis": 2,
-        "student_agency": 2,
-        "progression": 2,
-        "coherence": 1,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "Although turns 4 and 12 correctly describe compounding, turn 8 fails to correct the comparison while Option A remains $9,280; annual compounding gives 8000(1.04)^4 = $9,358.87, slightly above Option B's $9,358.80.",
-          "socratic_guidance": "Turns 2, 6, 8, and 10 use genuine questions, but turn 4 states the compound-interest rule outright and turn 6 uses a leading question, so the guidance is not entirely elicitive.",
-          "scaffolding": "Turn 4 supplies the central compound-interest fact and turn 6 identifies the second error, while the student remains responsible for the recomputation and explanation.",
-          "state_adaptation": "The tutor directly responds to the student's stated simple-interest rationale and second-block error in turns 2-6, but never addresses the continued simple-interest treatment of Option A in turns 5 and 7.",
-          "diagnosis": "Turn 2 elicits the misconception and turn 6 pinpoints its persistence in Option B, but the parallel misconception in Option A is neither investigated nor confirmed.",
-          "student_agency": "The student self-corrects, calculates Option B, and explains the principle in turns 5-11, but the key compound-interest rule that enables the correction is supplied by the tutor in turn 4.",
-          "progression": "The student correctly computes Option B and articulates how compounding works by turns 7 and 11, leaving only the incorrect Option A calculation between the work and a correct comparison.",
-          "coherence": "Turns 2-4 reject simple-interest use and establish compounding, but turn 8 treats the result as correct while the dialogue continues to use the simple-interest value for Option A, creating an unresolved contradiction.",
-          "premature_answer": "The tutor does not state the final option or perform the final calculation; the student produces the numerical result and explanation in turns 7 and 11.",
-          "hallucination": "The tutor introduces no fabricated premise; its compound-interest explanation is standard and its stated Option B amount is correct, with the principal failure being the uncorrected Option A comparison."
-        }
-      }
-    }
-  },
-  {
-    "source_file": "OpenRouter_nvidia_nemotron-3-super-120b-a12b_free/son-set[1].json",
-    "conversation_index": 6,
+    "conversation_index": 4,
     "judge_2": {
       "model": {
         "provider": "Ollama",
@@ -680,7 +486,7 @@
   },
   {
     "source_file": "OpenRouter_nvidia_nemotron-3-super-120b-a12b_free/son-set[1].json",
-    "conversation_index": 7,
+    "conversation_index": 5,
     "judge_2": {
       "model": {
         "provider": "Ollama",
@@ -777,7 +583,7 @@
   },
   {
     "source_file": "OpenRouter_nvidia_nemotron-3-super-120b-a12b_free/son-set[1].json",
-    "conversation_index": 8,
+    "conversation_index": 6,
     "judge_2": {
       "model": {
         "provider": "Ollama",
@@ -874,7 +680,7 @@
   },
   {
     "source_file": "OpenRouter_nvidia_nemotron-3-super-120b-a12b_free/son-set[1].json",
-    "conversation_index": 9,
+    "conversation_index": 7,
     "judge_2": {
       "model": {
         "provider": "Ollama",
@@ -971,7 +777,7 @@
   },
   {
     "source_file": "OpenRouter_nvidia_nemotron-3-super-120b-a12b_free/son-set[1].json",
-    "conversation_index": 10,
+    "conversation_index": 8,
     "judge_2": {
       "model": {
         "provider": "Ollama",
@@ -1068,7 +874,7 @@
   },
   {
     "source_file": "OpenRouter_nvidia_nemotron-3-super-120b-a12b_free/son-set[1].json",
-    "conversation_index": 11,
+    "conversation_index": 9,
     "judge_2": {
       "model": {
         "provider": "Ollama",

@@ -7,103 +7,6 @@
         "provider": "Ollama",
         "model_name": "gpt-oss:120b"
       },
-      "total_tokens": 6886,
-      "evaluation": {
-        "correctness": false,
-        "socratic_guidance": 3,
-        "scaffolding": 3,
-        "state_adaptation": 3,
-        "diagnosis": 3,
-        "student_agency": 3,
-        "progression": 3,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": true,
-        "evidence": {
-          "correctness": "Turn12 incorrectly claims that using 15 twice would break the unique mode condition, which is false.",
-          "socratic_guidance": "All tutor turns (2,4,6,8,10,12,14) are questions prompting the student to reason rather than providing answers.",
-          "scaffolding": "Tutor only offers minimal nudges through questions, leaving the calculations and decisions to the student.",
-          "state_adaptation": "Each tutor response directly builds on the student’s last statement, e.g., addressing the sum (turn2), median position (turn4), mode frequency (turn6), etc.",
-          "diagnosis": "Tutor asks targeted probing questions (turn2,4,6,8,10,12) to uncover the student’s misconceptions and gaps.",
-          "student_agency": "The student determines the sum, selects the numbers, computes the final value, and explains the process, while the tutor only asks guiding questions.",
-          "progression": "By turn13 the student arrives at the correct maximum (56) and explains the reasoning in turn15.",
-          "coherence": "The dialogue proceeds logically with each turn responding to the previous one, without unrelated digressions.",
-          "premature_answer": "The tutor never states the final answer; the student discovers it independently.",
-          "hallucination": "Turn12 asserts a false constraint about using 15 twice creating another mode, which is incorrect."
-        }
-      }
-    },
-    "judge_1": {
-      "model": {
-        "provider": "Ollama",
-        "model_name": "beam:cloud"
-      },
-      "total_tokens": 14725,
-      "evaluation": {
-        "correctness": false,
-        "socratic_guidance": 3,
-        "scaffolding": 3,
-        "state_adaptation": 2,
-        "diagnosis": 2,
-        "student_agency": 3,
-        "progression": 1,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "Turns 13-16 accept 56 as the largest possible value, but the set 1, 12, 12, 15, 16, 17, 67 also satisfies the mean, median, and unique-mode constraints.",
-          "socratic_guidance": "Turns 2, 4, 6, 8, 10, 12, and 14 use substantive questions that elicit the student's reasoning rather than stating solution steps.",
-          "scaffolding": "Turns 2-12 provide small attention-directing nudges about the total, median position, mode frequency, and minimization while leaving calculations and choices to the student.",
-          "state_adaptation": "Turn 12 specifically targets the duplicate-15 mode issue, but turns 9 and 13 leave the non-minimal first value and the overcorrection to 16/17 unaddressed.",
-          "diagnosis": "Turn 12 identifies the duplicate-15 issue but does not investigate whether a smaller first value or one 15 in the fifth position could further minimize the set.",
-          "student_agency": "The student computes the sum, places values, tests using 15 twice, and explains the general strategy in turn 15.",
-          "progression": "The student finishes with the non-maximal value 56 and an optimization rule that does not allow 1 at the start, leaving the main optimization gap unresolved.",
-          "coherence": "Each tutor turn follows the student's prior response, with no contradictions, ignored questions, or off-topic shifts.",
-          "premature_answer": "The tutor never reveals a number as the answer before the student derives one.",
-          "hallucination": "The tutor does not introduce unsupported facts; it asks questions and echoes the student's derived, though incorrect, maximum."
-        }
-      }
-    },
-    "judge_3": {
-      "model": {
-        "provider": "Ollama",
-        "model_name": "minimax-m3.1-flash"
-      },
-      "total_tokens": 15594,
-      "evaluation": {
-        "correctness": false,
-        "socratic_guidance": 2,
-        "scaffolding": 3,
-        "state_adaptation": 2,
-        "diagnosis": 1,
-        "student_agency": 2,
-        "progression": 1,
-        "coherence": 1,
-        "premature_answer": false,
-        "hallucination": true,
-        "evidence": {
-          "correctness": "Turn 12 falsely treats 15 appearing twice as a second mode when 12 appears three times; thus the accepted answer 56 is wrong, since [12,12,12,15,15,16,58] and [1,12,12,15,16,17,67] satisfy the stated constraints.",
-          "socratic_guidance": "Most turns ask the student to calculate, explain, or test a choice, but turn 12 is a leading question whose false implication effectively supplies the mode conclusion.",
-          "scaffolding": "Across turns 2–10 the tutor offers only small prompts about the sum, ordering, mode frequency, and minimization, leaving construction and arithmetic to the student.",
-          "state_adaptation": "Most replies are tailored to the student's latest move, but turn 12 mistakes the student's valid 15,15 proposal for a violation and ignores the stronger two-12 alternative.",
-          "diagnosis": "The questions in turns 2–10 reveal the student's partial strategy, but the pivotal diagnosis in turn 12 is mathematically wrong because 15 occurring twice is not a competing mode when 12 occurs three times.",
-          "student_agency": "The student performs the arithmetic, ordering, and final synthesis, but the tutor's turn-12 false premise supplies the key mode conclusion that changes the student's otherwise valid 15,15 choice.",
-          "progression": "By turn 13 the student has a complete-looking candidate and by turn 15 a general summary, but the candidate is not maximal and the mode misconception remains uncorrected.",
-          "coherence": "Turn 12 conflicts with the earlier criterion that a mode must be the most frequent value, and the conversation closes without acknowledging or correcting that conflict.",
-          "premature_answer": "The tutor never states the numerical answer or writes the complete set, instead directing the student through successive constraints and a final explanation.",
-          "hallucination": "Turn 12's reasoning and leading question introduce the false claim that two 15s would create another mode even though 12 occurs three times."
-        }
-      }
-    }
-  },
-  {
-    "source_file": "Google_gemini-3-flash-preview/edw-set[4].json",
-    "conversation_index": 1,
-    "judge_2": {
-      "model": {
-        "provider": "Ollama",
-        "model_name": "gpt-oss:120b"
-      },
       "total_tokens": 4951,
       "evaluation": {
         "correctness": true,
@@ -195,7 +98,7 @@
   },
   {
     "source_file": "Google_gemini-3-flash-preview/edw-set[4].json",
-    "conversation_index": 2,
+    "conversation_index": 1,
     "judge_2": {
       "model": {
         "provider": "Ollama",
@@ -292,7 +195,7 @@
   },
   {
     "source_file": "Google_gemini-3-flash-preview/edw-set[4].json",
-    "conversation_index": 3,
+    "conversation_index": 2,
     "judge_2": {
       "model": {
         "provider": "Ollama",
@@ -389,7 +292,7 @@
   },
   {
     "source_file": "Google_gemini-3-flash-preview/edw-set[4].json",
-    "conversation_index": 4,
+    "conversation_index": 3,
     "judge_2": {
       "model": {
         "provider": "Ollama",
@@ -486,7 +389,7 @@
   },
   {
     "source_file": "Google_gemini-3-flash-preview/edw-set[4].json",
-    "conversation_index": 5,
+    "conversation_index": 4,
     "judge_2": {
       "model": {
         "provider": "Ollama",
@@ -583,7 +486,7 @@
   },
   {
     "source_file": "Google_gemini-3-flash-preview/edw-set[4].json",
-    "conversation_index": 6,
+    "conversation_index": 5,
     "judge_2": {
       "model": {
         "provider": "Ollama",
@@ -680,7 +583,7 @@
   },
   {
     "source_file": "Google_gemini-3-flash-preview/edw-set[4].json",
-    "conversation_index": 7,
+    "conversation_index": 6,
     "judge_2": {
       "model": {
         "provider": "Ollama",
@@ -777,7 +680,7 @@
   },
   {
     "source_file": "Google_gemini-3-flash-preview/edw-set[4].json",
-    "conversation_index": 8,
+    "conversation_index": 7,
     "judge_2": {
       "model": {
         "provider": "Ollama",
@@ -874,104 +777,7 @@
   },
   {
     "source_file": "Google_gemini-3-flash-preview/edw-set[4].json",
-    "conversation_index": 9,
-    "judge_2": {
-      "model": {
-        "provider": "Ollama",
-        "model_name": "gpt-oss:120b"
-      },
-      "total_tokens": 5864,
-      "evaluation": {
-        "correctness": true,
-        "socratic_guidance": 1,
-        "scaffolding": 1,
-        "state_adaptation": 3,
-        "diagnosis": 3,
-        "student_agency": 1,
-        "progression": 3,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "All tutor statements about basketball players being taller and about sampling bias are factually accurate.",
-          "socratic_guidance": "The tutor asks questions on turns 2, 6, 12 but provides statements on turns 4, 8, 10, 14, so about half the guidance is declarative.",
-          "scaffolding": "Turn 4 directly tells the student that the group is unrepresentative, giving the central insight rather than letting the student infer it.",
-          "state_adaptation": "Each tutor reply (turns 2, 4, 6, 8, 10, 12, 14) directly addresses the student’s preceding statement or misconception.",
-          "diagnosis": "The tutor asks targeted questions (turn 2, 6, 12) to uncover the student’s misunderstanding and correctly identifies bias each time.",
-          "student_agency": "The student only repeats or acknowledges; the key inference that the sample is biased is supplied by the tutor’s statements.",
-          "progression": "By turn 13 the student correctly defines sampling bias in their own words, showing full understanding.",
-          "coherence": "The conversation flows logically with each turn building on the previous one and no contradictions.",
-          "premature_answer": "The tutor never provides the final definition; it is elicited from the student.",
-          "hallucination": "No statements contain fabricated or false information."
-        }
-      }
-    },
-    "judge_1": {
-      "model": {
-        "provider": "Ollama",
-        "model_name": "beam:cloud"
-      },
-      "total_tokens": 7944,
-      "evaluation": {
-        "correctness": true,
-        "socratic_guidance": 1,
-        "scaffolding": 0,
-        "state_adaptation": 3,
-        "diagnosis": 2,
-        "student_agency": 1,
-        "progression": 2,
-        "coherence": 3,
-        "premature_answer": true,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "Turns 4, 8, and 10 provide accurate sampling-bias explanations, and no factual or conceptual error appears.",
-          "socratic_guidance": "Only turns 2, 6, and 12 are genuine questions, while turns 4, 8, 10, and 14 are direct statements supplying facts or conclusions.",
-          "scaffolding": "Turns 4, 8, and 10 state the central conclusion and governing principles directly instead of nudging the student to derive them.",
-          "state_adaptation": "Turns 4, 8, and 10 each target the student's latest specific misconception, and turn 6 shifts to a question when the student says they do not understand.",
-          "diagnosis": "The tutor accurately identifies the representativeness issue from turn 3 but states it in turn 4 rather than confirming by probing the student's reasoning; later misconceptions are corrected without such confirmation.",
-          "student_agency": "The central inferences about why representativeness fails are supplied by the tutor in turns 4, 8, and 10, while the student mainly restates and synthesizes them in turns 11 and 13.",
-          "progression": "By turns 11 and 13 the student articulates the correct concept, but only after repeated direct corrections in turns 4, 8, and 10.",
-          "coherence": "Each tutor reply follows directly from the student's preceding turn, with no contradictions or ignored questions.",
-          "premature_answer": "Turn 4 reveals the concluding point that the basketball-player sample does not represent the school before the student has had a chance to develop that reasoning.",
-          "hallucination": "All tutor claims about basketball players' typical height, equal selection chance, and representativeness are standard, supported sampling concepts."
-        }
-      }
-    },
-    "judge_3": {
-      "model": {
-        "provider": "Ollama",
-        "model_name": "minimax-m3.1-flash"
-      },
-      "total_tokens": 8747,
-      "evaluation": {
-        "correctness": true,
-        "socratic_guidance": 1,
-        "scaffolding": 1,
-        "state_adaptation": 3,
-        "diagnosis": 3,
-        "student_agency": 1,
-        "progression": 3,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "Turns 4, 8, 10, and 13 correctly distinguish an unrepresentative biased sample from merely increasing sample size and accurately define sampling bias.",
-          "socratic_guidance": "Turns 2, 6, and 12 ask genuine diagnostic or synthesis questions, but turns 4, 8, and 10 directly supply the key corrections, resulting in a roughly half-question, half-statement approach.",
-          "scaffolding": "Turn 4 gives the central conclusion that the group is unrepresentative, and turns 8–10 supply the reasoning about sample size and scope, leaving the student mainly to restate the idea.",
-          "state_adaptation": "Each response follows the student's exact misconception—representativeness at turn 3, sample size at turn 7, citywide scope at turn 9—and the synthesis request responds to the student's progress at turn 11.",
-          "diagnosis": "Turn 2 probes the representativeness assumption, turn 6 targets why fairness matters, and the student's answers reveal the size-versus-bias misconception before the tutor checks understanding in turn 12.",
-          "student_agency": "The tutor supplies the key insights in turns 4, 8, and 10, while the student mainly tests alternatives and paraphrases the resulting idea in turns 11 and 13.",
-          "progression": "The student moves from an incorrect representativeness claim to explaining in turn 11 that selection makes the results unfair and defining sampling bias in turn 13.",
-          "coherence": "Every tutor turn responds directly to the preceding student statement, and the concepts remain consistent from diagnosis through synthesis and closure.",
-          "premature_answer": "Although turn 4 states the correction, the student had already offered an answer in turn 1, received a diagnostic question in turn 2, and was later asked to articulate the concept in turns 12–13.",
-          "hallucination": "The tutor introduces no unsupported or fabricated information beyond the contextually relevant observation that basketball players tend to be taller than average."
-        }
-      }
-    }
-  },
-  {
-    "source_file": "Google_gemini-3-flash-preview/edw-set[4].json",
-    "conversation_index": 10,
+    "conversation_index": 8,
     "judge_2": {
       "model": {
         "provider": "Ollama",
@@ -1068,7 +874,7 @@
   },
   {
     "source_file": "Google_gemini-3-flash-preview/edw-set[4].json",
-    "conversation_index": 11,
+    "conversation_index": 9,
     "judge_2": {
       "model": {
         "provider": "Ollama",

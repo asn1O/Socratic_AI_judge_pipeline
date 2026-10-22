@@ -880,103 +880,6 @@
         "provider": "Ollama",
         "model_name": "gpt-oss:120b"
       },
-      "total_tokens": 6191,
-      "evaluation": {
-        "correctness": true,
-        "socratic_guidance": 3,
-        "scaffolding": 3,
-        "state_adaptation": 3,
-        "diagnosis": 3,
-        "student_agency": 3,
-        "progression": 3,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "All tutor explanations (turns 2,4,6,8,10) are mathematically accurate and no false information is introduced.",
-          "socratic_guidance": "Each tutor turn (2,4,6,8,10,12) poses a question prompting the student to work out the next step rather than providing the answer.",
-          "scaffolding": "Tutor only offers minimal nudges such as asking about 1001+1 (turn2) or the end bits (turn4) and leaves the full reasoning to the student.",
-          "state_adaptation": "Tutor’s replies directly address the student’s specific confusion at each point, e.g., clarifying the carry after turn3 (turn4) and building on the unsigned result after turn7 (turn8).",
-          "diagnosis": "Tutor identifies the student’s difficulty with the addition (turn2) and with relating signed/unsigned values (turn8) by asking targeted questions before proceeding.",
-          "student_agency": "The student performs all calculations and formulates the final rule, while the tutor only asks guiding questions.",
-          "progression": "The student moves from converting -86 to two’s complement, to finding its unsigned value, to articulating the modular relationship, achieving full understanding.",
-          "coherence": "The conversation follows a logical sequence with each turn responding to the previous one, without contradictions.",
-          "premature_answer": "The tutor never supplies the final answer; the student generates each result.",
-          "hallucination": "No fabricated or false statements are presented by the tutor."
-        }
-      }
-    },
-    "judge_1": {
-      "model": {
-        "provider": "Ollama",
-        "model_name": "beam:cloud"
-      },
-      "total_tokens": 8957,
-      "evaluation": {
-        "correctness": true,
-        "socratic_guidance": 2,
-        "scaffolding": 2,
-        "state_adaptation": 2,
-        "diagnosis": 2,
-        "student_agency": 2,
-        "progression": 3,
-        "coherence": 3,
-        "premature_answer": false,
-        "hallucination": false,
-        "evidence": {
-          "correctness": "The tutor's guidance in turns 2, 4, and 6 is mathematically sound, including the correct two's complement relation between -86 and unsigned 170 in an 8-bit system.",
-          "socratic_guidance": "Turns 2, 4, 6, 8, and 10 use questions, but turn 4 also states the carry result for ...001, so guidance is not fully question-driven.",
-          "scaffolding": "Turn 4 directly gives the carry outcome for the last three bits rather than only redirecting attention, though the student still combines the full 8-bit string.",
-          "state_adaptation": "The tutor addresses the carrying confusion in turns 4-5, but does not recognize the student's originally correct result of 10101010 until turn 6.",
-          "diagnosis": "Targeted addition questions reveal the carry difficulty, but the tutor initially treats the already-correct answer as an addition mistake and does not ask the student to explain their method.",
-          "student_agency": "The student performs the binary conversions and derives the unsigned and general N-bit relationships, while the tutor supplies the carry step in turn 4.",
-          "progression": "By turns 7-11 the student correctly computes 170 and explains the general relationship between negative two's complement values and unsigned interpretation.",
-          "coherence": "Each turn follows the prior one from two's complement calculation to unsigned interpretation and then the general principle, with no ignored questions.",
-          "premature_answer": "The tutor waits until turn 6 to affirm the two's complement result and does not provide the final unsigned or general-rule answer before the student reasons through it.",
-          "hallucination": "All tutor claims, including flipped bits, carry behavior, and the unsigned value 170, are consistent with standard binary arithmetic."
-        }
-      }
-    },
-    "judge_3": {
-      "model": {
-        "provider": "Ollama",
-        "model_name": "minimax-m3.1-flash"
-      },
-      "total_tokens": 14379,
-      "evaluation": {
-        "correctness": false,
-        "socratic_guidance": 2,
-        "scaffolding": 3,
-        "state_adaptation": 2,
-        "diagnosis": 1,
-        "student_agency": 3,
-        "progression": 3,
-        "coherence": 1,
-        "premature_answer": false,
-        "hallucination": true,
-        "evidence": {
-          "correctness": "Turns 2 and 4 incorrectly treat the final addition as erroneous even though 10101001 + 1 = 10101010 is correct, which the tutor acknowledges in turn 6.",
-          "socratic_guidance": "Turns 2, 6, 8, and 10 primarily use questions to elicit calculations and explanations, but turn 4 directly supplies the carry result ...010.",
-          "scaffolding": "Turn 2 gives a focused nudge, and after the student shows confusion turn 4 escalates only at the final suffix while leaving the student to complete and explain the 8-bit result.",
-          "state_adaptation": "Turns 4–10 respond specifically to the student's carry confusion and later unsigned-value reasoning, but turns 2–4 fail to recognize that the original final result was already correct.",
-          "diagnosis": "The tutor infers a nonexistent addition error in turn 2 rather than investigating the student's uncertainty, and turn 4 reinforces that unsupported diagnosis.",
-          "student_agency": "The student independently derives the unsigned value 170, the relationship 170 = -86 + 256, and the general N-bit rule in turns 7, 9, and 11.",
-          "progression": "By turns 9–11, the student correctly explains both the 8-bit relationship and the general two's-complement rule in their own words.",
-          "coherence": "Turns 2–4 treat the correct addition as an error, while turn 6 says it is spot on, creating a noticeable contradiction.",
-          "premature_answer": "The student had already proposed the final bit pattern 10101010 in turn 1, so the tutor did not reveal the final answer before the student's reasoning.",
-          "hallucination": "The turn-2 reasoning falsely asserts that the student made an addition error, and turn 4 treats that nonexistent error as real."
-        }
-      }
-    }
-  },
-  {
-    "source_file": "Google_gemini-3.5-flash-lite/asn-set[3].json",
-    "conversation_index": 10,
-    "judge_2": {
-      "model": {
-        "provider": "Ollama",
-        "model_name": "gpt-oss:120b"
-      },
       "total_tokens": 5325,
       "evaluation": {
         "correctness": true,
@@ -1068,7 +971,7 @@
   },
   {
     "source_file": "Google_gemini-3.5-flash-lite/asn-set[3].json",
-    "conversation_index": 11,
+    "conversation_index": 10,
     "judge_2": {
       "model": {
         "provider": "Ollama",
@@ -1165,7 +1068,7 @@
   },
   {
     "source_file": "Google_gemini-3.5-flash-lite/asn-set[3].json",
-    "conversation_index": 12,
+    "conversation_index": 11,
     "judge_2": {
       "model": {
         "provider": "Ollama",
@@ -1262,7 +1165,7 @@
   },
   {
     "source_file": "Google_gemini-3.5-flash-lite/asn-set[3].json",
-    "conversation_index": 13,
+    "conversation_index": 12,
     "judge_2": {
       "model": {
         "provider": "Ollama",
@@ -1359,7 +1262,7 @@
   },
   {
     "source_file": "Google_gemini-3.5-flash-lite/asn-set[3].json",
-    "conversation_index": 14,
+    "conversation_index": 13,
     "judge_2": {
       "model": {
         "provider": "Ollama",
