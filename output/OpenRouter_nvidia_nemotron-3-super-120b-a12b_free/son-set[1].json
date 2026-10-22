@@ -63,6 +63,37 @@
           "hallucination": "All tutor statements are consistent with the problem information and the student's derived answer."
         }
       }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 9189,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 2,
+        "scaffolding": 2,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "Turn 6 correctly identifies the Calvin-cycle requirement as 3 ATP per CO2, consistent with the student's resulting 24 μmol/min and explanation in turns 9–13.",
+          "socratic_guidance": "Turns 2, 4, 8, 10, and 12 use genuine questions to probe, redirect, justify, and synthesize, but turn 6 states the answer-relevant 3-ATP fact before asking the comparison.",
+          "scaffolding": "Turn 6 provides a substantial hint by stating the 3 ATP/CO2 requirement, while turn 8 offers a smaller redirect and the student performs the multiplication and explanation.",
+          "state_adaptation": "The tutor specifically addresses the guessed 1:1 ratio in turn 2, the equal-use belief in turn 4, continued confusion in turn 8, and the need for justification and synthesis in turns 10 and 12.",
+          "diagnosis": "Turns 2 and 4 elicit that the student's ratio assumptions were guesses, and turns 6–8 adjust the intervention to the student's failure to use the stated ATP requirement.",
+          "student_agency": "The student retrieves the 3-ATP ratio, computes 8×3=24, explains the proportional reasoning, self-corrects the NADPH ratio, and states the general rule in their own words in turns 9, 11, and 13.",
+          "progression": "By turns 9 and 11–13, the student reaches 24 μmol ATP/min, explains why multiplying by 3 is valid, and articulates the underlying rule.",
+          "coherence": "Each tutor turn responds directly to the preceding student response, progressing logically from diagnosis through hinting to explanation and closure without contradiction.",
+          "premature_answer": "The tutor never states the numerical result of 24 μmol/min; the student derives it in turn 9 after multiple opportunities to reason.",
+          "hallucination": "The tutor introduces no unsupported or factually false information, and its statement in turn 6 that each CO2 fixed consumes 3 ATP is correct."
+        }
+      }
     }
   },
   {
@@ -127,6 +158,37 @@
           "coherence": "Each tutor turn follows from the student's prior response, and there are no contradictions or ignored questions.",
           "premature_answer": "The tutor does not reveal the final two's complement value before the student works through it in turn 5.",
           "hallucination": "No fabricated or unsupported factual claims appear in the tutor's responses."
+        }
+      }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 17567,
+      "evaluation": {
+        "correctness": false,
+        "socratic_guidance": 2,
+        "scaffolding": 3,
+        "state_adaptation": 2,
+        "diagnosis": 2,
+        "student_agency": 2,
+        "progression": 2,
+        "coherence": 1,
+        "premature_answer": false,
+        "hallucination": true,
+        "evidence": {
+          "correctness": "Turn 8's verification is mathematically flawed: adding the one's complement 11010010 to 00101101 does not verify the two's complement; the required addend is 11010011.",
+          "socratic_guidance": "Turns 2, 6, 8, 10, and 12 pose genuine questions, but Turns 4 and 8 also state the 8-bit setup and verification step rather than leaving every inference to the student.",
+          "scaffolding": "After the student names flip-and-add, Turn 4 gives only a narrow nudge about using an 8-bit form, leaving the conversion, generalization, and explanation to the student.",
+          "state_adaptation": "Turn 4 directly targets the stated 8-bit uncertainty, but after Turn 9's incorrect arithmetic, Turn 10 moves to generalization without diagnosing or correcting the error.",
+          "diagnosis": "Turns 2–4 elicit the student's uncertainty and target bit width, but the tutor never investigates the cause of the Turn 9 arithmetic error before intervening.",
+          "student_agency": "The student produces the binary representation, complement, general rule, and conceptual explanation in Turns 5, 11, and 13, although the tutor supplies the 8-bit setup and directs the verification.",
+          "progression": "The student reaches 11010011 and states the general rule, but the sole numerical check is wrong and the final explanation only restates definitions, so conceptual understanding is not securely demonstrated.",
+          "coherence": "Turn 6 needlessly repeats the already answered flip question, and Turns 8–10 move from a false verification to generalization without reconciling the arithmetic.",
+          "premature_answer": "The tutor never states 11010011 or supplies the final procedure; the student derives both in Turns 5 and 11.",
+          "hallucination": "Turn 10's reasoning asserts that the student 'verified correctness' despite the contradictory arithmetic in Turn 9, making an unsupported and factually false claim."
         }
       }
     }
@@ -195,6 +257,37 @@
           "hallucination": "The tutor introduces no fabricated or factually false information; all thermal explanations are physically consistent."
         }
       }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 6676,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 2,
+        "scaffolding": 2,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 2,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "Turns 4–13 correctly explain that latent heat disrupts intermolecular attractions during melting while added heat increases kinetic energy once melting is complete.",
+          "socratic_guidance": "Turns 2, 4, 8, 10, and 12 pose genuine questions, but turn 6 supplies the key fact that temperature reflects average kinetic energy and turn 8 names latent heat, making the guidance somewhat leading.",
+          "scaffolding": "Turn 6 gives the conceptual rule connecting kinetic energy to temperature rather than the smallest possible nudge, although the student still performs the inference and explanation.",
+          "state_adaptation": "Turn 4 directly addresses the student's mistaken expectation that added heat must raise temperature, and turns 6, 8, 10, and 12 progressively build on the student's bond-breaking explanation.",
+          "diagnosis": "Turn 2 elicits the student's initial idea, turn 4 targets the specific misconception that added heat necessarily means faster molecules, and turn 6 confirms and extends the bond-breaking mechanism the student supplies in turn 5.",
+          "student_agency": "The student independently proposes bond breaking in turn 5, infers constant temperature in turn 7, and applies the idea in turn 11, but turn 6 explicitly supplies the average-kinetic-energy link that drives the conclusion.",
+          "progression": "The student moves from an incorrect warming prediction to explaining the constant-temperature phase change, extending it to liquid water, and stating the general latent-heat principle in turn 13.",
+          "coherence": "Each tutor turn follows directly from the student's preceding response, and the dialogue progresses logically from diagnosis through explanation, application, and synthesis.",
+          "premature_answer": "The tutor does not explicitly state that the temperature stays constant before the student reaches that conclusion in turn 7; turn 6 instead supplies a concept and asks the student to infer the result.",
+          "hallucination": "The references to latent heat, intermolecular forces, and increased kinetic energy after melting are standard physical concepts and are not fabricated."
+        }
+      }
     }
   },
   {
@@ -259,6 +352,37 @@
           "coherence": "Each tutor question follows directly from the student's prior response without contradictions or ignored questions.",
           "premature_answer": "The tutor never reveals a final answer or substantially complete solution; it only prompts further reasoning.",
           "hallucination": "No unsupported or fabricated facts are presented anywhere in the conversation."
+        }
+      }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 8001,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "Turn 5 correctly establishes five deaths without flipping and four with flipping, and the tutor's subsequent discussion of outcomes, intention, and foresight is conceptually sound.",
+          "socratic_guidance": "Turns 2, 4, 6, 8, and 10 pose genuine questions, including Turn 8's request to justify why intending harm matters, rather than supplying the answer.",
+          "scaffolding": "The tutor gives only minimal redirects, such as asking what totals the student gets in Turn 4, while leaving the calculations, ethical reasoning, and synthesis to the student.",
+          "state_adaptation": "Each response follows the student's specific progress, addressing uncertainty about counts in Turns 3–4, the intention distinction in Turns 7–8, and the need for synthesis in Turns 9–10.",
+          "diagnosis": "The tutor elicits the student's reasoning with targeted questions about totals, intention, and justification, and the student's answers in Turns 5, 7, and 9 clarify their understanding.",
+          "student_agency": "The student independently calculates the totals in Turn 5, articulates the mere-means concern in Turn 9, and formulates a decision principle in Turn 11, while the tutor only prompts.",
+          "progression": "By Turn 11 the student has moved from uncertainty and an initial intuition to a stated principle combining total harms with the moral relevance of intention and instrumentalization.",
+          "coherence": "The dialogue proceeds logically from outcome counts to intention, then to moral justification and synthesis, with the closing in Turn 12 directly following the student's Turn 11 response.",
+          "premature_answer": "The tutor never states a final verdict or complete solution and instead repeatedly asks the student to derive the counts, rationale, and governing principle.",
+          "hallucination": "No fabricated or factually false information is introduced; the tutor's prompts concern only details and distinctions supplied in the conversation."
         }
       }
     }
@@ -327,6 +451,37 @@
           "hallucination": "No fabricated or unsupported facts appear; all conversion constants provided are correct."
         }
       }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 6167,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's prompts and cited conversion facts are correct, including 3600 seconds per hour and 5280 feet per mile, and the student correctly computes 5280 × 0.3048 = 1609.344 meters per mile.",
+          "socratic_guidance": "Turns 2, 4, 6, 8, 10, and 12 consistently use questions to prompt the student to explain, verify, combine, and synthesize the conversion reasoning rather than supplying the solution.",
+          "scaffolding": "The tutor gives only targeted nudges, such as redirecting attention to the seconds-per-hour fact in turn 4 and the already-recalled feet-and-meters facts in turn 8, leaving all calculations to the student.",
+          "state_adaptation": "Each response directly addresses the student's latest misconception or step, moving from hours-to-seconds in turn 4 to meters-per-mile in turns 6–8 and then to combining the conversions in turn 10.",
+          "diagnosis": "The tutor uses targeted questions to uncover and confirm the student's unit misconceptions, and the student's corrected statements of 3600 seconds per hour and 1609.344 meters per mile confirm the diagnoses.",
+          "student_agency": "The student independently corrects both conversion errors, performs both multiplications, formulates the meters-per-second procedure, and explains the overall process in turn 13.",
+          "progression": "By turn 13 the student has independently assembled the correct conversion procedure and articulated its rationale in their own words, with only light tutor prompting.",
+          "coherence": "Each tutor turn follows the preceding student response and advances the same conversion process without contradiction, repetition, or an ignored question.",
+          "premature_answer": "The tutor never reveals the final distance or supplies a complete solution; it guides the student toward deriving the conversion steps.",
+          "hallucination": "No fabricated or factually false information is introduced, and the conversion factors referenced by the tutor are accurate."
+        }
+      }
     }
   },
   {
@@ -391,6 +546,37 @@
           "coherence": "The conversation follows logically from the initial attempt through diagnosis, correction, and final explanation without contradictions.",
           "premature_answer": "The tutor never reveals the final answer or a complete solution before the student works through it.",
           "hallucination": "The tutor introduces no fabricated or unsupported information."
+        }
+      }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 16482,
+      "evaluation": {
+        "correctness": false,
+        "socratic_guidance": 2,
+        "scaffolding": 2,
+        "state_adaptation": 2,
+        "diagnosis": 2,
+        "student_agency": 2,
+        "progression": 2,
+        "coherence": 1,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "Although turns 4 and 12 correctly describe compounding, turn 8 fails to correct the comparison while Option A remains $9,280; annual compounding gives 8000(1.04)^4 = $9,358.87, slightly above Option B's $9,358.80.",
+          "socratic_guidance": "Turns 2, 6, 8, and 10 use genuine questions, but turn 4 states the compound-interest rule outright and turn 6 uses a leading question, so the guidance is not entirely elicitive.",
+          "scaffolding": "Turn 4 supplies the central compound-interest fact and turn 6 identifies the second error, while the student remains responsible for the recomputation and explanation.",
+          "state_adaptation": "The tutor directly responds to the student's stated simple-interest rationale and second-block error in turns 2-6, but never addresses the continued simple-interest treatment of Option A in turns 5 and 7.",
+          "diagnosis": "Turn 2 elicits the misconception and turn 6 pinpoints its persistence in Option B, but the parallel misconception in Option A is neither investigated nor confirmed.",
+          "student_agency": "The student self-corrects, calculates Option B, and explains the principle in turns 5-11, but the key compound-interest rule that enables the correction is supplied by the tutor in turn 4.",
+          "progression": "The student correctly computes Option B and articulates how compounding works by turns 7 and 11, leaving only the incorrect Option A calculation between the work and a correct comparison.",
+          "coherence": "Turns 2-4 reject simple-interest use and establish compounding, but turn 8 treats the result as correct while the dialogue continues to use the simple-interest value for Option A, creating an unresolved contradiction.",
+          "premature_answer": "The tutor does not state the final option or perform the final calculation; the student produces the numerical result and explanation in turns 7 and 11.",
+          "hallucination": "The tutor introduces no fabricated premise; its compound-interest explanation is standard and its stated Option B amount is correct, with the principal failure being the uncorrected Option A comparison."
         }
       }
     }
@@ -459,6 +645,37 @@
           "hallucination": "No fabricated or unsupported factual claim is introduced beyond the grammatical concepts used in the dialogue."
         }
       }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 12253,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 2,
+        "scaffolding": 2,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 2,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "Turns 4, 6, and 8 give substantively accurate functional distinctions, and the complete classification in turn 9 is consistent with them.",
+          "socratic_guidance": "Turns 2, 4, 6, 8, and 10 ask the student to explain or apply distinctions, but turns 4 and 6 also supply relevant rules, so the guidance is not exclusively question-led.",
+          "scaffolding": "Turns 4 and 6 provide targeted definitions about articles, -ing forms, adverbs, and pronouns while leaving classification to the student, but this help exceeds the smallest possible redirect.",
+          "state_adaptation": "The tutor shifts from Running, quickly, and the in turns 2–4 to proudly and it in turns 6–8, then requests synthesis after the fully correct turn 9.",
+          "diagnosis": "Turn 2 elicits the student's reasoning, and later probes target the exact persisting misconceptions before the student's explanations confirm the needed distinctions.",
+          "student_agency": "The student revises the labels and ultimately supplies every classification plus a general decision rule in turns 9 and 11, although the tutor supplied key category definitions in turns 4 and 6.",
+          "progression": "The student moves from systematic misclassifications to a correct full labeling in turn 9 and articulates function-based criteria in turn 11.",
+          "coherence": "Each turn responds to the preceding student errors or success, with no contradiction, repetition, or ignored question.",
+          "premature_answer": "The tutor never states the complete labeled solution; it provides concepts and waits for the student to produce the classifications.",
+          "hallucination": "The tutor's statements about articles, participles, adverbs, pronouns, and other function words are standard grammatical information rather than fabricated content."
+        }
+      }
     }
   },
   {
@@ -523,6 +740,37 @@
           "coherence": "Every turn follows logically from the preceding student response without contradiction or ignored questions.",
           "premature_answer": "The tutor asks the student to compute each result rather than revealing the final discretionary amount early.",
           "hallucination": "All factual claims about Alex's budget values and calculations are consistent with the student's provided numbers."
+        }
+      }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 13151,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 2,
+        "scaffolding": 2,
+        "state_adaptation": 3,
+        "diagnosis": 2,
+        "student_agency": 2,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "Turns 4–13 correctly calculate savings as $640, fixed expenses as $1,250, and discretionary spending as $1,310 from $3,200.",
+          "socratic_guidance": "Most turns ask the student to calculate or explain, but turns 4, 8, and 10 also state the operation or rule, so the guidance is not exclusively question-led.",
+          "scaffolding": "Turns 4, 8, and 10 explicitly set up the percentage, addition, and subtraction operations, providing more than minimal redirects even though the student performs the arithmetic.",
+          "state_adaptation": "Turn 4 responds directly to the order confusion, turn 8 addresses the addition difficulty, and turns 6, 10, and 12 advance only after the student's successful steps.",
+          "diagnosis": "Turn 2 probes the student's initial approach, but the tutor does not ask a follow-up that confirms the underlying cause of the uncertainty or distinguishes a misconception from a procedural slip.",
+          "student_agency": "The student calculates $640, $1,250, and $1,310 and explains the full procedure in turn 13, but the tutor supplies the key final subtraction relationship in turn 10.",
+          "progression": "The student progresses from uncertainty about savings and expenses to the correct result and an independent articulation of the budgeting rule in turn 13.",
+          "coherence": "Each tutor prompt follows the student's preceding reasoning and advances the same calculation sequence without contradiction or repetition.",
+          "premature_answer": "The final $1,310 first appears in the student's turn 11 after the staged calculations, and the tutor never reveals it.",
+          "hallucination": "No factually false or fabricated claim appears; the budget figures, percentages, and totals used by the tutor are internally consistent."
         }
       }
     }
@@ -591,6 +839,37 @@
           "hallucination": "No unsupported, fabricated, or factually false information is presented in the tutor’s responses."
         }
       }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 15236,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 2,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 2,
+        "coherence": 1,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor consistently treats left turns as 90 degrees counterclockwise and right turns as 90 degrees clockwise, with no substantive mathematical error.",
+          "socratic_guidance": "Every substantive tutoring turn asks the student to explain, apply, test, or generalize the turn rule, and the tutor never supplies the solution.",
+          "scaffolding": "Turn 4 offers only a focused north-facing probe, and turns 6–12 leave the student to diagnose, explain, and generalize the rule.",
+          "state_adaptation": "Turns 4–12 respond directly to the student's recurring turn misconception, but turn 14 closes without addressing the coordinate component raised in turns 2–3.",
+          "diagnosis": "Turn 6 probes the basis of the explicit 'left always points west' misconception, and turns 10–12 elicit and confirm the corrected generalization in the student's own words.",
+          "student_agency": "The student self-corrects in turn 7 and independently articulates the complete turn rule in turn 13 while the tutor supplies no key reasoning step.",
+          "progression": "The student resolves the recurring heading misconception and explains the counterclockwise and clockwise rule in turn 13, but never recomputes the path or provides the requested coordinates.",
+          "coherence": "Although the prompts are internally related, the student's original request for the final coordinates is never answered, and turn 14 instead proposes another problem.",
+          "premature_answer": "The tutor never reveals the endpoint or a substantially complete solution.",
+          "hallucination": "No fabricated, unsupported, or factually false information is introduced by the tutor."
+        }
+      }
     }
   },
   {
@@ -655,6 +934,37 @@
           "coherence": "All turns follow logically and no contradiction or ignored question occurs.",
           "premature_answer": "The tutor never gives the final time or distance before the student computes them.",
           "hallucination": "No unsupported or fabricated information appears in the tutor's responses."
+        }
+      }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 5408,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "Turn 6 correctly checks that the quadratic's discriminant is 100 + 882 = 982, and the time and horizontal-distance calculations in Turns 7 and 9 are mathematically correct.",
+          "socratic_guidance": "Every substantive tutoring turn (2, 4, 6, 8, 10, and 12) poses a question that prompts the student to reason, check, or explain rather than supplying the next step.",
+          "scaffolding": "The tutor gives only targeted nudges, such as prompting for the starting-height term in Turn 4 and the discriminant check in Turn 6, while leaving the central calculations and solution to the student.",
+          "state_adaptation": "The tutor responds specifically to the student's omitted height term in Turn 4, arithmetic slip in Turn 6, completed vertical solution in Turn 8, and need for verification and synthesis in Turns 10 and 12.",
+          "diagnosis": "Turns 2, 4, and 6 use targeted questions to uncover the student's method, missing height term, and discriminant error, and the student's subsequent responses confirm those diagnoses.",
+          "student_agency": "The student independently sets up the vertical equation, corrects the discriminant, computes the horizontal velocity and distance, and summarizes the method in Turn 13.",
+          "progression": "The student reaches the correct time of about 4.2 s and distance of about 72.7 m and then explains the component-based method in Turn 13.",
+          "coherence": "Each question follows logically from the student's preceding work, progressing from diagnosis through correction, horizontal motion, verification, and synthesis.",
+          "premature_answer": "The tutor never states the final time or distance and instead lets the student derive both values through successive questions.",
+          "hallucination": "The tutor introduces no fabricated information, and the explicit mathematical cue in Turn 6 that 100 + 882 forms the discriminant is correct."
         }
       }
     }
@@ -723,6 +1033,37 @@
           "hallucination": "The tutor introduces no fabricated or unsupported factual information."
         }
       }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 5667,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "Turns 6–9 correctly establish that \"list\" is the subject and \"is\" is the agreeing verb, and turn 10 correctly treats \"box\" as the singular subject in the analogous example.",
+          "socratic_guidance": "Every instructional turn asks the student to identify, apply, or explain the rule, with turn 12 specifically asking the student to justify the answer.",
+          "scaffolding": "The tutor provides only targeted prompts about the subject, the prepositional phrase, and the matching verb, leaving the student to supply the reasoning and answer.",
+          "state_adaptation": "The tutor responds directly to each misconception, uses a new example in turn 10 when the error recurs, and changes to an explanation prompt in turn 12.",
+          "diagnosis": "Turns 4–6 probe the student's belief that the noun inside the prepositional phrase controls the verb, while turns 10–13 retest and confirm the corrected understanding.",
+          "student_agency": "The student ultimately identifies the main subject, selects the agreeing verb, and articulates the governing rule independently in turn 13.",
+          "progression": "The student moves from believing that \"items\" controls the verb to identifying \"list,\" then explaining in turn 13 that agreement follows the main subject rather than a following prepositional phrase.",
+          "coherence": "Each prompt follows the student's preceding response, and the transfer example and final explanation form a logically connected sequence.",
+          "premature_answer": "The tutor never states the verb choice or complete rule before the student has reasoned through them.",
+          "hallucination": "The tutor introduces no fabricated facts, and the grammatical distinctions and example judgments are correct."
+        }
+      }
     }
   },
   {
@@ -787,6 +1128,37 @@
           "coherence": "Every tutor response follows from the student's previous turn without contradiction or ignored questions.",
           "premature_answer": "The tutor never reveals the final 36.0 g yield before the student derives it, although it discloses stoichiometric ratios earlier.",
           "hallucination": "All tutor content is consistent with standard chemistry and the values present in the conversation, with no fabricated facts."
+        }
+      }
+    },
+    "judge_3": {
+      "model": {
+        "provider": "Ollama",
+        "model_name": "minimax-m3.1-flash"
+      },
+      "total_tokens": 7978,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 2,
+        "scaffolding": 2,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 2,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor correctly identifies the required 2:1 H2-to-O2 ratio in Turn 6, contrasts it with the available 2:1 ratio in Turn 8, and introduces no chemical or mathematical error.",
+          "socratic_guidance": "Turns 2–12 consistently ask the student to explain comparisons and reasoning, but Turns 2, 6, and 8 state next steps or ratios before asking the student to draw the conclusion.",
+          "scaffolding": "The tutor provides targeted but substantial support with the coefficient and mole ratios in Turns 6 and 8, while leaving the limiting-reactant conclusion and yield calculation for the student in Turn 11.",
+          "state_adaptation": "Each prompt directly addresses the student's current uncertainty or misconception, including molar masses in Turn 4, mass-based comparison in Turn 8, and coefficient-blind mole comparison in Turn 10.",
+          "diagnosis": "Turns 8 and 10 accurately distinguish the student's mass-only and mole-only misconceptions through targeted ratio questions, while Turn 12 requests an own-words explanation that confirms understanding.",
+          "student_agency": "The student calculates the moles in Turn 5, revises the limiting-reactant conclusion after Turn 10, computes 36.0 g in Turn 11, and independently summarizes the method in Turn 13, although the tutor supplied key ratios.",
+          "progression": "The student progresses from uncertainty and two incorrect limiting-reactant claims to the correct 36.0 g yield in Turn 11 and a coherent explanation of the general procedure in Turn 13.",
+          "coherence": "The dialogue consistently proceeds from molar masses to mole comparison, limiting-reactant identification, yield calculation, and synthesis, with no contradictions or ignored questions.",
+          "premature_answer": "The tutor supplies ratios and prompts but does not state the limiting-reactant conclusion or the 36.0 g water result before the student derives them in Turn 11.",
+          "hallucination": "No tutor turn introduces fabricated data or a false chemical claim; the stated molar-mass and mole-ratio relationships are consistent with the conversation."
         }
       }
     }
