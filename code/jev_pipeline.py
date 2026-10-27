@@ -221,8 +221,14 @@ def _evaluate_source_folder(
     provider: str = DEFAULT_PROVIDER,
     wait_seconds: float = 0.0,
     state: Optional[Dict[str, Dict[str, Any]]] = None,
+    include_state: bool = False,
+    include_reasoning: bool = False,
+    include_state_reasoning: bool = False,
 ) -> Dict[str, Any]:
     """Evaluate up to max_conversations from one source model folder using the direct JEV endpoint."""
+    include_state = include_state or include_state_reasoning
+    include_reasoning = include_reasoning or include_state_reasoning
+
     source_root = data_dir / source_model_dir
     if not source_root.exists():
         raise FileNotFoundError(f"Input model folder not found: {source_root}")
@@ -270,7 +276,11 @@ def _evaluate_source_folder(
                 continue
 
             # Format state payload for JEV endpoint
-            eval_state = format_conversation_state(payload)
+            eval_state = format_conversation_state(
+                payload,
+                include_state=include_state,
+                include_reasoning=include_reasoning,
+            )
 
             attempt = 0
             call_succeeded = False
@@ -408,6 +418,9 @@ def run_pipeline(
     jev_url: Optional[str] = None,
     provider: str = DEFAULT_PROVIDER,
     wait_seconds: float = 0.0,
+    include_state: bool = False,
+    include_reasoning: bool = False,
+    include_state_reasoning: bool = False,
 ) -> int:
     """Evaluate up to max_conversations from a single input model folder using the JEV endpoint."""
     load_dotenv()
@@ -443,6 +456,9 @@ def run_pipeline(
         provider=provider,
         wait_seconds=wait_seconds,
         state=model_state,
+        include_state=include_state,
+        include_reasoning=include_reasoning,
+        include_state_reasoning=include_state_reasoning,
     )
 
     summary = _format_run_summary(stats, time.monotonic() - started_at)
@@ -495,6 +511,26 @@ def _parse_args() -> argparse.Namespace:
         default=0.0,
         help="Optional delay in seconds between conversation evaluations (default: 0.0).",
     )
+    parser.add_argument(
+        "--include-state",
+        action="store_true",
+        default=False,
+        help="Include tutor state in conversation turns sent to JEV.",
+    )
+    parser.add_argument(
+        "--include-reasoning",
+        action="store_true",
+        default=False,
+        help="Include tutor reasoning in conversation turns sent to JEV.",
+    )
+    parser.add_argument(
+        "--include-state-reasoning",
+        "--include-state-and-reasoning",
+        dest="include_state_reasoning",
+        action="store_true",
+        default=False,
+        help="Include both tutor state and reasoning in conversation turns sent to JEV.",
+    )
     return parser.parse_args()
 
 
@@ -508,6 +544,9 @@ def main() -> None:
         jev_url=args.jev_url,
         provider=args.provider,
         wait_seconds=args.wait_seconds,
+        include_state=args.include_state,
+        include_reasoning=args.include_reasoning,
+        include_state_reasoning=args.include_state_reasoning,
     )
     print(f"Evaluated {count} conversation(s).")
 

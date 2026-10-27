@@ -1,4 +1,5 @@
 import json
+import sys
 import tempfile
 from pathlib import Path
 from unittest.mock import MagicMock, patch
@@ -7,7 +8,7 @@ import pytest
 import requests
 
 from code.jev_model import FIXED_QUESTIONS, call_jev, format_conversation_state
-from code.jev_pipeline import _state_path_for_source_dir, run_pipeline
+from code.jev_pipeline import _parse_args, _state_path_for_source_dir, run_pipeline
 
 
 def test_format_conversation_state():
@@ -227,3 +228,133 @@ def test_run_pipeline_end_to_end(monkeypatch):
         with open(out_file, encoding="utf-8") as f:
             saved_records2 = json.load(f)
         assert len(saved_records2) == 2
+
+
+def test_format_conversation_state_with_state_and_reasoning():
+    raw_record = {
+        "domain": "math",
+        "topic": "fractions",
+        "problem": "Simplify 2/4",
+        "conversation": [
+            {
+                "turn": 1,
+                "speaker": "student",
+                "text": "Is it 1/2?",
+            },
+            {
+                "turn": 2,
+                "speaker": "tutor",
+                "reasoning": "Student got the correct answer directly.",
+                "state": "Synthesis",
+                "response": "Yes! How did you divide the numerator and denominator?",
+            },
+        ],
+    }
+
+    # 1. include_state only
+    state_only = format_conversation_state(raw_record, include_state=True)
+    assert "state" in state_only["conversation"][1]
+    assert state_only["conversation"][1]["state"] == "Synthesis"
+    assert "reasoning" not in state_only["conversation"][1]
+
+    # 2. include_reasoning only
+    reasoning_only = format_conversation_state(raw_record, include_reasoning=True)
+    assert "reasoning" in reasoning_only["conversation"][1]
+    assert reasoning_only["conversation"][1]["reasoning"] == "Student got the correct answer directly."
+    assert "state" not in reasoning_only["conversation"][1]
+
+    # 3. include_state_reasoning convenience flag
+    both = format_conversation_state(raw_record, include_state_reasoning=True)
+    assert both["conversation"][1]["state"] == "Synthesis"
+    assert both["conversation"][1]["reasoning"] == "Student got the correct answer directly."
+
+    # 4. Student turns do not have state or reasoning injected if absent
+    assert "state" not in both["conversation"][0]
+    assert "reasoning" not in both["conversation"][0]
+
+
+def test_parse_args_state_and_reasoning(monkeypatch):
+    test_args = [
+        "prog",
+        "--source-model-dir", "ModelA",
+        "--max-conversations", "5",
+        "--include-state",
+        "--include-reasoning",
+    ]
+    monkeypatch.setattr(sys, "argv", test_args)
+    args = _parse_args()
+    assert args.include_state is True
+    assert args.include_reasoning is True
+    assert args.include_state_reasoning is False
+
+    test_args_combined = [
+        "prog",
+        "--source-model-dir", "ModelA",
+        "--max-conversations", "5",
+        "--include-state-reasoning",
+    ]
+    monkeypatch.setattr(sys, "argv", test_args_combined)
+    args_combined = _parse_args()
+    assert args_combined.include_state_reasoning is True
+
+    test_args_alias = [
+        "prog",
+        "--source-model-dir", "ModelA",
+        "--max-conversations", "5",
+        "--include-state-and-reasoning",
+    ]
+    monkeypatch.setattr(sys, "argv", test_args_alias)
+    args_alias = _parse_args()
+    assert args_alias.include_state_reasoning is True
+
+
+def test_run_pipeline_passes_state_and_reasoning_to_jev(monkeypatch):
+    sample_records = [
+        {
+            "domain": "math",
+            "topic": "addition",
+            "problem": "1 + 1",
+            "conversation": [
+                {"turn": 1, "speaker": "student", "text": "2"},
+                {
+                    "turn": 2,
+                    "speaker": "tutor",
+                    "reasoning": "Confirmed student calculation",
+                    "state": "Closing",
+                    "response": "Correct!",
+                },
+            ],
+        }
+    ]
+
+    captured_states = []
+
+    def fake_call_jev(state, questions=None, url=None, timeout=None):
+        captured_states.append(state)
+        return True, {"model": "imajev-test", "answers": {}}, 50, None
+
+    monkeypatch.setattr("code.jev_pipeline.call_jev", fake_call_jev)
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        tmp_path = Path(tmp_dir)
+        data_dir = tmp_path / "data"
+        output_dir = tmp_path / "jev_output"
+        model_dir = data_dir / "TestModel"
+        model_dir.mkdir(parents=True, exist_ok=True)
+        data_file = model_dir / "sample.json"
+        with open(data_file, "w", encoding="utf-8") as f:
+            json.dump(sample_records, f)
+
+        run_pipeline(
+            max_conversations=1,
+            source_model_dir="TestModel",
+            data_dir=str(data_dir),
+            output_dir=str(output_dir),
+            include_state_reasoning=True,
+        )
+
+        assert len(captured_states) == 1
+        tutor_turn = captured_states[0]["conversation"][1]
+        assert tutor_turn["state"] == "Closing"
+        assert tutor_turn["reasoning"] == "Confirmed student calculation"
+

@@ -110,8 +110,16 @@ FIXED_QUESTIONS: Dict[str, Any] = {
 }
 
 
-def format_conversation_state(record: Dict[str, Any]) -> Dict[str, Any]:
+def format_conversation_state(
+    record: Dict[str, Any],
+    include_state: bool = False,
+    include_reasoning: bool = False,
+    include_state_reasoning: bool = False,
+) -> Dict[str, Any]:
     """Format an input dataset conversation record into the state dictionary expected by JEV."""
+    include_state = include_state or include_state_reasoning
+    include_reasoning = include_reasoning or include_state_reasoning
+
     domain = str(record.get("domain", "") or "")
     topic = str(record.get("topic", "") or "")
     problem = str(record.get("problem", "") or "")
@@ -127,13 +135,16 @@ def format_conversation_state(record: Dict[str, Any]) -> Dict[str, Any]:
         speaker = str(turn.get("speaker", "") or "")
         # Student turns usually contain 'text'; tutor turns in generated datasets have 'response'
         text = str(turn.get("text") or turn.get("response") or turn.get("content") or "")
-        formatted_turns.append(
-            {
-                "turn": turn_num,
-                "speaker": speaker,
-                "text": text,
-            }
-        )
+        formatted_turn: Dict[str, Any] = {
+            "turn": turn_num,
+            "speaker": speaker,
+            "text": text,
+        }
+        if include_state and "state" in turn and turn.get("state") is not None:
+            formatted_turn["state"] = turn["state"]
+        if include_reasoning and "reasoning" in turn and turn.get("reasoning") is not None:
+            formatted_turn["reasoning"] = turn["reasoning"]
+        formatted_turns.append(formatted_turn)
 
     return {
         "domain": domain,
