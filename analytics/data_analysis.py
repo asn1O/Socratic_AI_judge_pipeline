@@ -106,8 +106,10 @@ def calculate_cohen_kappa(x: list[bool], y: list[bool]) -> float:
 
 def process_model_folder(
     model_dir: Path,
+    jev_dir: Optional[Path] = None,
+    jev2_dir: Optional[Path] = None,
 ) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
-    """Process a single model folder and extract evaluation rows across all 3 judges."""
+    """Process a single model folder and extract evaluation rows across all judges, JEV-1, and JEV-2."""
     model_name = model_dir.name
     set_files = sorted(
         [f for f in model_dir.iterdir() if f.is_file() and is_set_file(f.name)],
@@ -126,6 +128,30 @@ def process_model_folder(
         except Exception as exc:
             logger.error("Error reading %s: %s", file_path, exc)
             continue
+
+        jev1_data: Optional[List[Any]] = None
+        if jev_dir:
+            jev1_file = jev_dir / model_name / file_path.name
+            if jev1_file.is_file():
+                try:
+                    with open(jev1_file, "r", encoding="utf-8") as fp:
+                        loaded_j1 = json.load(fp)
+                    if isinstance(loaded_j1, list):
+                        jev1_data = loaded_j1
+                except Exception as exc:
+                    logger.warning("Error reading JEV1 file %s: %s", jev1_file, exc)
+
+        jev2_data: Optional[List[Any]] = None
+        if jev2_dir:
+            jev2_file = jev2_dir / model_name / file_path.name
+            if jev2_file.is_file():
+                try:
+                    with open(jev2_file, "r", encoding="utf-8") as fp:
+                        loaded_j2 = json.load(fp)
+                    if isinstance(loaded_j2, list):
+                        jev2_data = loaded_j2
+                except Exception as exc:
+                    logger.warning("Error reading JEV2 file %s: %s", jev2_file, exc)
 
         for idx, item in enumerate(data):
             if not isinstance(item, dict):
@@ -146,6 +172,42 @@ def process_model_folder(
             j2_tokens = j2.get("total_tokens", 0) or 0
             j3_tokens = j3.get("total_tokens", 0) or 0
 
+            # Match JEV1 conversation item
+            jev1_item = None
+            if jev1_data:
+                if idx < len(jev1_data) and jev1_data[idx].get("conversation_index", idx) == convo_idx:
+                    jev1_item = jev1_data[idx]
+                else:
+                    for cand in jev1_data:
+                        if isinstance(cand, dict) and cand.get("conversation_index") == convo_idx:
+                            jev1_item = cand
+                            break
+
+            jev1_answers = (
+                jev1_item.get("evaluation", {}).get("answers", {})
+                if isinstance(jev1_item, dict) and isinstance(jev1_item.get("evaluation"), dict)
+                else {}
+            )
+            jev1_tokens = (jev1_item.get("total_tokens", 0) or 0) if isinstance(jev1_item, dict) else 0
+
+            # Match JEV2 conversation item
+            jev2_item = None
+            if jev2_data:
+                if idx < len(jev2_data) and jev2_data[idx].get("conversation_index", idx) == convo_idx:
+                    jev2_item = jev2_data[idx]
+                else:
+                    for cand in jev2_data:
+                        if isinstance(cand, dict) and cand.get("conversation_index") == convo_idx:
+                            jev2_item = cand
+                            break
+
+            jev2_answers = (
+                jev2_item.get("evaluation", {}).get("answers", {})
+                if isinstance(jev2_item, dict) and isinstance(jev2_item.get("evaluation"), dict)
+                else {}
+            )
+            jev2_tokens = (jev2_item.get("total_tokens", 0) or 0) if isinstance(jev2_item, dict) else 0
+
             row: Dict[str, Any] = {
                 "conversation_id": convo_id,
                 "file_name": file_path.name,
@@ -161,6 +223,34 @@ def process_model_folder(
                 row[f"judge_1_{nm}"] = v1
                 row[f"judge_2_{nm}"] = v2
                 row[f"judge_3_{nm}"] = v3
+
+                # Extract JEV1 scores (discrete argmax and continuous score)
+                ans_nm1 = jev1_answers.get(nm, {}) if isinstance(jev1_answers, dict) else {}
+                score_exp1 = ans_nm1.get("score")
+                probs1 = ans_nm1.get("probabilities", {})
+                if probs1:
+                    argmax_score1 = int(max(probs1, key=lambda k: probs1[k]))
+                elif score_exp1 is not None:
+                    argmax_score1 = int(round(score_exp1))
+                else:
+                    argmax_score1 = None
+
+                row[f"jev_1_{nm}"] = argmax_score1
+                row[f"jev_1_{nm}_score"] = round(score_exp1, 3) if score_exp1 is not None else None
+
+                # Extract JEV2 scores (discrete argmax and continuous score)
+                ans_nm2 = jev2_answers.get(nm, {}) if isinstance(jev2_answers, dict) else {}
+                score_exp2 = ans_nm2.get("score")
+                probs2 = ans_nm2.get("probabilities", {})
+                if probs2:
+                    argmax_score2 = int(max(probs2, key=lambda k: probs2[k]))
+                elif score_exp2 is not None:
+                    argmax_score2 = int(round(score_exp2))
+                else:
+                    argmax_score2 = None
+
+                row[f"jev_2_{nm}"] = argmax_score2
+                row[f"jev_2_{nm}_score"] = round(score_exp2, 3) if score_exp2 is not None else None
 
                 vals = [float(v) for v in (v1, v2, v3) if v is not None]
                 if vals:
@@ -191,7 +281,9 @@ def process_model_folder(
             row["judge_1_tokens"] = j1_tokens
             row["judge_2_tokens"] = j2_tokens
             row["judge_3_tokens"] = j3_tokens
-            row["total_tokens"] = j1_tokens + j2_tokens + j3_tokens
+            row["jev_1_tokens"] = jev1_tokens
+            row["jev_2_tokens"] = jev2_tokens
+            row["total_tokens"] = j1_tokens + j2_tokens + j3_tokens + jev1_tokens + jev2_tokens
 
             rows.append(row)
 
@@ -202,7 +294,7 @@ def process_model_folder(
 def compute_summary_statistics(
     model_name: str, rows: List[Dict[str, Any]], num_set_files: int
 ) -> Dict[str, Any]:
-    """Compute statistical metrics across 3-judge evaluations."""
+    """Compute statistical metrics across 3-judge evaluations, JEV-1, and JEV-2."""
     total_convos = len(rows)
     if total_convos == 0:
         return {
@@ -253,14 +345,50 @@ def compute_summary_statistics(
     t1 = [r["judge_1_tokens"] for r in rows if r.get("judge_1_tokens")]
     t2 = [r["judge_2_tokens"] for r in rows if r.get("judge_2_tokens")]
     t3 = [r["judge_3_tokens"] for r in rows if r.get("judge_3_tokens")]
+    tj1 = [r["jev_1_tokens"] for r in rows if r.get("jev_1_tokens")]
+    tj2 = [r["jev_2_tokens"] for r in rows if r.get("jev_2_tokens")]
     tot = [r["total_tokens"] for r in rows if r.get("total_tokens")]
 
     summary["tokens"] = {
         "avg_judge_1_tokens": round(statistics.mean(t1), 1) if t1 else 0,
         "avg_judge_2_tokens": round(statistics.mean(t2), 1) if t2 else 0,
         "avg_judge_3_tokens": round(statistics.mean(t3), 1) if t3 else 0,
+        "avg_jev_1_tokens": round(statistics.mean(tj1), 1) if tj1 else 0,
+        "avg_jev_2_tokens": round(statistics.mean(tj2), 1) if tj2 else 0,
         "avg_total_tokens_per_convo": round(statistics.mean(tot), 1) if tot else 0,
     }
+
+    # JEV-1 stats
+    summary["jev_1_metrics"] = {}
+    for nm in NUMERIC_METRICS:
+        exp_vals = [r[f"jev_1_{nm}_score"] for r in rows if r.get(f"jev_1_{nm}_score") is not None]
+        arg_vals = [r[f"jev_1_{nm}"] for r in rows if r.get(f"jev_1_{nm}") is not None]
+        if exp_vals:
+            summary["jev_1_metrics"][nm] = {
+                "mean_expected": round(statistics.mean(exp_vals), 3),
+                "std_expected": round(statistics.stdev(exp_vals), 3) if len(exp_vals) > 1 else 0.0,
+                "mean_argmax": round(statistics.mean(arg_vals), 3) if arg_vals else None,
+                "min_expected": round(min(exp_vals), 3),
+                "max_expected": round(max(exp_vals), 3),
+            }
+        else:
+            summary["jev_1_metrics"][nm] = None
+
+    # JEV-2 stats
+    summary["jev_2_metrics"] = {}
+    for nm in NUMERIC_METRICS:
+        exp_vals = [r[f"jev_2_{nm}_score"] for r in rows if r.get(f"jev_2_{nm}_score") is not None]
+        arg_vals = [r[f"jev_2_{nm}"] for r in rows if r.get(f"jev_2_{nm}") is not None]
+        if exp_vals:
+            summary["jev_2_metrics"][nm] = {
+                "mean_expected": round(statistics.mean(exp_vals), 3),
+                "std_expected": round(statistics.stdev(exp_vals), 3) if len(exp_vals) > 1 else 0.0,
+                "mean_argmax": round(statistics.mean(arg_vals), 3) if arg_vals else None,
+                "min_expected": round(min(exp_vals), 3),
+                "max_expected": round(max(exp_vals), 3),
+            }
+        else:
+            summary["jev_2_metrics"][nm] = None
 
     return summary
 
@@ -275,7 +403,7 @@ def write_csv(filepath: Path, rows: List[Dict[str, Any]], fieldnames: List[str])
 
 
 def compute_inter_judge_agreement_3judges(all_rows: List[Dict[str, Any]]) -> Dict[str, Any]:
-    """Compute pairwise and 3-judge agreement metrics across all conversations."""
+    """Compute pairwise and multi-judge agreement metrics across all conversations including JEV-1 and JEV-2."""
     total_convos = len(all_rows)
     agreement_report: Dict[str, Any] = {
         "total_evaluated_conversations": total_convos,
@@ -283,6 +411,8 @@ def compute_inter_judge_agreement_3judges(all_rows: List[Dict[str, Any]]) -> Dic
             "judge_1": "beam:cloud",
             "judge_2": "gpt-oss:120b",
             "judge_3": "minimax-m3.1-flash",
+            "jev_1": "imajev-4b",
+            "jev_2": "imajev-4b",
         },
         "numerical_metrics": {},
         "boolean_metrics": {},
@@ -290,17 +420,27 @@ def compute_inter_judge_agreement_3judges(all_rows: List[Dict[str, Any]]) -> Dic
 
     for nm in NUMERIC_METRICS:
         j1_vals, j2_vals, j3_vals = [], [], []
+        jev1_vals, jev2_vals = [], []
         exact_all_3 = 0
         within_1_span = 0
 
         exact_12, within_12 = 0, 0
         exact_13, within_13 = 0, 0
         exact_23, within_23 = 0, 0
+        exact_1j1, within_1j1 = 0, 0
+        exact_2j1, within_2j1 = 0, 0
+        exact_3j1, within_3j1 = 0, 0
+        exact_1j2, within_1j2 = 0, 0
+        exact_2j2, within_2j2 = 0, 0
+        exact_3j2, within_3j2 = 0, 0
+        exact_j1j2, within_j1j2 = 0, 0
 
         for r in all_rows:
             v1 = r.get(f"judge_1_{nm}")
             v2 = r.get(f"judge_2_{nm}")
             v3 = r.get(f"judge_3_{nm}")
+            vj1 = r.get(f"jev_1_{nm}")
+            vj2 = r.get(f"jev_2_{nm}")
 
             if v1 is not None and v2 is not None and v3 is not None:
                 f1, f2, f3 = float(v1), float(v2), float(v3)
@@ -322,8 +462,102 @@ def compute_inter_judge_agreement_3judges(all_rows: List[Dict[str, Any]]) -> Dic
                 if f2 == f3: exact_23 += 1
                 if abs(f2 - f3) <= 1.0: within_23 += 1
 
+                if vj1 is not None:
+                    fj1 = float(vj1)
+                    jev1_vals.append(fj1)
+                    if f1 == fj1: exact_1j1 += 1
+                    if abs(f1 - fj1) <= 1.0: within_1j1 += 1
+                    if f2 == fj1: exact_2j1 += 1
+                    if abs(f2 - fj1) <= 1.0: within_2j1 += 1
+                    if f3 == fj1: exact_3j1 += 1
+                    if abs(f3 - fj1) <= 1.0: within_3j1 += 1
+
+                if vj2 is not None:
+                    fj2 = float(vj2)
+                    jev2_vals.append(fj2)
+                    if f1 == fj2: exact_1j2 += 1
+                    if abs(f1 - fj2) <= 1.0: within_1j2 += 1
+                    if f2 == fj2: exact_2j2 += 1
+                    if abs(f2 - fj2) <= 1.0: within_2j2 += 1
+                    if f3 == fj2: exact_3j2 += 1
+                    if abs(f3 - fj2) <= 1.0: within_3j2 += 1
+
+                if vj1 is not None and vj2 is not None:
+                    fj1, fj2 = float(vj1), float(vj2)
+                    if fj1 == fj2: exact_j1j2 += 1
+                    if abs(fj1 - fj2) <= 1.0: within_j1j2 += 1
+
         n = len(j1_vals)
+        n_j1 = len(jev1_vals)
+        n_j2 = len(jev2_vals)
         if n > 0:
+            pairwise = {
+                "j1_vs_j2": {
+                    "exact_match_pct": round(exact_12 / n * 100.0, 2),
+                    "within_1_pct": round(within_12 / n * 100.0, 2),
+                    "mae": round(calculate_mae(j1_vals, j2_vals), 3),
+                    "pearson_r": round(calculate_pearson_r(j1_vals, j2_vals), 3),
+                },
+                "j1_vs_j3": {
+                    "exact_match_pct": round(exact_13 / n * 100.0, 2),
+                    "within_1_pct": round(within_13 / n * 100.0, 2),
+                    "mae": round(calculate_mae(j1_vals, j3_vals), 3),
+                    "pearson_r": round(calculate_pearson_r(j1_vals, j3_vals), 3),
+                },
+                "j2_vs_j3": {
+                    "exact_match_pct": round(exact_23 / n * 100.0, 2),
+                    "within_1_pct": round(within_23 / n * 100.0, 2),
+                    "mae": round(calculate_mae(j2_vals, j3_vals), 3),
+                    "pearson_r": round(calculate_pearson_r(j2_vals, j3_vals), 3),
+                },
+            }
+            if n_j1 > 0:
+                pairwise["j1_vs_jev1"] = {
+                    "exact_match_pct": round(exact_1j1 / n_j1 * 100.0, 2),
+                    "within_1_pct": round(within_1j1 / n_j1 * 100.0, 2),
+                    "mae": round(calculate_mae(j1_vals[:n_j1], jev1_vals), 3),
+                    "pearson_r": round(calculate_pearson_r(j1_vals[:n_j1], jev1_vals), 3),
+                }
+                pairwise["j2_vs_jev1"] = {
+                    "exact_match_pct": round(exact_2j1 / n_j1 * 100.0, 2),
+                    "within_1_pct": round(within_2j1 / n_j1 * 100.0, 2),
+                    "mae": round(calculate_mae(j2_vals[:n_j1], jev1_vals), 3),
+                    "pearson_r": round(calculate_pearson_r(j2_vals[:n_j1], jev1_vals), 3),
+                }
+                pairwise["j3_vs_jev1"] = {
+                    "exact_match_pct": round(exact_3j1 / n_j1 * 100.0, 2),
+                    "within_1_pct": round(within_3j1 / n_j1 * 100.0, 2),
+                    "mae": round(calculate_mae(j3_vals[:n_j1], jev1_vals), 3),
+                    "pearson_r": round(calculate_pearson_r(j3_vals[:n_j1], jev1_vals), 3),
+                }
+            if n_j2 > 0:
+                pairwise["j1_vs_jev2"] = {
+                    "exact_match_pct": round(exact_1j2 / n_j2 * 100.0, 2),
+                    "within_1_pct": round(within_1j2 / n_j2 * 100.0, 2),
+                    "mae": round(calculate_mae(j1_vals[:n_j2], jev2_vals), 3),
+                    "pearson_r": round(calculate_pearson_r(j1_vals[:n_j2], jev2_vals), 3),
+                }
+                pairwise["j2_vs_jev2"] = {
+                    "exact_match_pct": round(exact_2j2 / n_j2 * 100.0, 2),
+                    "within_1_pct": round(within_2j2 / n_j2 * 100.0, 2),
+                    "mae": round(calculate_mae(j2_vals[:n_j2], jev2_vals), 3),
+                    "pearson_r": round(calculate_pearson_r(j2_vals[:n_j2], jev2_vals), 3),
+                }
+                pairwise["j3_vs_jev2"] = {
+                    "exact_match_pct": round(exact_3j2 / n_j2 * 100.0, 2),
+                    "within_1_pct": round(within_3j2 / n_j2 * 100.0, 2),
+                    "mae": round(calculate_mae(j3_vals[:n_j2], jev2_vals), 3),
+                    "pearson_r": round(calculate_pearson_r(j3_vals[:n_j2], jev2_vals), 3),
+                }
+            if n_j1 > 0 and n_j2 > 0:
+                min_n = min(n_j1, n_j2)
+                pairwise["jev1_vs_jev2"] = {
+                    "exact_match_pct": round(exact_j1j2 / min_n * 100.0, 2),
+                    "within_1_pct": round(within_j1j2 / min_n * 100.0, 2),
+                    "mae": round(calculate_mae(jev1_vals[:min_n], jev2_vals[:min_n]), 3),
+                    "pearson_r": round(calculate_pearson_r(jev1_vals[:min_n], jev2_vals[:min_n]), 3),
+                }
+
             agreement_report["numerical_metrics"][nm] = {
                 "n": n,
                 "all_3_exact_match_pct": round(exact_all_3 / n * 100.0, 2),
@@ -331,26 +565,9 @@ def compute_inter_judge_agreement_3judges(all_rows: List[Dict[str, Any]]) -> Dic
                 "j1_mean": round(statistics.mean(j1_vals), 3),
                 "j2_mean": round(statistics.mean(j2_vals), 3),
                 "j3_mean": round(statistics.mean(j3_vals), 3),
-                "pairwise": {
-                    "j1_vs_j2": {
-                        "exact_match_pct": round(exact_12 / n * 100.0, 2),
-                        "within_1_pct": round(within_12 / n * 100.0, 2),
-                        "mae": round(calculate_mae(j1_vals, j2_vals), 3),
-                        "pearson_r": round(calculate_pearson_r(j1_vals, j2_vals), 3),
-                    },
-                    "j1_vs_j3": {
-                        "exact_match_pct": round(exact_13 / n * 100.0, 2),
-                        "within_1_pct": round(within_13 / n * 100.0, 2),
-                        "mae": round(calculate_mae(j1_vals, j3_vals), 3),
-                        "pearson_r": round(calculate_pearson_r(j1_vals, j3_vals), 3),
-                    },
-                    "j2_vs_j3": {
-                        "exact_match_pct": round(exact_23 / n * 100.0, 2),
-                        "within_1_pct": round(within_13 / n * 100.0, 2),
-                        "mae": round(calculate_mae(j2_vals, j3_vals), 3),
-                        "pearson_r": round(calculate_pearson_r(j2_vals, j3_vals), 3),
-                    },
-                },
+                "jev1_mean": round(statistics.mean(jev1_vals), 3) if jev1_vals else None,
+                "jev2_mean": round(statistics.mean(jev2_vals), 3) if jev2_vals else None,
+                "pairwise": pairwise,
             }
 
     for bm in BOOLEAN_METRICS:
@@ -394,7 +611,7 @@ def compute_inter_judge_agreement_3judges(all_rows: List[Dict[str, Any]]) -> Dic
 
 
 def generate_overall_score_distribution_csv(all_rows: List[Dict[str, Any]], filepath: Path) -> None:
-    """Generate overall distribution table for Judge 1, Judge 2, Judge 3, and 3-judge mean."""
+    """Generate overall distribution table for Judge 1, Judge 2, Judge 3, JEV-1, and JEV-2."""
     total = len(all_rows)
     dist_rows = []
 
@@ -402,32 +619,63 @@ def generate_overall_score_distribution_csv(all_rows: List[Dict[str, Any]], file
         j1_c = Counter([r.get(f"judge_1_{m}") for r in all_rows if r.get(f"judge_1_{m}") is not None])
         j2_c = Counter([r.get(f"judge_2_{m}") for r in all_rows if r.get(f"judge_2_{m}") is not None])
         j3_c = Counter([r.get(f"judge_3_{m}") for r in all_rows if r.get(f"judge_3_{m}") is not None])
+        jev1_c = Counter([r.get(f"jev_1_{m}") for r in all_rows if r.get(f"jev_1_{m}") is not None])
+        jev2_c = Counter([r.get(f"jev_2_{m}") for r in all_rows if r.get(f"jev_2_{m}") is not None])
 
         for score in [3, 2, 1, 0]:
             dist_rows.append({
                 "metric": m,
                 "score": score,
                 "judge_1_count": j1_c.get(score, 0),
-                "judge_1_pct": f"{j1_c.get(score, 0) / total * 100:.2f}%",
+                "judge_1_pct": f"{j1_c.get(score, 0) / total * 100:.2f}%" if total else "0.00%",
                 "judge_2_count": j2_c.get(score, 0),
-                "judge_2_pct": f"{j2_c.get(score, 0) / total * 100:.2f}%",
+                "judge_2_pct": f"{j2_c.get(score, 0) / total * 100:.2f}%" if total else "0.00%",
                 "judge_3_count": j3_c.get(score, 0),
-                "judge_3_pct": f"{j3_c.get(score, 0) / total * 100:.2f}%",
+                "judge_3_pct": f"{j3_c.get(score, 0) / total * 100:.2f}%" if total else "0.00%",
+                "jev_1_count": jev1_c.get(score, 0),
+                "jev_1_pct": f"{jev1_c.get(score, 0) / total * 100:.2f}%" if total else "0.00%",
+                "jev_2_count": jev2_c.get(score, 0),
+                "jev_2_pct": f"{jev2_c.get(score, 0) / total * 100:.2f}%" if total else "0.00%",
             })
 
     write_csv(
         filepath,
         dist_rows,
-        ["metric", "score", "judge_1_count", "judge_1_pct", "judge_2_count", "judge_2_pct", "judge_3_count", "judge_3_pct"],
+        [
+            "metric",
+            "score",
+            "judge_1_count",
+            "judge_1_pct",
+            "judge_2_count",
+            "judge_2_pct",
+            "judge_3_count",
+            "judge_3_pct",
+            "jev_1_count",
+            "jev_1_pct",
+            "jev_2_count",
+            "jev_2_pct",
+        ],
     )
-    logger.info("Saved 3-judge overall score distribution to %s", filepath)
+    logger.info("Saved 5-evaluator overall score distribution to %s", filepath)
 
 
 def run_analysis(
-    output_dir: Path, analytics_dir: Path
+    output_dir: Path,
+    analytics_dir: Path,
+    jev_dir: Optional[Path] = Path("jev_output"),
+    jev2_dir: Optional[Path] = Path("jev_output2"),
 ) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
     """Execute analysis across output folders and persist all results strictly under analytics/."""
     logger.info("Scanning model folders in %s...", output_dir)
+    if jev_dir and jev_dir.is_dir():
+        logger.info("Incorporating JEV-1 evaluations from %s...", jev_dir)
+    else:
+        logger.info("No JEV-1 directory specified or found.")
+
+    if jev2_dir and jev2_dir.is_dir():
+        logger.info("Incorporating JEV-2 evaluations from %s...", jev2_dir)
+    else:
+        logger.info("No JEV-2 directory specified or found.")
 
     model_subdirs = sorted(
         [
@@ -450,7 +698,13 @@ def run_analysis(
         + [f"judge_2_{m}" for m in NUMERIC_METRICS + BOOLEAN_METRICS]
         + ["judge_2_tokens"]
         + [f"judge_3_{m}" for m in NUMERIC_METRICS + BOOLEAN_METRICS]
-        + ["judge_3_tokens", "total_tokens"]
+        + ["judge_3_tokens"]
+        + [f"jev_1_{m}" for m in NUMERIC_METRICS]
+        + [f"jev_1_{m}_score" for m in NUMERIC_METRICS]
+        + ["jev_1_tokens"]
+        + [f"jev_2_{m}" for m in NUMERIC_METRICS]
+        + [f"jev_2_{m}_score" for m in NUMERIC_METRICS]
+        + ["jev_2_tokens", "total_tokens"]
     )
 
     all_models_summary: List[Dict[str, Any]] = []
@@ -461,7 +715,7 @@ def run_analysis(
 
     for model_dir in model_subdirs:
         model_name = model_dir.name
-        rows, summary = process_model_folder(model_dir)
+        rows, summary = process_model_folder(model_dir, jev_dir=jev_dir, jev2_dir=jev2_dir)
         all_models_summary.append(summary)
         all_conversations.extend(rows)
 
@@ -490,6 +744,8 @@ def run_analysis(
             continue
 
         m_metrics = s["metrics"]
+        j1_metrics = s.get("jev_1_metrics", {})
+        j2_metrics = s.get("jev_2_metrics", {})
         row = {
             "model_name": m_name,
             "conversations_evaluated": n_convos,
@@ -504,9 +760,25 @@ def run_analysis(
             "correctness_pct": m_metrics.get("correctness", {}).get("percentage"),
             "premature_answer_pct": m_metrics.get("premature_answer", {}).get("percentage"),
             "hallucination_pct": m_metrics.get("hallucination", {}).get("percentage"),
+            "jev_1_socratic_guidance_mean": j1_metrics.get("socratic_guidance", {}).get("mean_expected"),
+            "jev_1_scaffolding_mean": j1_metrics.get("scaffolding", {}).get("mean_expected"),
+            "jev_1_state_adaptation_mean": j1_metrics.get("state_adaptation", {}).get("mean_expected"),
+            "jev_1_diagnosis_mean": j1_metrics.get("diagnosis", {}).get("mean_expected"),
+            "jev_1_student_agency_mean": j1_metrics.get("student_agency", {}).get("mean_expected"),
+            "jev_1_progression_mean": j1_metrics.get("progression", {}).get("mean_expected"),
+            "jev_1_coherence_mean": j1_metrics.get("coherence", {}).get("mean_expected"),
+            "jev_2_socratic_guidance_mean": j2_metrics.get("socratic_guidance", {}).get("mean_expected"),
+            "jev_2_scaffolding_mean": j2_metrics.get("scaffolding", {}).get("mean_expected"),
+            "jev_2_state_adaptation_mean": j2_metrics.get("state_adaptation", {}).get("mean_expected"),
+            "jev_2_diagnosis_mean": j2_metrics.get("diagnosis", {}).get("mean_expected"),
+            "jev_2_student_agency_mean": j2_metrics.get("student_agency", {}).get("mean_expected"),
+            "jev_2_progression_mean": j2_metrics.get("progression", {}).get("mean_expected"),
+            "jev_2_coherence_mean": j2_metrics.get("coherence", {}).get("mean_expected"),
             "avg_judge_1_tokens": s.get("tokens", {}).get("avg_judge_1_tokens"),
             "avg_judge_2_tokens": s.get("tokens", {}).get("avg_judge_2_tokens"),
             "avg_judge_3_tokens": s.get("tokens", {}).get("avg_judge_3_tokens"),
+            "avg_jev_1_tokens": s.get("tokens", {}).get("avg_jev_1_tokens"),
+            "avg_jev_2_tokens": s.get("tokens", {}).get("avg_jev_2_tokens"),
             "avg_total_tokens": s.get("tokens", {}).get("avg_total_tokens_per_convo"),
         }
         benchmark_rows.append(row)
@@ -530,20 +802,36 @@ def run_analysis(
         "correctness_pct",
         "premature_answer_pct",
         "hallucination_pct",
+        "jev_1_socratic_guidance_mean",
+        "jev_1_scaffolding_mean",
+        "jev_1_state_adaptation_mean",
+        "jev_1_diagnosis_mean",
+        "jev_1_student_agency_mean",
+        "jev_1_progression_mean",
+        "jev_1_coherence_mean",
+        "jev_2_socratic_guidance_mean",
+        "jev_2_scaffolding_mean",
+        "jev_2_state_adaptation_mean",
+        "jev_2_diagnosis_mean",
+        "jev_2_student_agency_mean",
+        "jev_2_progression_mean",
+        "jev_2_coherence_mean",
         "avg_judge_1_tokens",
         "avg_judge_2_tokens",
         "avg_judge_3_tokens",
+        "avg_jev_1_tokens",
+        "avg_jev_2_tokens",
         "avg_total_tokens",
     ]
     benchmark_csv = analytics_dir / "model_benchmark_comparison.csv"
     write_csv(benchmark_csv, benchmark_rows, benchmark_fields)
     logger.info("Saved benchmark comparison to %s", benchmark_csv)
 
-    # 2. Score distribution CSV for Judge 1, Judge 2, and Judge 3
+    # 2. Score distribution CSV for Judge 1, Judge 2, Judge 3, JEV-1, and JEV-2
     distribution_csv = analytics_dir / "overall_score_distribution.csv"
     generate_overall_score_distribution_csv(all_conversations, distribution_csv)
 
-    # 3. Inter-Judge Agreement Analysis across all 3 judges
+    # 3. Inter-Judge Agreement Analysis across all evaluators
     agreement = compute_inter_judge_agreement_3judges(all_conversations)
     agreement_json = analytics_dir / "inter_judge_agreement.json"
     with open(agreement_json, "w", encoding="utf-8") as fp:
@@ -561,6 +849,8 @@ def run_analysis(
                 "judge_1_mean": stats["j1_mean"],
                 "judge_2_mean": stats["j2_mean"],
                 "judge_3_mean": stats["j3_mean"],
+                "jev_1_mean": stats.get("jev1_mean"),
+                "jev_2_mean": stats.get("jev2_mean"),
                 "j1_vs_j2_exact_pct": stats["pairwise"]["j1_vs_j2"]["exact_match_pct"],
                 "j1_vs_j2_within_1_pct": stats["pairwise"]["j1_vs_j2"]["within_1_pct"],
                 "j1_vs_j2_r": stats["pairwise"]["j1_vs_j2"]["pearson_r"],
@@ -570,6 +860,13 @@ def run_analysis(
                 "j2_vs_j3_exact_pct": stats["pairwise"]["j2_vs_j3"]["exact_match_pct"],
                 "j2_vs_j3_within_1_pct": stats["pairwise"]["j2_vs_j3"]["within_1_pct"],
                 "j2_vs_j3_r": stats["pairwise"]["j2_vs_j3"]["pearson_r"],
+                "j1_vs_jev1_r": stats["pairwise"].get("j1_vs_jev1", {}).get("pearson_r", "N/A"),
+                "j2_vs_jev1_r": stats["pairwise"].get("j2_vs_jev1", {}).get("pearson_r", "N/A"),
+                "j3_vs_jev1_r": stats["pairwise"].get("j3_vs_jev1", {}).get("pearson_r", "N/A"),
+                "j1_vs_jev2_r": stats["pairwise"].get("j1_vs_jev2", {}).get("pearson_r", "N/A"),
+                "j2_vs_jev2_r": stats["pairwise"].get("j2_vs_jev2", {}).get("pearson_r", "N/A"),
+                "j3_vs_jev2_r": stats["pairwise"].get("j3_vs_jev2", {}).get("pearson_r", "N/A"),
+                "jev1_vs_jev2_r": stats["pairwise"].get("jev1_vs_jev2", {}).get("pearson_r", "N/A"),
             }
         )
     for bm, stats in agreement["boolean_metrics"].items():
@@ -583,6 +880,8 @@ def run_analysis(
                 "judge_1_mean": f"{stats['j1_true_pct']}%",
                 "judge_2_mean": f"{stats['j2_true_pct']}%",
                 "judge_3_mean": f"{stats['j3_true_pct']}%",
+                "jev_1_mean": "N/A",
+                "jev_2_mean": "N/A",
                 "j1_vs_j2_exact_pct": "N/A",
                 "j1_vs_j2_within_1_pct": "N/A",
                 "j1_vs_j2_r": f"kappa={stats['pairwise_cohen_kappa']['j1_vs_j2']}",
@@ -592,6 +891,13 @@ def run_analysis(
                 "j2_vs_j3_exact_pct": "N/A",
                 "j2_vs_j3_within_1_pct": "N/A",
                 "j2_vs_j3_r": f"kappa={stats['pairwise_cohen_kappa']['j2_vs_j3']}",
+                "j1_vs_jev1_r": "N/A",
+                "j2_vs_jev1_r": "N/A",
+                "j3_vs_jev1_r": "N/A",
+                "j1_vs_jev2_r": "N/A",
+                "j2_vs_jev2_r": "N/A",
+                "j3_vs_jev2_r": "N/A",
+                "jev1_vs_jev2_r": "N/A",
             }
         )
 
@@ -604,6 +910,8 @@ def run_analysis(
         "judge_1_mean",
         "judge_2_mean",
         "judge_3_mean",
+        "jev_1_mean",
+        "jev_2_mean",
         "j1_vs_j2_exact_pct",
         "j1_vs_j2_within_1_pct",
         "j1_vs_j2_r",
@@ -613,10 +921,17 @@ def run_analysis(
         "j2_vs_j3_exact_pct",
         "j2_vs_j3_within_1_pct",
         "j2_vs_j3_r",
+        "j1_vs_jev1_r",
+        "j2_vs_jev1_r",
+        "j3_vs_jev1_r",
+        "j1_vs_jev2_r",
+        "j2_vs_jev2_r",
+        "j3_vs_jev2_r",
+        "jev1_vs_jev2_r",
     ]
     agreement_csv = analytics_dir / "inter_judge_reliability.csv"
     write_csv(agreement_csv, agreement_csv_rows, agreement_csv_fields)
-    logger.info("Saved 3-judge inter-judge reliability to %s", agreement_csv)
+    logger.info("Saved multi-judge & dual JEV inter-judge reliability to %s", agreement_csv)
 
     # 4. Save comprehensive summary JSON
     summary_path = analytics_dir / "full_analysis_summary.json"
@@ -637,8 +952,8 @@ def print_cli_summary(
 ) -> None:
     """Print clean terminal report for the user."""
     print("\n" + "=" * 140)
-    print("SOCRATIC AI EVALUATION BENCHMARK - 3-JUDGE MODEL EVALUATIONS")
-    print("Judges: 1 = beam:cloud | 2 = gpt-oss:120b | 3 = minimax-m3.1-flash")
+    print("SOCRATIC AI EVALUATION BENCHMARK - MULTI-JUDGE & DUAL JEV (JEV-1 & JEV-2) EVALUATIONS")
+    print("Judges: 1 = beam:cloud | 2 = gpt-oss:120b | 3 = minimax-m3.1-flash | JEV-1 = imajev-4b (Turns) | JEV-2 = imajev-4b (State/Reasoning)")
     print("=" * 140)
 
     hdr = "%-45s | %-4s | %-7s | %-7s | %-7s | %-7s | %-7s | %-7s | %-8s | %-7s | %-7s" % (
@@ -686,16 +1001,18 @@ def print_cli_summary(
         )
 
     print("-" * 140)
-    print("\nTRI-JUDGE RELIABILITY & CALIBRATION (N = %d)" % agreement["total_evaluated_conversations"])
-    print("-" * 115)
+    print("\nMULTI-EVALUATOR RELIABILITY & CALIBRATION (N = %d)" % agreement["total_evaluated_conversations"])
+    print("-" * 135)
     print(
-        "%-20s | %-12s | %-14s | %-10s | %-10s | %-10s | %-10s"
-        % ("Metric", "All 3 Exact", "All 3 Within±1", "J1 Mean", "J2 Mean", "J3 Mean", "J1-J2 r")
+        "%-20s | %-12s | %-14s | %-8s | %-8s | %-8s | %-8s | %-8s | %-7s"
+        % ("Metric", "All 3 Exact", "All 3 Within±1", "J1 Mean", "J2 Mean", "J3 Mean", "JEV1 Mean", "JEV2 Mean", "J1-J2 r")
     )
-    print("-" * 115)
+    print("-" * 135)
     for nm, s in agreement["numerical_metrics"].items():
+        j1_m_str = f"{s.get('jev1_mean'):.2f}" if s.get("jev1_mean") is not None else "N/A"
+        j2_m_str = f"{s.get('jev2_mean'):.2f}" if s.get("jev2_mean") is not None else "N/A"
         print(
-            "%-20s | %10.1f%% | %12.1f%% | %10.2f | %10.2f | %10.2f | %10.3f"
+            "%-20s | %10.1f%% | %12.1f%% | %8.2f | %8.2f | %8.2f | %8s | %8s | %7.3f"
             % (
                 nm,
                 s["all_3_exact_match_pct"],
@@ -703,15 +1020,17 @@ def print_cli_summary(
                 s["j1_mean"],
                 s["j2_mean"],
                 s["j3_mean"],
+                j1_m_str,
+                j2_m_str,
                 s["pairwise"]["j1_vs_j2"]["pearson_r"],
             )
         )
-    print("-" * 115)
+    print("-" * 135)
     print(
         "%-20s | %-16s | %-10s | %-10s | %-10s"
         % ("Boolean Metric", "All 3 Unanimous", "J1 True%", "J2 True%", "J3 True%")
     )
-    print("-" * 115)
+    print("-" * 135)
     for bm, s in agreement["boolean_metrics"].items():
         print(
             "%-20s | %14.1f%% | %9.1f%% | %9.1f%% | %9.1f%%"
@@ -723,18 +1042,30 @@ def print_cli_summary(
                 s["j3_true_pct"],
             )
         )
-    print("=" * 115 + "\n")
+    print("=" * 135 + "\n")
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Run 3-judge data analysis and generate CSV reports strictly under analytics/."
+        description="Run multi-judge & dual JEV (JEV-1 & JEV-2) data analysis and generate CSV reports strictly under analytics/."
     )
     parser.add_argument(
         "--output-dir",
         type=Path,
         default=Path("output"),
         help="Root output directory containing model folders (default: output)",
+    )
+    parser.add_argument(
+        "--jev-dir",
+        type=Path,
+        default=Path("jev_output"),
+        help="Directory containing JEV-1 evaluation outputs (default: jev_output)",
+    )
+    parser.add_argument(
+        "--jev2-dir",
+        type=Path,
+        default=Path("jev_output2"),
+        help="Directory containing JEV-2 evaluation outputs (default: jev_output2)",
     )
     parser.add_argument(
         "--analytics-dir",
@@ -744,9 +1075,12 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    benchmark_rows, agreement = run_analysis(args.output_dir, args.analytics_dir)
+    benchmark_rows, agreement = run_analysis(
+        args.output_dir, args.analytics_dir, jev_dir=args.jev_dir, jev2_dir=args.jev2_dir
+    )
     print_cli_summary(benchmark_rows, agreement)
 
 
 if __name__ == "__main__":
     main()
+
