@@ -7,8 +7,8 @@ from unittest.mock import MagicMock, patch
 import pytest
 import requests
 
-from code.jev_model import FIXED_QUESTIONS, call_jev, format_conversation_state
-from code.jev_pipeline import _parse_args, _state_path_for_source_dir, run_pipeline
+from src.jev_model import FIXED_QUESTIONS, call_jev, format_conversation_state
+from src.jev_pipeline import _parse_args, _state_path_for_source_dir, run_pipeline
 
 
 def test_format_conversation_state():
@@ -170,7 +170,7 @@ def test_run_pipeline_end_to_end(monkeypatch):
     def fake_call_jev(state, questions=None, url=None, timeout=None):
         return True, mock_jev_eval, 120, None
 
-    monkeypatch.setattr("code.jev_pipeline.call_jev", fake_call_jev)
+    monkeypatch.setattr("src.jev_pipeline.call_jev", fake_call_jev)
 
     with tempfile.TemporaryDirectory() as tmp_dir:
         tmp_path = Path(tmp_dir)
@@ -333,7 +333,7 @@ def test_run_pipeline_passes_state_and_reasoning_to_jev(monkeypatch):
         captured_states.append(state)
         return True, {"model": "imajev-test", "answers": {}}, 50, None
 
-    monkeypatch.setattr("code.jev_pipeline.call_jev", fake_call_jev)
+    monkeypatch.setattr("src.jev_pipeline.call_jev", fake_call_jev)
 
     with tempfile.TemporaryDirectory() as tmp_dir:
         tmp_path = Path(tmp_dir)

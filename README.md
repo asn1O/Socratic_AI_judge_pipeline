@@ -6,12 +6,14 @@ This repository contains the pipeline code to process, validate, and evaluate So
 
 The pipeline consists of three main Python scripts:
 
-1. **`validate_conversations.py`**
+1. **`scripts/validate_conversations.py`**
    Ensures the structural integrity of the generated conversations. It checks for proper alternating speakers (student vs. tutor), turn numbering, and valid progression of tutor states (e.g., ensuring a transition from 'Synthesis' to 'Closing').
-2. **`similarity_check.py`**
+2. **`scripts/similarity_check.py`**
    Detects duplicate or highly similar conversations across the dataset using TF-IDF and cosine similarity to ensure diversity in the fine-tuning data.
-3. **`code/pipeline.py`**
+3. **`src/pipeline.py`**
    Runs a judge model to evaluate the qualitative aspects of conversations (e.g., hallucination, correctness, socratic guidance). It outputs scored results to the `output` directory, which can then be used to filter the best interactions.
+4. **`src/jev_pipeline.py`**
+   Runs evaluation directly via the JEV endpoint, outputting evaluated results to `jev_output2/`.
 
 ## First-Time Setup
 
@@ -34,32 +36,47 @@ To validate the structure of the JSON conversations stored in the `data/` direct
 
 ```bash
 # To run in check-only mode (logs invalid conversations):
-python3 validate_conversations.py
+python3 scripts/validate_conversations.py
 
 # To remove structurally invalid elements and rewrite the JSON files:
-python3 validate_conversations.py --delete-invalid
+python3 scripts/validate_conversations.py --delete-invalid
 ```
 
 ### 2. Checking for Similarity (Deduplication)
 To scan the `data/` directory and find conversations that are over 90% similar:
 
 ```bash
-python3 similarity_check.py
+python3 scripts/similarity_check.py
 ```
-*This will log pairs of similar conversations to `similarity.log` allowing you to inspect and remove duplicates.*
+*This will log pairs of similar conversations to `scripts/similarity.log` allowing you to inspect and remove duplicates.*
 
 ### 3. Running the Evaluation Pipeline
 To rate conversations using the configured judge models:
 
 ```bash
 # Example: Evaluate up to 5 conversations from the specified model directory
-python3 code/pipeline.py --source-model-dir Google_gemini-3.6-flash --max-conversations 5
+python3 src/pipeline.py --source-model-dir Google_gemini-3.6-flash --max-conversations 5
 ```
 Options for `pipeline.py`:
 - `--source-model-dir`: (Required) Name of the folder under `data/` to evaluate.
 - `--max-conversations`: (Required) Limit the number of conversations evaluated in a single run.
 - `--data-dir`: Custom data directory path (default: `data`).
 - `--output-dir`: Custom output directory path (default: `output`).
-- `--judge-index`: Index of a specific judge model to use from `model.json`.
+- `--models-path`: Path to judge model configurations (default: `models/model.json`).
+- `--judge-index`: Index of a specific judge model to use from `models/model.json`.
 
 Results and evaluation state will be saved in the `output/` directory, mirroring the structure of your `data/` folder.
+
+### 4. Running the JEV Evaluation Pipeline
+To evaluate conversations using the direct JEV endpoint:
+
+```bash
+# Example: Evaluate up to 5 conversations from the specified model directory
+python3 src/jev_pipeline.py --source-model-dir Google_gemini-2.5-flash-lite --max-conversations 5
+```
+Options for `jev_pipeline.py`:
+- `--source-model-dir`: (Required) Name of the folder under `data/` to evaluate.
+- `--max-conversations`: (Required) Limit the number of conversations evaluated in a single run.
+- `--data-dir`: Custom data directory path (default: `data`).
+- `--output-dir`: Custom output directory path (default: `jev_output2`).
+- `--jev-url`: URL of the JEV systemone endpoint (default: `/v1/systemone` or `$JEV_URL`).

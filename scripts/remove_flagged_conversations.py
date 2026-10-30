@@ -277,6 +277,9 @@ def main():
     parser = argparse.ArgumentParser(
         description="Identify and remove flawed conversations (correctness=False, premature=True, hallucination=True) across data, output, and jev_output."
     )
+    root_dir = Path(__file__).resolve().parent.parent
+    script_dir = Path(__file__).resolve().parent
+
     parser.add_argument(
         "--apply",
         action="store_true",
@@ -285,32 +288,32 @@ def main():
     parser.add_argument(
         "--data-dir",
         type=Path,
-        default=Path("data"),
+        default=root_dir / "data",
         help="Path to data directory (default: data).",
     )
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=Path("output"),
+        default=root_dir / "output",
         help="Path to output directory (default: output).",
     )
     parser.add_argument(
         "--jev-dir",
         type=Path,
-        default=Path("jev_output"),
+        default=root_dir / "jev_output",
         help="Path to jev_output directory (default: jev_output).",
     )
     parser.add_argument(
         "--log-file",
         type=Path,
-        default=Path("removed_conversations.log"),
-        help="Path to write the human-readable log (default: removed_conversations.log).",
+        default=script_dir / "removed_conversations.log",
+        help="Path to write the human-readable log (default: scripts/removed_conversations.log).",
     )
     parser.add_argument(
         "--json-log",
         type=Path,
-        default=Path("removed_conversations.json"),
-        help="Path to save the structured JSON list of removed elements (default: removed_conversations.json).",
+        default=script_dir / "removed_conversations.json",
+        help="Path to save the structured JSON list of removed elements (default: scripts/removed_conversations.json).",
     )
     parser.add_argument(
         "--no-reindex",

@@ -33,6 +33,7 @@ except ImportError:  # pragma: no cover
 
 MAX_CONSECUTIVE_ERRORS = 3
 RETRY_WAIT_SECONDS = 2.0
+DEFAULT_OUTPUT_DIR = os.getenv("JEV_OUTPUT_DIR", "jev_output2")
 
 logger = logging.getLogger("jev_pipeline")
 logger.setLevel(logging.INFO)
@@ -414,7 +415,7 @@ def run_pipeline(
     max_conversations: Optional[int] = None,
     source_model_dir: Optional[str] = None,
     data_dir: str = "data",
-    output_dir: str = "jev_output",
+    output_dir: str = DEFAULT_OUTPUT_DIR,
     jev_url: Optional[str] = None,
     provider: str = DEFAULT_PROVIDER,
     wait_seconds: float = 0.0,
@@ -490,8 +491,8 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-dir",
         type=str,
-        default="jev_output",
-        help="Directory where evaluated results are stored (default: jev_output).",
+        default=DEFAULT_OUTPUT_DIR,
+        help=f"Directory where evaluated results are stored (default: {DEFAULT_OUTPUT_DIR}).",
     )
     parser.add_argument(
         "--jev-url",

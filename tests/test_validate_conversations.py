@@ -3,7 +3,7 @@ from collections import Counter
 from pathlib import Path
 import tempfile
 
-from validate_conversations import is_valid_conversation, validate_file
+from scripts.validate_conversations import is_valid_conversation, validate_file
 
 
 def test_valid_conversation():
@@ -113,7 +113,7 @@ def test_validate_dataset_folder_stats():
         with open(folder_b / "file2.json", "w", encoding="utf-8") as f:
             json.dump([valid_convo, valid_convo], f)
 
-        from validate_conversations import validate_dataset
+        from scripts.validate_conversations import validate_dataset
 
         total, total_invalid, folder_stats, errors, file_count = validate_dataset(
             data_dir=base_dir,

@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from code.pipeline import _validate_evaluation_payload, _state_path_for_source_dir
+from src.pipeline import _validate_evaluation_payload, _state_path_for_source_dir
 
 
 VALID_PAYLOAD = {

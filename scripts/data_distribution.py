@@ -473,7 +473,7 @@ def main() -> None:
     parser.add_argument(
         "--data-dir",
         type=Path,
-        default=Path(__file__).parent / "data",
+        default=Path(__file__).resolve().parent.parent / "data",
         help="Path to the data directory containing model folders (default: ./data)",
     )
     parser.add_argument(

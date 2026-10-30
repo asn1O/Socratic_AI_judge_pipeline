@@ -18,7 +18,7 @@ file_handler.setFormatter(logging.Formatter(LOG_FORMAT))
 log.addHandler(file_handler)
 
 # ── Paths ──────────────────────────────────────────────────────────────
-DATA_DIR = Path(__file__).parent / "data"
+DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 
 
 VALID_SPEAKERS = {"student", "tutor"}

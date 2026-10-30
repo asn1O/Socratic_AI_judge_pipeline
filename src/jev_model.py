@@ -8,9 +8,9 @@ import requests
 
 logger = logging.getLogger("jev_pipeline")
 
-DEFAULT_JEV_URL = os.getenv("JEV_URL", "http://127.0.0.1:8765/v1/systemone")
+DEFAULT_JEV_URL = os.getenv("JEV_URL", "/v1/systemone")
 DEFAULT_PROVIDER = "imajev"
-DEFAULT_MODEL_NAME = "imajev-2b"
+DEFAULT_MODEL_NAME = "imajev-4b"
 DEFAULT_TIMEOUT_SECONDS = 300.0
 
 FIXED_QUESTIONS: Dict[str, Any] = {

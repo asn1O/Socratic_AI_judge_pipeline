@@ -536,7 +536,7 @@ def run_pipeline(
         raise ValueError("judge_number is required and must be 1, 2, or 3")
 
     if models_path is None:
-        models_path = str(Path(__file__).resolve().parent / "model.json")
+        models_path = str(Path(__file__).resolve().parent.parent / "models" / "model.json")
 
     models = _load_models(models_path)
     if not models:
@@ -595,7 +595,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--models-path",
         type=str,
-        default=str(Path(__file__).resolve().parent / "model.json"),
+        default=str(Path(__file__).resolve().parent.parent / "models" / "model.json"),
         help="Path to the JSON file that lists the models.",
     )
     parser.add_argument(

@@ -14,7 +14,7 @@ log = logging.getLogger(__name__)
 
 # ── Paths ──────────────────────────────────────────────────────────────
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_DIRECTORY = os.path.join(SCRIPT_DIR, "data")
+DATA_DIRECTORY = os.path.join(os.path.dirname(SCRIPT_DIR), "data")
 SIMILARITY_THRESHOLD = 0.90
 
 file_handler = logging.FileHandler(
