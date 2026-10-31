@@ -475,7 +475,6 @@ function renderConversation(data) {
     if (isStudent) {
       contentHtml = `<div class="turn-content">${escapeHtml(turn.text || '')}</div>`;
     } else {
-      contentHtml = `<div class="turn-content">${escapeHtml(turn.response || turn.text || '')}</div>`;
       if (turn.reasoning) {
         contentHtml += `
           <div class="turn-reasoning">
@@ -484,6 +483,7 @@ function renderConversation(data) {
           </div>
         `;
       }
+      contentHtml += `<div class="turn-content">${escapeHtml(turn.response || turn.text || '')}</div>`;
     }
 
     card.innerHTML = `
