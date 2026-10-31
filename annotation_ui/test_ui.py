@@ -74,6 +74,13 @@ class TestDataLoader(unittest.TestCase):
         self.assertIn("conversation", conv)
         self.assertGreater(len(conv["conversation"]), 0)
 
+        # Source relative path & index metadata
+        self.assertIn("source", rec)
+        self.assertIn("relative_path", rec["source"])
+        self.assertIn("index", rec["source"])
+        self.assertTrue(rec["source"]["relative_path"].endswith(".json"))
+        self.assertIsInstance(rec["source"]["index"], int)
+
 
 class TestExcelManager(unittest.TestCase):
     """Test Excel read/write without altering project production Excel files."""

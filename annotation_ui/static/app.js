@@ -66,6 +66,9 @@ const elements = {
   toastBanner: document.getElementById('toast-banner'),
   btnToggleAllGuides: document.getElementById('btn-toggle-all-guides'),
   rubricCheatBody: document.getElementById('rubric-cheat-body'),
+  metaSourcePath: document.getElementById('meta-source-path'),
+  metaSourceIndex: document.getElementById('meta-source-index'),
+  btnCopyPath: document.getElementById('btn-copy-path'),
 };
 
 // Initialization
@@ -243,6 +246,20 @@ function setupEventListeners() {
   elements.btnSaveOnly.addEventListener('click', () => saveScores(false));
   elements.btnResetForm.addEventListener('click', () => resetScoresForm(true));
 
+  // Copy Relative Path Button
+  if (elements.btnCopyPath) {
+    elements.btnCopyPath.addEventListener('click', () => {
+      const pathText = elements.metaSourcePath ? elements.metaSourcePath.textContent.trim() : '';
+      if (pathText && pathText !== '-') {
+        navigator.clipboard.writeText(pathText).then(() => {
+          showToast('✓ Relative path copied to clipboard!', 'success');
+        }).catch(() => {
+          showToast(`Relative path: ${pathText}`, 'info');
+        });
+      }
+    });
+  }
+
   // Rubric Modal
   elements.btnRubricModal.addEventListener('click', openRubricModal);
   elements.btnCloseRubric.addEventListener('click', closeRubricModal);
@@ -405,6 +422,16 @@ function renderConversation(data) {
     elements.gradingBadge.className = 'grading-badge';
   }
 
+  // Source File Relative Path & Index
+  const src = rec.source || {};
+  if (elements.metaSourcePath) {
+    elements.metaSourcePath.textContent = src.relative_path || '-';
+    elements.metaSourcePath.title = src.relative_path ? `Relative path: ${src.relative_path}` : 'No source path';
+  }
+  if (elements.metaSourceIndex) {
+    elements.metaSourceIndex.textContent = `Index: ${src.index !== undefined ? src.index : '-'}`;
+  }
+
   // Problem statement
   elements.metaProblem.textContent = conv.problem || 'No problem statement provided.';
 
@@ -422,6 +449,24 @@ function renderConversation(data) {
 
   // Simulation Config Grid
   elements.metaConfigGrid.innerHTML = '';
+  if (src.relative_path) {
+    const item = document.createElement('div');
+    item.className = 'config-item';
+    item.innerHTML = `
+      <span class="config-k">Source File</span>
+      <span class="config-v" style="font-family: monospace; font-size: 0.85em;">${escapeHtml(src.relative_path)}</span>
+    `;
+    elements.metaConfigGrid.appendChild(item);
+  }
+  if (src.index !== undefined) {
+    const item = document.createElement('div');
+    item.className = 'config-item';
+    item.innerHTML = `
+      <span class="config-k">Source Index</span>
+      <span class="config-v">${escapeHtml(String(src.index))}</span>
+    `;
+    elements.metaConfigGrid.appendChild(item);
+  }
   Object.entries(config).forEach(([k, v]) => {
     const item = document.createElement('div');
     item.className = 'config-item';
