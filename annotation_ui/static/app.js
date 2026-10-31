@@ -64,12 +64,15 @@ const elements = {
   btnZoomIn: document.getElementById('btn-zoom-in'),
   btnZoomOut: document.getElementById('btn-zoom-out'),
   toastBanner: document.getElementById('toast-banner'),
+  btnToggleAllGuides: document.getElementById('btn-toggle-all-guides'),
+  rubricCheatBody: document.getElementById('rubric-cheat-body'),
 };
 
 // Initialization
 document.addEventListener('DOMContentLoaded', async () => {
   initTheme();
   setupEventListeners();
+  await initRubricData();
   await loadSamples();
 });
 
@@ -133,7 +136,7 @@ function setupEventListeners() {
 
   elements.btnNextUngraded.addEventListener('click', jumpToNextUngraded);
 
-  // Score Pills Interaction
+  // Score Pills Interaction & Live Hint
   document.querySelectorAll('.score-pills').forEach((group) => {
     const field = group.dataset.field;
     group.querySelectorAll('.pill').forEach((pill) => {
@@ -147,11 +150,21 @@ function setupEventListeners() {
           group.querySelectorAll('.pill').forEach((p) => p.classList.remove('selected'));
           pill.classList.add('selected');
         }
+        updateMetricHint(field);
+      });
+
+      pill.addEventListener('mouseenter', () => {
+        const val = parseInt(pill.dataset.val, 10);
+        updateMetricHint(field, val);
+      });
+
+      pill.addEventListener('mouseleave', () => {
+        updateMetricHint(field);
       });
     });
   });
 
-  // Boolean Pills Interaction
+  // Boolean Pills Interaction & Live Hint
   document.querySelectorAll('.bool-pills').forEach((group) => {
     const field = group.dataset.field;
     group.querySelectorAll('.pill-bool').forEach((pill) => {
@@ -165,9 +178,49 @@ function setupEventListeners() {
           group.querySelectorAll('.pill-bool').forEach((p) => p.classList.remove('selected'));
           pill.classList.add('selected');
         }
+        updateMetricHint(field);
+      });
+
+      pill.addEventListener('mouseenter', () => {
+        const val = pill.dataset.val === 'true' ? 'TRUE' : 'FALSE';
+        updateMetricHint(field, val);
+      });
+
+      pill.addEventListener('mouseleave', () => {
+        updateMetricHint(field);
       });
     });
   });
+
+  // Individual Metric Guide toggle buttons
+  document.querySelectorAll('.btn-metric-guide').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const metric = btn.dataset.metric;
+      const box = document.getElementById(`guide-${metric}`);
+      if (box) {
+        const isVisible = box.style.display !== 'none';
+        box.style.display = isVisible ? 'none' : 'flex';
+        btn.classList.toggle('active', !isVisible);
+      }
+    });
+  });
+
+  // Toggle all guides button
+  let allGuidesExpanded = false;
+  if (elements.btnToggleAllGuides) {
+    elements.btnToggleAllGuides.addEventListener('click', () => {
+      allGuidesExpanded = !allGuidesExpanded;
+      document.querySelectorAll('.metric-guide-box').forEach((box) => {
+        box.style.display = allGuidesExpanded ? 'flex' : 'none';
+      });
+      document.querySelectorAll('.btn-metric-guide').forEach((btn) => {
+        btn.classList.toggle('active', allGuidesExpanded);
+      });
+      elements.btnToggleAllGuides.textContent = allGuidesExpanded
+        ? '📕 Hide All Criteria'
+        : '📖 Show All Criteria';
+    });
+  }
 
   // Score Inputs & Sync
   elements.scoreOutOf5.addEventListener('input', (e) => {
@@ -518,6 +571,8 @@ function populateScoresForm(savedScores) {
     elements.scoreOutOf10.value = savedScores.overall_score_out_of_10;
     state.scores.overall_score_out_of_10 = savedScores.overall_score_out_of_10;
   }
+
+  updateAllMetricHints();
 }
 
 // Reset form
@@ -538,6 +593,8 @@ function resetScoresForm(showFeedback = false) {
   document.querySelectorAll('.pill, .pill-bool').forEach((p) => p.classList.remove('selected'));
   elements.scoreOutOf5.value = '';
   elements.scoreOutOf10.value = '';
+
+  updateAllMetricHints();
 
   if (showFeedback) {
     showToast('Form reset. Click Save (or Save & Next) to empty this row in Excel.', 'info');
@@ -669,23 +726,134 @@ function updateTabCount(sampleKey, summary) {
   }
 }
 
-// Rubric Modal display
-async function openRubricModal() {
+const ALL_METRIC_KEYS = [
+  'socratic_guidance',
+  'scaffolding',
+  'state_adaptation',
+  'diagnosis',
+  'student_agency',
+  'progression',
+  'coherence',
+  'correctness',
+];
+
+// Initialize Rubric Data & build inline guides
+async function initRubricData() {
   if (!state.rubricData) {
     try {
       const res = await fetch('/api/rubric');
       const data = await res.json();
       state.rubricData = data.rubric || {};
+      buildInlineRubricGuides();
     } catch (err) {
-      showToast('Could not load rubric data', 'error');
-      return;
+      console.error('Failed to load rubric data:', err);
     }
   }
+}
+
+function buildInlineRubricGuides() {
+  if (!state.rubricData) return;
+
+  // 1. Populate individual inline guide cards
+  ALL_METRIC_KEYS.forEach((key) => {
+    const item = state.rubricData[key];
+    const box = document.getElementById(`guide-${key}`);
+    if (box && item) {
+      const ruleHtml = item.rule
+        ? `<div class="guide-rule-alert"><strong>⚠️ Critical Rule (judge_prompt.md):</strong> ${escapeHtml(item.rule)}</div>`
+        : '';
+      let levelsHtml = '';
+      if (item.levels) {
+        levelsHtml = `
+          <div class="guide-levels-grid">
+            ${Object.entries(item.levels)
+              .map(([lvl, desc]) => `<div class="guide-level-item"><strong>[${lvl}]</strong> ${escapeHtml(desc)}</div>`)
+              .join('')}
+          </div>
+        `;
+      }
+      box.innerHTML = `
+        <div class="guide-desc"><strong>What to evaluate:</strong> ${escapeHtml(item.description)}</div>
+        ${ruleHtml}
+        ${levelsHtml}
+      `;
+    }
+  });
+
+  // 2. Populate Complete Cheat Sheet Drawer
+  const cheatBody = document.getElementById('rubric-cheat-body');
+  if (cheatBody) {
+    cheatBody.innerHTML = '';
+    Object.entries(state.rubricData).forEach(([metricKey, item]) => {
+      const card = document.createElement('div');
+      card.className = 'rubric-item';
+      const ruleHtml = item.rule
+        ? `<div class="guide-rule-alert" style="margin: 6px 0;"><strong>⚠️ Evaluation Rule:</strong> ${escapeHtml(item.rule)}</div>`
+        : '';
+      let levelsHtml = '';
+      if (item.levels) {
+        levelsHtml = `
+          <div class="guide-levels-grid">
+            ${Object.entries(item.levels)
+              .map(([lvl, desc]) => `<div class="guide-level-item"><strong>[${lvl}]</strong> ${escapeHtml(desc)}</div>`)
+              .join('')}
+          </div>
+        `;
+      }
+      card.innerHTML = `
+        <div class="rubric-item-title">${escapeHtml(item.title)}</div>
+        <div class="rubric-item-desc">${escapeHtml(item.description)}</div>
+        ${ruleHtml}
+        ${levelsHtml}
+      `;
+      cheatBody.appendChild(card);
+    });
+  }
+}
+
+// Update the live hint text below each metric row
+function updateMetricHint(metric, val = null) {
+  const hintEl = document.getElementById(`hint-${metric}`);
+  if (!hintEl) return;
+
+  const activeVal = val !== null ? val : state.scores[metric];
+  if (activeVal === null || activeVal === undefined || !state.rubricData || !state.rubricData[metric]) {
+    hintEl.textContent = 'Hover or click a score for rubric criteria';
+    hintEl.classList.remove('highlighted');
+    return;
+  }
+
+  const levels = state.rubricData[metric].levels || {};
+  let lvlText = levels[String(activeVal)];
+  if (!lvlText && typeof activeVal === 'boolean') {
+    lvlText = levels[activeVal ? 'TRUE' : 'FALSE'];
+  }
+
+  if (lvlText) {
+    hintEl.textContent = lvlText;
+    hintEl.classList.add('highlighted');
+  } else {
+    hintEl.textContent = `Selected: ${activeVal}`;
+    hintEl.classList.remove('highlighted');
+  }
+}
+
+function updateAllMetricHints() {
+  ALL_METRIC_KEYS.forEach((m) => updateMetricHint(m));
+}
+
+// Rubric Modal display
+async function openRubricModal() {
+  await initRubricData();
 
   elements.rubricModalContent.innerHTML = '';
   Object.entries(state.rubricData).forEach(([k, item]) => {
     const div = document.createElement('div');
     div.className = 'rubric-item';
+
+    const ruleHtml = item.rule
+      ? `<div class="guide-rule-alert" style="margin: 6px 0 10px 0;"><strong>⚠️ Critical Rule (judge_prompt.md):</strong> ${escapeHtml(item.rule)}</div>`
+      : '';
 
     let levelsHtml = '';
     if (item.levels) {
@@ -701,6 +869,7 @@ async function openRubricModal() {
     div.innerHTML = `
       <div class="rubric-item-title">${escapeHtml(item.title)}</div>
       <div class="rubric-item-desc">${escapeHtml(item.description)}</div>
+      ${ruleHtml}
       ${levelsHtml}
     `;
     elements.rubricModalContent.appendChild(div);
