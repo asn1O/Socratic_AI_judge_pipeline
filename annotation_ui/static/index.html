@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Socratic AI Annotation Studio</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body class="theme-light">
+  <div class="app-container">
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="brand">
+          <div class="brand-icon">🎓</div>
+          <div class="brand-text">
+            <span class="brand-title">Socratic AI</span>
+            <span class="brand-subtitle">Annotation Studio</span>
+          </div>
+        </div>
+
+        <!-- Sample Selector Tabs -->
+        <div class="sample-tabs" id="sample-tabs">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <div class="header-center">
+        <!-- Conversation Selector & Quick Navigation -->
+        <div class="nav-controls">
+          <button id="btn-prev" class="btn btn-nav" title="Previous Conversation (Alt + Left)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            Prev
+          </button>
+
+          <div class="selector-wrapper">
+            <select id="conv-select" class="conv-select" title="Select Conversation ID">
+              <option value="">Loading conversations...</option>
+            </select>
+            <input type="text" id="conv-quick-jump" class="conv-quick-jump" placeholder="Jump ID / #" title="Enter index or ID and press Enter">
+          </div>
+
+          <button id="btn-next" class="btn btn-nav" title="Next Conversation (Alt + Right)">
+            Next
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+
+          <button id="btn-next-ungraded" class="btn btn-subtle" title="Jump to the next unannotated conversation">
+            ⚡ Next Ungraded
+          </button>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <!-- Progress display -->
+        <div class="progress-box" id="progress-box">
+          <div class="progress-text">
+            <span id="progress-count">0 / 0</span>
+            <span class="progress-pct" id="progress-pct">(0%)</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <button id="btn-rubric-modal" class="btn btn-icon" title="View Scoring Rubric & Guide">
+          📖 Rubric
+        </button>
+
+        <button id="btn-theme-toggle" class="btn btn-icon" title="Toggle Dark/Light Mode">
+          🌙
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area: Split View -->
+    <main class="main-layout">
+      <!-- Left: Conversation Viewer -->
+      <section class="conversation-pane">
+        <!-- Context Card (Problem, Domain, Config) -->
+        <div class="meta-card" id="meta-card">
+          <div class="meta-header">
+            <div class="meta-badges">
+              <span class="badge badge-id" id="meta-ann-id">Loading...</span>
+              <span class="badge badge-domain" id="meta-domain">-</span>
+              <span class="badge badge-topic" id="meta-topic">-</span>
+              <span class="badge badge-status" id="meta-status">Pending</span>
+            </div>
+            <div class="font-zoom-controls">
+              <button class="btn-zoom" id="btn-zoom-out" title="Decrease font size">A-</button>
+              <button class="btn-zoom" id="btn-zoom-in" title="Increase font size">A+</button>
+            </div>
+          </div>
+
+          <div class="problem-box">
+            <div class="problem-label">Problem / Task:</div>
+            <div class="problem-text" id="meta-problem">-</div>
+          </div>
+
+          <!-- Sampling details (e.g. Disagreements or Profile Weakness) -->
+          <div class="special-info-box" id="special-info-box" style="display: none;"></div>
+
+          <details class="config-details">
+            <summary class="config-summary">Simulation Configuration & Parameters</summary>
+            <div class="config-grid" id="meta-config-grid"></div>
+          </details>
+        </div>
+
+        <!-- Dialogue Container -->
+        <div class="dialogue-container" id="dialogue-container">
+          <!-- Turns inserted dynamically -->
+        </div>
+
+        <!-- Optional: LLM Judges Reference Collapsible Drawer -->
+        <details class="judge-ref-drawer" id="judge-ref-drawer">
+          <summary class="judge-ref-summary">
+            <span>⚖️ LLM Judges Evaluation Reference (Optional Reference)</span>
+            <span class="text-muted">(Click to view/hide judge scores)</span>
+          </summary>
+          <div class="judge-ref-content" id="judge-ref-content">
+            <!-- Populated with judge 1-4 scores and rationales -->
+          </div>
+        </details>
+      </section>
+
+      <!-- Right: Scoring & Grading Form -->
+      <aside class="grading-pane">
+        <div class="grading-card">
+          <div class="grading-header">
+            <div class="grading-title-row">
+              <h2 class="grading-title">Human Annotation Scores</h2>
+              <span class="grading-badge" id="grading-badge">Ungraded</span>
+            </div>
+            <div class="grading-subtitle">
+              Scores are automatically saved to the active Excel sheet for <strong id="grading-target-sheet">-</strong>.
+            </div>
+          </div>
+
+          <form id="grading-form" class="grading-form" onsubmit="return false;">
+            <!-- 7 Numeric Metrics (0 to 3) -->
+            <div class="metrics-section">
+              <div class="section-title">Pedagogical Core Metrics (Scale 0 - 3)</div>
+
+              <!-- Socratic Guidance -->
+              <div class="metric-row" data-metric="socratic_guidance">
+                <div class="metric-info">
+                  <span class="metric-name">Socratic Guidance</span>
+                  <span class="metric-help" title="Questions vs statements: Does the tutor elicit student reasoning or give away steps?">ℹ️</span>
+                </div>
+                <div class="score-pills" data-field="socratic_guidance">
+                  <button type="button" class="pill" data-val="0" title="0: Very poor / absent (Statements / rhetorical questions)">0</button>
+                  <button type="button" class="pill" data-val="1" title="1: Weak (Statements/leading make up >= half)">1</button>
+                  <button type="button" class="pill" data-val="2" title="2: Adequate (Mostly genuine questions, slight giveaway)">2</button>
+                  <button type="button" class="pill" data-val="3" title="3: Strong (Pure questions, asks student to justify/test)">3</button>
+                </div>
+              </div>
+
+              <!-- Scaffolding -->
+              <div class="metric-row" data-metric="scaffolding">
+                <div class="metric-info">
+                  <span class="metric-name">Scaffolding</span>
+                  <span class="metric-help" title="Granularity of help: Smallest nudge vs solving key steps for the student.">ℹ️</span>
+                </div>
+                <div class="score-pills" data-field="scaffolding">
+                  <button type="button" class="pill" data-val="0" title="0: Very poor (Provides full solution/central step)">0</button>
+                  <button type="button" class="pill" data-val="1" title="1: Weak (Names key method, central decision made for student)">1</button>
+                  <button type="button" class="pill" data-val="2" title="2: Adequate (Useful partial direction, slightly heavy/early)">2</button>
+                  <button type="button" class="pill" data-val="3" title="3: Strong (Minimal nudge, escalates only if stuck)">3</button>
+                </div>
+              </div>
+
+              <!-- State Adaptation -->
+              <div class="metric-row" data-metric="state_adaptation">
+                <div class="metric-info">
+                  <span class="metric-name">State Adaptation</span>
+                  <span class="metric-help" title="Dynamic responsiveness to student understanding, errors, and misconceptions.">ℹ️</span>
+                </div>
+                <div class="score-pills" data-field="state_adaptation">
+                  <button type="button" class="pill" data-val="0" title="0: Very poor (Scripted, repeats failed moves)">0</button>
+                  <button type="button" class="pill" data-val="1" title="1: Weak (Generic acknowledgement, moves not tailored)">1</button>
+                  <button type="button" class="pill" data-val="2" title="2: Adequate (Mostly addresses errors, minor signal missed)">2</button>
+                  <button type="button" class="pill" data-val="3" title="3: Strong (Tied to student words, adapts pace & strategy)">3</button>
+                </div>
+              </div>
+
+              <!-- Diagnosis -->
+              <div class="metric-row" data-metric="diagnosis">
+                <div class="metric-info">
+                  <span class="metric-name">Diagnosis</span>
+                  <span class="metric-help" title="Identifying and confirming student misconceptions vs slips before acting.">ℹ️</span>
+                </div>
+                <div class="score-pills" data-field="diagnosis">
+                  <button type="button" class="pill" data-val="0" title="0: Very poor (No probe; acts on assumptions)">0</button>
+                  <button type="button" class="pill" data-val="1" title="1: Weak (Only generic checks like 'Do you understand?')">1</button>
+                  <button type="button" class="pill" data-val="2" title="2: Adequate (Accurate difficulty identified, not confirmed)">2</button>
+                  <button type="button" class="pill" data-val="3" title="3: Strong (Targeted questions, diagnoses root cause)">3</button>
+                </div>
+              </div>
+
+              <!-- Student Agency -->
+              <div class="metric-row" data-metric="student_agency">
+                <div class="metric-info">
+                  <span class="metric-name">Student Agency</span>
+                  <span class="metric-help" title="Who does the intellectual heavy lifting and drives reasoning forward?">ℹ️</span>
+                </div>
+                <div class="score-pills" data-field="student_agency">
+                  <button type="button" class="pill" data-val="0" title="0: Very poor (Tutor does all reasoning; student says 'ok')">0</button>
+                  <button type="button" class="pill" data-val="1" title="1: Weak (Student short echoes, tutor picks strategy)">1</button>
+                  <button type="button" class="pill" data-val="2" title="2: Adequate (Student produces most steps, minor tutor aid)">2</button>
+                  <button type="button" class="pill" data-val="3" title="3: Strong (Student drives reasoning, explains in own words)">3</button>
+                </div>
+              </div>
+
+              <!-- Progression -->
+              <div class="metric-row" data-metric="progression">
+                <div class="metric-info">
+                  <span class="metric-name">Progression</span>
+                  <span class="metric-help" title="Meaningful movement toward problem resolution and deep understanding.">ℹ️</span>
+                </div>
+                <div class="score-pills" data-field="progression">
+                  <button type="button" class="pill" data-val="0" title="0: Very poor (No progress, leaves student confused)">0</button>
+                  <button type="button" class="pill" data-val="1" title="1: Weak (Partial steps done, major gap remains)">1</button>
+                  <button type="button" class="pill" data-val="2" title="2: Adequate (Reaches answer, lacks transfer or deep why)">2</button>
+                  <button type="button" class="pill" data-val="3" title="3: Strong (Reaches solution with articulated understanding)">3</button>
+                </div>
+              </div>
+
+              <!-- Coherence -->
+              <div class="metric-row" data-metric="coherence">
+                <div class="metric-info">
+                  <span class="metric-name">Coherence</span>
+                  <span class="metric-help" title="Logical and conversational flow without contradictions or skipped turns.">ℹ️</span>
+                </div>
+                <div class="score-pills" data-field="coherence">
+                  <button type="button" class="pill" data-val="0" title="0: Very poor (Contradictory, off-topic, broken flow)">0</button>
+                  <button type="button" class="pill" data-val="1" title="1: Weak (Noticeable contradictions or ignored questions)">1</button>
+                  <button type="button" class="pill" data-val="2" title="2: Adequate (Mostly coherent with only minor phrasing slips)">2</button>
+                  <button type="button" class="pill" data-val="3" title="3: Strong (Flawless logical flow across all turns)">3</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Correctness (Boolean) -->
+            <div class="boolean-section">
+              <div class="metric-row" data-metric="correctness">
+                <div class="metric-info">
+                  <span class="metric-name">Correctness</span>
+                  <span class="metric-help" title="Is the tutor's substantive content, math, and reasoning accurate?">ℹ️</span>
+                </div>
+                <div class="bool-pills" data-field="correctness">
+                  <button type="button" class="pill-bool pill-true" data-val="true">✓ TRUE (Correct)</button>
+                  <button type="button" class="pill-bool pill-false" data-val="false">✗ FALSE (Error)</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Holistic Overall Scores -->
+            <div class="overall-section">
+              <div class="section-title">Overall Ratings</div>
+
+              <div class="overall-grid">
+                <div class="overall-col">
+                  <label for="score-out-of-5" class="input-label">
+                    Overall (0 – 5)
+                  </label>
+                  <div class="number-input-row">
+                    <input type="number" id="score-out-of-5" min="0" max="5" step="0.1" class="score-input" placeholder="0 - 5">
+                    <span class="scale-max">/ 5</span>
+                  </div>
+                </div>
+
+                <div class="overall-col">
+                  <label for="score-out-of-10" class="input-label">
+                    Overall (0 – 10)
+                  </label>
+                  <div class="number-input-row">
+                    <input type="number" id="score-out-of-10" min="0" max="10" step="0.1" class="score-input" placeholder="0 - 10">
+                    <span class="scale-max">/ 10</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sync-row">
+                <label class="checkbox-label" title="Keep 10-point score automatically synced as 2x the 5-point score">
+                  <input type="checkbox" id="sync-scores-checkbox" checked>
+                  <span>Auto-sync 10-score ($2 \times \text{5-score}$)</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Action Bar -->
+            <div class="form-actions">
+              <button type="button" id="btn-save-next" class="btn btn-primary" title="Save scores and proceed to next conversation (Alt+Enter)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Save & Next
+              </button>
+              <button type="button" id="btn-save-only" class="btn btn-secondary" title="Save scores without advancing">
+                Save
+              </button>
+              <button type="button" id="btn-reset-form" class="btn btn-outline" title="Clear score selections for this conversation">
+                Reset
+              </button>
+            </div>
+          </form>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Rubric Modal -->
+    <div class="modal-backdrop" id="rubric-modal" style="display: none;">
+      <div class="modal-container">
+        <div class="modal-header">
+          <h3 class="modal-title">📖 Socratic AI Rubric & Scoring Guidelines</h3>
+          <button class="modal-close" id="btn-close-rubric">&times;</button>
+        </div>
+        <div class="modal-body" id="rubric-modal-content">
+          <!-- Filled dynamically from /api/rubric -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast" id="toast-banner"></div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
