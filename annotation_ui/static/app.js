@@ -449,24 +449,6 @@ function renderConversation(data) {
 
   // Simulation Config Grid
   elements.metaConfigGrid.innerHTML = '';
-  if (src.relative_path) {
-    const item = document.createElement('div');
-    item.className = 'config-item';
-    item.innerHTML = `
-      <span class="config-k">Source File</span>
-      <span class="config-v" style="font-family: monospace; font-size: 0.85em;">${escapeHtml(src.relative_path)}</span>
-    `;
-    elements.metaConfigGrid.appendChild(item);
-  }
-  if (src.index !== undefined) {
-    const item = document.createElement('div');
-    item.className = 'config-item';
-    item.innerHTML = `
-      <span class="config-k">Source Index</span>
-      <span class="config-v">${escapeHtml(String(src.index))}</span>
-    `;
-    elements.metaConfigGrid.appendChild(item);
-  }
   Object.entries(config).forEach(([k, v]) => {
     const item = document.createElement('div');
     item.className = 'config-item';
