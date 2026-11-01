@@ -181,13 +181,14 @@ class AnnotationRequestHandler(SimpleHTTPRequestHandler):
             results = []
             for key in self.data_loader.get_sample_keys():
                 meta = self.data_loader.get_sample_meta(key) or {}
-                summary = self.excel_manager.get_sample_summary(key)
+                valid_ids = self.data_loader.get_id_list(key)
+                summary = self.excel_manager.get_sample_summary(key, valid_ids=valid_ids)
                 results.append({
                     "key": key,
                     "display_name": meta.get("display_name", key),
                     "id_prefix": meta.get("id_prefix", ""),
                     "description": meta.get("description", ""),
-                    "total": summary["total"] or len(self.data_loader.get_id_list(key)),
+                    "total": len(valid_ids),
                     "graded": summary["graded"],
                     "pending": summary["pending"],
                     "pct_completed": summary["pct_completed"],
@@ -269,6 +270,11 @@ class AnnotationRequestHandler(SimpleHTTPRequestHandler):
                 self._send_json({"error": "Missing 'annotation_id'"}, status=HTTPStatus.BAD_REQUEST)
                 return
 
+            valid_ids = self.data_loader.get_id_list(sample_key)
+            if annotation_id not in valid_ids:
+                self._send_json({"error": f"Annotation ID '{annotation_id}' is not in the active annotation set."}, status=HTTPStatus.BAD_REQUEST)
+                return
+
             success, message = self.excel_manager.save_scores(sample_key, annotation_id, scores)
             if not success:
                 self._send_json({"success": False, "error": message}, status=HTTPStatus.BAD_REQUEST)
@@ -277,7 +283,8 @@ class AnnotationRequestHandler(SimpleHTTPRequestHandler):
             # Compute next ID to make transition immediate
             conv_info = self.data_loader.get_conversation_by_id(sample_key, annotation_id)
             next_id = conv_info.get("next_id") if conv_info else None
-            summary = self.excel_manager.get_sample_summary(sample_key)
+            valid_ids = self.data_loader.get_id_list(sample_key)
+            summary = self.excel_manager.get_sample_summary(sample_key, valid_ids=valid_ids)
             is_graded = any(v is not None and v != "" for v in scores.values())
 
             self._send_json({

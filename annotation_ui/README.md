@@ -25,9 +25,9 @@ python3 annotation_ui/app.py --port 8000
 ## Features & Capabilities
 
 1. **Three Annotation Datasets**:
-   - **Random Sample**: 240 conversations (`RND-0001` .. `RND-0240`)
-   - **Metric-Profile Sample**: 120 conversations (`MP-0001` .. `MP-0120`)
-   - **Judge-Disagreement Sample**: 40 conversations (`JD-0001` .. `JD-0040`)
+   - **Random Sample**: 228 conversations (`RND-0001` .. `RND-0240`)
+   - **Metric-Profile Sample**: 100 conversations (`MP-0001` .. `MP-0120`)
+   - **Judge-Disagreement Sample**: 34 conversations (`JD-0001` .. `JD-0039`)
 
 2. **Clean Two-Pane Reading & Grading Layout**:
    - **Left Pane (Conversation Viewer)**:

@@ -132,10 +132,15 @@ class ExcelAnnotationManager:
                 status_map[cell_id] = is_graded
         return status_map
 
-    def get_sample_summary(self, sample_key: str) -> Dict[str, Any]:
+    def get_sample_summary(self, sample_key: str, valid_ids: Optional[List[str]] = None) -> Dict[str, Any]:
         """Return total rows and graded count for a sample."""
         status_map = self.get_all_status(sample_key)
-        total = len(status_map)
+        if valid_ids is not None:
+            valid_set = set(valid_ids)
+            status_map = {k: v for k, v in status_map.items() if k in valid_set}
+            total = len(valid_ids)
+        else:
+            total = len(status_map)
         graded = sum(1 for v in status_map.values() if v)
         return {
             "sample_key": sample_key,

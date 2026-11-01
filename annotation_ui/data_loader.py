@@ -14,28 +14,28 @@ SAMPLES_META = {
         "key": "random_sample",
         "display_name": "Random Sample",
         "id_prefix": "RND",
-        "expected_count": 240,
+        "expected_count": 228,
         "excel_file": "random_sample_annotator.xlsx",
         "sheet_name": "Random_Sample_Annotator",
-        "description": "Unbiased baseline sample (240 conversations)",
+        "description": "Unbiased baseline sample (228 conversations)",
     },
     "metric_profile_sample": {
         "key": "metric_profile_sample",
         "display_name": "Metric-Profile Sample",
         "id_prefix": "MP",
-        "expected_count": 120,
+        "expected_count": 100,
         "excel_file": "metric_profile_sample_annotator.xlsx",
         "sheet_name": "Metric_Profile_Annotator",
-        "description": "Targeted metric strengths & weaknesses (120 conversations)",
+        "description": "Targeted metric strengths & weaknesses (100 conversations)",
     },
     "judge_disagreement_sample": {
         "key": "judge_disagreement_sample",
         "display_name": "Judge-Disagreement Sample",
         "id_prefix": "JD",
-        "expected_count": 40,
+        "expected_count": 34,
         "excel_file": "judge_disagreement_sample_annotator.xlsx",
         "sheet_name": "Judge_Disagreement_Annotator",
-        "description": "Severely divergent judge evaluations (40 conversations)",
+        "description": "Severely divergent judge evaluations (34 conversations)",
     },
 }
 
@@ -86,7 +86,17 @@ class AnnotationDataLoader:
         return list(SAMPLES_META.keys())
 
     def get_sample_meta(self, sample_key: str) -> Optional[Dict[str, Any]]:
-        return SAMPLES_META.get(sample_key)
+        meta = SAMPLES_META.get(sample_key)
+        if not meta:
+            return None
+        res = dict(meta)
+        actual_count = len(self._id_lists.get(sample_key, []))
+        if actual_count > 0:
+            res["expected_count"] = actual_count
+            res["count"] = actual_count
+            import re
+            res["description"] = re.sub(r"\(\d+\s+conversations\)", f"({actual_count} conversations)", res.get("description", ""))
+        return res
 
     def get_id_list(self, sample_key: str) -> List[str]:
         return self._id_lists.get(sample_key, [])

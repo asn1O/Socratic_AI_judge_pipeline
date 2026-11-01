@@ -28,9 +28,9 @@ class TestDataLoader(unittest.TestCase):
         self.assertEqual(set(keys), {"random_sample", "metric_profile_sample", "judge_disagreement_sample"})
 
         # Check counts
-        self.assertEqual(len(self.loader.get_id_list("random_sample")), 240)
-        self.assertEqual(len(self.loader.get_id_list("metric_profile_sample")), 120)
-        self.assertEqual(len(self.loader.get_id_list("judge_disagreement_sample")), 40)
+        self.assertEqual(len(self.loader.get_id_list("random_sample")), 228)
+        self.assertEqual(len(self.loader.get_id_list("metric_profile_sample")), 100)
+        self.assertEqual(len(self.loader.get_id_list("judge_disagreement_sample")), 34)
 
     def test_first_and_last_ids(self):
         rnd_ids = self.loader.get_id_list("random_sample")
@@ -43,7 +43,7 @@ class TestDataLoader(unittest.TestCase):
 
         jd_ids = self.loader.get_id_list("judge_disagreement_sample")
         self.assertEqual(jd_ids[0], "JD-0001")
-        self.assertEqual(jd_ids[-1], "JD-0040")
+        self.assertEqual(jd_ids[-1], "JD-0039")
 
     def test_navigation_pointers(self):
         # First item
@@ -59,11 +59,18 @@ class TestDataLoader(unittest.TestCase):
         self.assertEqual(data_second["next_id"], "RND-0003")
         self.assertEqual(data_second["index"], 2)
 
+        # Deleted ID skip check (RND-0022 was removed, so RND-0021 points directly to RND-0023)
+        data_21 = self.loader.get_conversation_by_id("random_sample", "RND-0021")
+        self.assertEqual(data_21["next_id"], "RND-0023")
+        self.assertIsNone(self.loader.get_conversation_by_id("random_sample", "RND-0022"))
+        data_23 = self.loader.get_conversation_by_id("random_sample", "RND-0023")
+        self.assertEqual(data_23["prev_id"], "RND-0021")
+
         # Last item
         data_last = self.loader.get_conversation_by_id("random_sample", "RND-0240")
         self.assertEqual(data_last["prev_id"], "RND-0239")
         self.assertIsNone(data_last["next_id"])
-        self.assertEqual(data_last["index"], 240)
+        self.assertEqual(data_last["index"], 228)
 
     def test_conversation_content(self):
         data = self.loader.get_conversation_by_id("random_sample", "RND-0001")
@@ -136,10 +143,16 @@ class TestExcelManager(unittest.TestCase):
         self.assertTrue(status["JD-0001"])
         self.assertFalse(status["JD-0002"])
 
-        # Check summary
+        # Check summary without valid_ids (raw Excel total)
         summary = self.mgr.get_sample_summary("judge_disagreement_sample")
         self.assertEqual(summary["graded"], 1)
         self.assertEqual(summary["pending"], 39)
+
+        # Check summary with valid_ids (filtered by active annotation set)
+        summary_valid = self.mgr.get_sample_summary("judge_disagreement_sample", valid_ids=["JD-0001", "JD-0002", "JD-0003"])
+        self.assertEqual(summary_valid["total"], 3)
+        self.assertEqual(summary_valid["graded"], 1)
+        self.assertEqual(summary_valid["pending"], 2)
 
     def test_overwrite_scores(self):
         # 1. Initial save
@@ -267,7 +280,7 @@ class TestServerAPI(unittest.TestCase):
         status, ctype, data = self._get("/api/conversations?sample=random_sample")
         self.assertEqual(status, 200)
         body = json.loads(data.decode("utf-8"))
-        self.assertEqual(body["total"], 240)
+        self.assertEqual(body["total"], 228)
         self.assertEqual(body["conversations"][0]["id"], "RND-0001")
 
     def test_api_conversation_detail(self):
