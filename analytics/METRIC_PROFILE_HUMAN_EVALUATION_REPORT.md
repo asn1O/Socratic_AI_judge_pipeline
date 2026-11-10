@@ -31,7 +31,7 @@
 >
 > **Judges 4 & 5 (`imajev-4b`)** tie for **#3 & #4** (QWK $\approx 0.540$–$0.546$, MAE $\approx 0.547$–$0.550$).
 
-![Metric Profile Accuracy Overview: MAE and Exact Agreement](/home/ayaans/.gemini/antigravity/brain/bd6029a1-9e89-4c61-b3de-1c68c74c5535/mp_judge_accuracy_mae_and_exact_agreement.png)
+![Metric Profile Accuracy Overview: MAE and Exact Agreement](charts/mp_judge_accuracy_mae_and_exact_agreement.png)
 
 ---
 
@@ -58,7 +58,7 @@ Pooling all 700 judgments per judge against human gold-standard annotations:
 
 ## 2. Metric-by-Metric Breakdown & Correlation Analysis
 
-![Metric Profile Correlation and Bias Profiles](/home/ayaans/.gemini/antigravity/brain/bd6029a1-9e89-4c61-b3de-1c68c74c5535/mp_judge_correlation_and_bias_profiles.png)
+![Metric Profile Correlation and Bias Profiles](charts/mp_judge_correlation_and_bias_profiles.png)
 
 ### Socratic Guidance (0–3 Scale)
 - **Human Ground Truth**: Mean = $1.53 \pm 0.73$
@@ -112,7 +112,7 @@ Pooling all 700 judgments per judge against human gold-standard annotations:
 
 ## 3. Disagreement Resolution & Outlier Analysis
 
-![Metric Profile Disagreement and Outliers](/home/ayaans/.gemini/antigravity/brain/bd6029a1-9e89-4c61-b3de-1c68c74c5535/mp_judge_disagreement_and_outlier_resolution.png)
+![Metric Profile Disagreement and Outliers](charts/mp_judge_disagreement_and_outlier_resolution.png)
 
 Out of 700 judgments, judges disagreed ($\text{range} \ge 1$) in **303 instances (43.3%)**.
 
@@ -151,7 +151,7 @@ Out of 700 judgments, judges disagreed ($\text{range} \ge 1$) in **303 instances
 
 ## 5. Overall Holistic Score Calibration
 
-![Metric Profile Overall Score Calibration](/home/ayaans/.gemini/antigravity/brain/bd6029a1-9e89-4c61-b3de-1c68c74c5535/mp_human_overall_score_calibration.png)
+![Metric Profile Overall Score Calibration](charts/mp_human_overall_score_calibration.png)
 
 How well do automated judges predict the human holistic rating (out of 10)?
 

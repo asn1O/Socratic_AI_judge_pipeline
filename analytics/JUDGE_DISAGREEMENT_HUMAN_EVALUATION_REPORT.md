@@ -23,7 +23,7 @@
 >
 > **Judge 2 (`gpt-oss:120b`)** is the **least accurate**, severely corrupted by **systematic grade inflation** (overall bias $+0.80$, with Scaffolding biased $+1.35$ and Student Agency $+1.41$). In severe disagreements (range $\ge 2$), Judge 2 was strictly closest to human in **0.0%** of cases.
 
-![Judge Accuracy Overview: MAE and Exact Agreement](/home/ayaans/.gemini/antigravity/brain/bd6029a1-9e89-4c61-b3de-1c68c74c5535/judge_accuracy_mae_and_exact_agreement.png)
+![Judge Accuracy Overview: MAE and Exact Agreement](charts/judge_accuracy_mae_and_exact_agreement.png)
 
 ---
 
@@ -50,7 +50,7 @@ Pooling all 238 evaluations per judge against human gold-standard annotations:
 
 ## 2. Metric-by-Metric Breakdown & Correlation Analysis
 
-![Judge Correlation and Bias Profiles](/home/ayaans/.gemini/antigravity/brain/bd6029a1-9e89-4c61-b3de-1c68c74c5535/judge_correlation_and_bias_profiles.png)
+![Judge Correlation and Bias Profiles](charts/judge_correlation_and_bias_profiles.png)
 
 ### Socratic Guidance (0–3 Scale)
 - **Human Ground Truth**: Mean = $1.35 \pm 0.54$ (Median = $1.0$)
@@ -106,7 +106,7 @@ Pooling all 238 evaluations per judge against human gold-standard annotations:
 
 Because this benchmark consists specifically of high-disagreement conversations, we investigated who the human agreed with when the judges diverged.
 
-![Judge Disagreement and Outlier Resolution](/home/ayaans/.gemini/antigravity/brain/bd6029a1-9e89-4c61-b3de-1c68c74c5535/judge_disagreement_and_outlier_resolution.png)
+![Judge Disagreement and Outlier Resolution](charts/judge_disagreement_and_outlier_resolution.png)
 
 ### Severe Disagreements (Range $\ge 2$, 66 Metric-Level Cases)
 In cases where judges had a spread of 2 or more points (e.g., $J_1=1, J_2=3, J_3=1$):
@@ -144,7 +144,7 @@ In cases where judges had a spread of 2 or more points (e.g., $J_1=1, J_2=3, J_3
 
 ## 5. Overall Holistic Score Calibration
 
-![Human Overall Score Calibration](/home/ayaans/.gemini/antigravity/brain/bd6029a1-9e89-4c61-b3de-1c68c74c5535/human_overall_score_calibration.png)
+![Human Overall Score Calibration](charts/human_overall_score_calibration.png)
 
 How well does the human holistic assessment (out of 10) correlate with automated judges?
 

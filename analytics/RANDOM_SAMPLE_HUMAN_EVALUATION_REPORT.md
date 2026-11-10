@@ -26,7 +26,7 @@
 >
 > **Judge 2 (`gpt-oss:120b`)** is the **least reliable (#5)**: lowest QWK (**0.229**), lowest correlation ($r=0.319$), highest bias (**+0.325**), and lowest exact agreement (**67.5%**).
 
-![Random Sample Accuracy Overview: MAE and Exact Agreement](/home/ayaans/.gemini/antigravity/brain/bd6029a1-9e89-4c61-b3de-1c68c74c5535/rnd_judge_accuracy_mae_and_exact_agreement.png)
+![Random Sample Accuracy Overview: MAE and Exact Agreement](charts/rnd_judge_accuracy_mae_and_exact_agreement.png)
 
 ---
 
@@ -53,7 +53,7 @@ Pooling all 1,596 evaluations per judge against human gold-standard annotations:
 
 ## 2. Metric-by-Metric Breakdown & Correlation Analysis
 
-![Random Sample Correlation and Bias Profiles](/home/ayaans/.gemini/antigravity/brain/bd6029a1-9e89-4c61-b3de-1c68c74c5535/rnd_judge_correlation_and_bias_profiles.png)
+![Random Sample Correlation and Bias Profiles](charts/rnd_judge_correlation_and_bias_profiles.png)
 
 ### Socratic Guidance (0–3 Scale)
 - **Human Ground Truth**: Mean = $2.41 \pm 0.68$
@@ -100,7 +100,7 @@ Pooling all 1,596 evaluations per judge against human gold-standard annotations:
 
 ## 3. Disagreement Resolution & Outlier Analysis
 
-![Random Sample Disagreement and Outliers](/home/ayaans/.gemini/antigravity/brain/bd6029a1-9e89-4c61-b3de-1c68c74c5535/rnd_judge_disagreement_and_outlier_resolution.png)
+![Random Sample Disagreement and Outliers](charts/rnd_judge_disagreement_and_outlier_resolution.png)
 
 Out of 1,596 judgments, the judges disagreed ($\text{range} \ge 1$) in **447 instances (28.0%)**.
 
@@ -139,7 +139,7 @@ Out of 1,596 judgments, the judges disagreed ($\text{range} \ge 1$) in **447 ins
 
 ## 5. Overall Holistic Score Calibration
 
-![Random Sample Overall Score Calibration](/home/ayaans/.gemini/antigravity/brain/bd6029a1-9e89-4c61-b3de-1c68c74c5535/rnd_human_overall_score_calibration.png)
+![Random Sample Overall Score Calibration](charts/rnd_human_overall_score_calibration.png)
 
 How well do automated judges predict the human overall quality score (out of 10)?
 
