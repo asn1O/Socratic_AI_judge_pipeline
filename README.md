@@ -50,7 +50,21 @@ python3 scripts/similarity_check.py
 ```
 *This will log pairs of similar conversations to `scripts/similarity.log` allowing you to inspect and remove duplicates.*
 
-### 3. Running the Evaluation Pipeline
+### 3. Converting Conversations for Fine-Tuning
+Convert all conversations in JSON set files recursively into one JSONL file:
+
+```bash
+python3 scripts/convert_for_finetuning.py --input-dir data --output-dir fine_tuning_data
+```
+
+The converter scans the input directory and all nested folders, then writes
+`fine_tuning_data.jsonl` in the output directory. Each line is one independent
+JSON record containing a `messages` array: system message with the problem, student
+turns as `user` messages, and tutor turns as tagged `assistant` messages.
+Non-conversation JSON files are skipped with a warning. The output directory must
+not be inside the input directory.
+
+### 4. Running the Evaluation Pipeline
 To rate conversations using the configured judge models:
 
 ```bash
@@ -67,7 +81,7 @@ Options for `pipeline.py`:
 
 Results and evaluation state will be saved in the `output/` directory, mirroring the structure of your `data/` folder.
 
-### 4. Running the JEV Evaluation Pipeline
+### 5. Running the JEV Evaluation Pipeline
 To evaluate conversations using the direct JEV endpoint:
 
 ```bash
