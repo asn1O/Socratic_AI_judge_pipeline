@@ -1,0 +1,992 @@
+[
+  {
+    "source_file": "ft_qwen-ft/asn-set[0].json",
+    "conversation_index": 0,
+    "judge_3": {
+      "model": {
+        "provider": "NVIDIA",
+        "model_name": "minimaxai/minimax-m3.1-flash"
+      },
+      "total_tokens": 8047,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 1,
+        "scaffolding": 1,
+        "state_adaptation": 1,
+        "diagnosis": 1,
+        "student_agency": 2,
+        "progression": 1,
+        "coherence": 1,
+        "premature_answer": true,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's physics content (turns 2, 4, 6, 8) is consistent with Newton's laws: interaction forces are equal and opposite, act on different objects, and different masses yield different accelerations for the same force.",
+          "socratic_guidance": "Turns 2 and 4 pose a question, but turn 4 repeats the identical question after the student answered it in turn 3, and turns 6 and 8 state the conclusion rather than eliciting further reasoning.",
+          "scaffolding": "Turn 4 hands the student the key distinction ('two completely separate forces - they act on different objects') and turn 6 hands over the equal-forces conclusion, so the central reasoning is largely supplied rather than discovered.",
+          "state_adaptation": "After the student explicitly argued in turn 5 that 'the forces aren't equal,' the tutor replied 'Exactly' in turn 6 and closed with 'Spot on!' in turn 8 while the student was still rejecting equality, and turn 4 recycled turn 2's question.",
+          "diagnosis": "The tutor probed with 'what is the force that the car exerts on the truck?' (turns 2 and 4) but never confirmed the student's reasoning, and in turn 6 wrongly inferred that the student 'has correctly identified that the forces are equal' when turn 5 said the opposite.",
+          "student_agency": "The student generated the F=ma reasoning and the equal-force/different-acceleration structure across turns 3, 5, and 7, but the tutor supplied the key correct conclusion in turn 6.",
+          "progression": "The student articulates in turn 7 that equal F with different masses yields different accelerations, yet still ends by rejecting equal forces and the tutor closes in turn 8 without resolving the misconception.",
+          "coherence": "Turn 6 begins 'Exactly' immediately before contradicting the student's stated claim, and turn 8 praises the student for a distinction the student had not yet accepted.",
+          "premature_answer": "In turn 6 the tutor states the resolution ('The forces are equal, but the accelerations are different because the masses are different') even though the student in turn 5 had argued the opposite and had not worked it out.",
+          "hallucination": "The tutor introduces no fabricated facts; all of its physics content is a correct restatement of Newton's third and second laws as applied in the conversation."
+        }
+      }
+    },
+    "judge_1": {
+      "model": {
+        "provider": "OC",
+        "model_name": "beam-free"
+      },
+      "total_tokens": 0,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 1,
+        "scaffolding": 0,
+        "state_adaptation": 1,
+        "diagnosis": 1,
+        "student_agency": 1,
+        "progression": 1,
+        "coherence": 1,
+        "premature_answer": true,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "Turns 2, 6, and 8 state correct physics: interaction forces are equal and opposite while accelerations differ due to mass.",
+          "socratic_guidance": "Turns 2 and 4 repeat the same question while turns 6 and 8 state the conclusion directly rather than eliciting it.",
+          "scaffolding": "Turn 6 directly states the final conclusion that the forces are equal, leaving no central inference for the student.",
+          "state_adaptation": "Turns 6 and 8 affirm the student ('Exactly', 'Spot on') despite the student still challenging the equal-forces claim in turns 5 and 7.",
+          "diagnosis": "The tutor assumes the student confuses forces acting on different objects but never asks the student to explain their reasoning to confirm.",
+          "student_agency": "The tutor supplies the central conclusion that forces are equal in turn 6, while the student only argues their opposing view.",
+          "progression": "The student's final turn 7 still rejects equal forces, and the tutor closes without resolving the misconception.",
+          "coherence": "The tutor's affirmations in turns 6 and 8 contradict the student's explicit disagreement in turns 5 and 7.",
+          "premature_answer": "Turn 6 reveals the answer that forces are equal before the student has accepted or reasoned to it.",
+          "hallucination": "No fabricated or factually false information appears in the tutor's responses."
+        }
+      }
+    }
+  },
+  {
+    "source_file": "ft_qwen-ft/asn-set[0].json",
+    "conversation_index": 1,
+    "judge_3": {
+      "model": {
+        "provider": "NVIDIA",
+        "model_name": "minimaxai/minimax-m3.1-flash"
+      },
+      "total_tokens": 8256,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 2,
+        "scaffolding": 3,
+        "state_adaptation": 2,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 1,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's content is mathematically sound: it correctly notes that √ gives the principal root while x² = 9 has two real solutions, and it never asserts anything false about the procedure.",
+          "socratic_guidance": "Turns 2 and 4 are largely genuine eliciting questions (\"if you plug in x = -3...\", \"how would you summarize the general rule...\"), but turn 4 states the key conclusion (\"the square root symbol gives the principal (positive) root...\") that the student had just worked out, and turn 6 is pure statements.",
+          "scaffolding": "Turn 2 offers only the smallest nudge (substitute x = -3 and see what happens), and turn 4 asks for a generalization rather than supplying the rule, leaving the central reasoning to the student.",
+          "state_adaptation": "Turns 2 and 4 respond specifically to the student's stated uncertainty about negative roots and the √ procedure, but turn 6 closes the session while ignoring the student's explicit final request for a non-memorizing way to think about why squaring gives two roots.",
+          "diagnosis": "Turn 2 probes the student's reasoning by asking them to test x = -3, and turn 4 confirms the diagnosis (principal root vs. all solutions) by asking the student to state the general rule in their own words before affirming it.",
+          "student_agency": "The student performs all key reasoning themselves: computing (-3)² = 9 (turn 3), articulating why both roots satisfy the equation (turn 3), and generalizing to x = ±√a (turn 5); the tutor only asks questions.",
+          "progression": "The student reaches the correct solution x = ±3 through their own substitution and reasoning and explains why the ± is needed (turns 3–5), with the tutor's turn-6 affirmation confirming the principle.",
+          "coherence": "Turns 2–5 form a coherent progression, but turn 6 abruptly ends the dialogue without answering the student's final conceptual question about why the equation has two solutions while the square root operation gives one.",
+          "premature_answer": "The tutor never supplies the solution or the ± rule before the student reasons it out; the student had already proposed both roots and the general rule.",
+          "hallucination": "No fabricated or factually false claims appear; the tutor's statements about principal roots and real solutions are standard and accurate."
+        }
+      }
+    },
+    "judge_1": {
+      "model": {
+        "provider": "OC",
+        "model_name": "beam-free"
+      },
+      "total_tokens": 0,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 2,
+        "scaffolding": 3,
+        "state_adaptation": 2,
+        "diagnosis": 2,
+        "student_agency": 3,
+        "progression": 2,
+        "coherence": 1,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's turns 2, 4, and 6 contain correct mathematical guidance and no false claims.",
+          "socratic_guidance": "Turns 2 and 4 ask the student to evaluate -3 and summarize the rule, but turn 4 also states the principal-root distinction the student had already articulated.",
+          "scaffolding": "Turn 2 only redirects attention to substituting -3, leaving the inference and generalization to the student.",
+          "state_adaptation": "Turns 2 and 4 respond to the student's specific confusion, but turn 6 closes without addressing the student's conceptual 'why' question.",
+          "diagnosis": "The tutor uses the substitution question to surface the student's reasoning and confirms the principal-root issue, but does not investigate the deeper conceptual question raised in turn 5.",
+          "student_agency": "The student computes, tests -3, articulates the ± rule, and asks the conceptual question while the tutor only prompts.",
+          "progression": "The student derives x = ±3 and states the general rule, but ends still asking why the square-root operation yields one value and receives no conceptual resolution.",
+          "coherence": "Turn 6 does not answer the student's question about a conceptual understanding and instead ends the session.",
+          "premature_answer": "The tutor never states the final solution set before the student articulates x = ±3.",
+          "hallucination": "No fabricated or unsupported factual claims appear in the tutor's responses."
+        }
+      }
+    }
+  },
+  {
+    "source_file": "ft_qwen-ft/asn-set[0].json",
+    "conversation_index": 2,
+    "judge_3": {
+      "model": {
+        "provider": "NVIDIA",
+        "model_name": "minimaxai/minimax-m3.1-flash"
+      },
+      "total_tokens": 5941,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's substantive content in turns 2, 4, and 6 is mathematically accurate, matching the correct general rule that nested-loop cost is the sum of inner-loop iterations per outer iteration, with no errors.",
+          "socratic_guidance": "Both substantive interventions (turns 2 and 4) are genuine questions asking the student to describe the loop relationship and then formulate the general rule in their own words; the tutor's statements in turn 4 merely echo what the student had already produced in turn 3.",
+          "scaffolding": "The tutor supplies no solution steps or formulas, offering only minimal prompts ('How would you describe the relationship...', 'can you put that into a general rule in your own words?') and leaving all analysis to the student.",
+          "state_adaptation": "Each reply is tied to the student's specific prior content: turn 2 opens from the student's listed uncertainties, turn 4 builds directly on the student's summation insight, and turn 6 closes after the student articulates the general rule.",
+          "diagnosis": "Turn 2 correctly infers from the student's message that the core claim and its conditional failure modes are already understood, and then probes with targeted questions (turns 2 and 4) that surface and confirm the student's reasoning rather than assuming understanding.",
+          "student_agency": "The student, not the tutor, generated the summation rule, the O(n) constant-inner-loop case, the triangular-sum case, and the O(m·k) case, and explicitly stated the general principle in turn 5.",
+          "progression": "By turn 5 the student states a correct general rule with supporting cases and articulates why the original claim fails ('nested loop structure suggests multiplication, but the actual complexity depends on what the loop bounds actually are'), demonstrating understanding.",
+          "coherence": "Each turn follows logically from the previous one, with no contradictions, repetition, or ignored questions across the six turns.",
+          "premature_answer": "The tutor never states the general rule or the answer before the student produces it in turn 5; turn 6's summary comes only after the student has reasoned it out.",
+          "hallucination": "No fabricated or factually false claims appear; the tutor's statements about nested-loop cost and complexity are standard and supported by the student's own examples."
+        }
+      }
+    },
+    "judge_1": {
+      "model": {
+        "provider": "ar",
+        "model_name": "reflection/beam-1.0"
+      },
+      "total_tokens": 5047,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's guidance consistently leads to the correct understanding that complexity depends on loop bounds, not just nesting.",
+          "socratic_guidance": "Turn 2 prompts the student with a question about the loop relationship rather than stating the answer.",
+          "scaffolding": "Turn 2 asks the student to describe the relationship between the loops, providing only a minimal nudge to start the analysis.",
+          "state_adaptation": "The tutor acknowledges the student's correct articulation in Turn 4 with 'You've nailed it!' before prompting for generalization.",
+          "diagnosis": "Turn 2 probes the student about the loop structure, addressing the student's initial uncertainty about universality.",
+          "student_agency": "The student synthesizes the correct general rule in Turn 5, demonstrating self-generated reasoning about different bound scenarios.",
+          "progression": "The student reaches a complete and accurate understanding of the general rule in Turn 5, not just a partial solution.",
+          "coherence": "Every turn directly follows the student's previous points, leading logically from the initial claim to a complete understanding.",
+          "premature_answer": "The tutor never reveals the final, complete rule before the student articulates it in Turn 5.",
+          "hallucination": "The tutor presents only established concepts in complexity theory without introducing any fabricated information."
+        }
+      }
+    }
+  },
+  {
+    "source_file": "ft_qwen-ft/asn-set[0].json",
+    "conversation_index": 3,
+    "judge_3": {
+      "model": {
+        "provider": "NVIDIA",
+        "model_name": "minimaxai/minimax-m3.1-flash"
+      },
+      "total_tokens": 6274,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 2,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's content is chemically accurate: dilution lowers hydrogen ion concentration, which raises pH and makes the solution less acidic (turns 4–9), and no factual or conceptual errors are introduced.",
+          "socratic_guidance": "Nearly every turn poses a genuine question eliciting reasoning (turns 2, 4, 6, 8), but the tutor also supplies statements the student could have worked out, e.g. 'pH is a measure of how many hydrogen ions are present in a solution' (turn 6) and the assertion that dilution makes the acid weaker (turn 4).",
+          "scaffolding": "The tutor gives minimal, one-step nudges (define 'dilute,' then ask about H+ concentration, then about pH) and leaves every central inference and the final synthesis to the student (turns 2–8).",
+          "state_adaptation": "Each reply is tied to the student's specific wording — building on 'making something weaker' (turn 3), 'more spread out' (turn 5), and the student's own corrected pH reasoning (turn 7) — and the pace follows the student's gradually clarified understanding.",
+          "diagnosis": "The tutor probes the student's underlying understanding with targeted questions ('What does that word mean in chemistry?', 'gone up or down?'), accurately identifies the misconception about concentration/acidity, and confirms each step before moving on (turns 2, 4, 6).",
+          "student_agency": "The student independently produces every key inference — dilution weakens the acid, H+ concentration drops, pH rises — and articulates the full relationship in their own words in turn 9, while the tutor only confirms.",
+          "progression": "The student moves from a wrong initial guess (turn 1) to a correct, self-articulated understanding that dilution of a strong acid raises pH and reduces acidity (turn 9), confirmed by the tutor in turn 10.",
+          "coherence": "Each turn follows logically from the prior one, with no contradictions, repetition, or off-topic digressions across turns 1–10.",
+          "premature_answer": "The tutor never states the final relationship; the answer that dilution raises pH is reached by the student in turn 9 and only then affirmed.",
+          "hallucination": "No fabricated or unsupported information appears; the tutor's only added fact (the pH–hydrogen ion relationship in turn 6) is standard and accurate."
+        }
+      }
+    },
+    "judge_1": {
+      "model": {
+        "provider": "ar",
+        "model_name": "reflection/beam-1.0"
+      },
+      "total_tokens": 5030,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's guidance consistently leads to the correct conclusion that dilution of a strong acid increases pH.",
+          "socratic_guidance": "The tutor primarily uses questions like in Turn 2 ('What does that word mean in chemistry?') and Turn 4 ('does that mean its concentration of hydrogen ions has gone up or down?') to elicit student reasoning.",
+          "scaffolding": "The tutor provides minimal directional nudges, such as asking about the meaning of 'dilute' in Turn 2, allowing the student to make the core inferential leaps about concentration and pH.",
+          "state_adaptation": "The tutor specifically addresses the student's confusion in Turn 7 about the pH scale by guiding them back to the definition of pH based on hydrogen ion concentration.",
+          "diagnosis": "In Turn 2, the tutor probes the student's initial confusion about dilution by asking for the definition of 'dilute' rather than correcting the initial guess immediately.",
+          "student_agency": "The student successfully synthesizes the concept in Turn 9 by explaining that concentration goes down and pH goes up, demonstrating self-generated reasoning.",
+          "progression": "The student reaches a complete and accurate understanding and articulates the concept in their own words by Turn 9, leading to a successful conclusion in Turn 10.",
+          "coherence": "Every turn directly follows the previous dialogue, moving logically from the definition of dilution to the relationship between concentration and pH.",
+          "premature_answer": "The tutor never reveals the final answer before the student had a chance to reason through the link between lower ion concentration and higher pH.",
+          "hallucination": "The tutor does not introduce any fabricated or factually false information in the conversation."
+        }
+      }
+    }
+  },
+  {
+    "source_file": "ft_qwen-ft/asn-set[0].json",
+    "conversation_index": 4,
+    "judge_3": {
+      "model": {
+        "provider": "NVIDIA",
+        "model_name": "minimaxai/minimax-m3.1-flash"
+      },
+      "total_tokens": 5633,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor correctly identifies the premise as a one-way implication (sufficient condition) and guides toward the correct conclusion that wet roads do not guarantee rain, with no factual or logical errors in its own statements.",
+          "socratic_guidance": "Turns 2, 4, 6, and 8 all pose substantive questions that require the student to reason (relationship in the premise, alternative causes, whether wetness guarantees rain, articulating the difference between 'If A, then B' and 'If B, then A').",
+          "scaffolding": "The tutor's only informational addition is the label 'sufficient condition' in turn 4; it otherwise leaves the alternative-cause search, the validity judgment, and the generalization entirely to the student.",
+          "state_adaptation": "Each reply responds specifically to what the student just said—turn 4 builds on 'rain leads to wet roads,' turn 6 on the list of alternative causes, turn 8 on the student's 'not necessarily' answer, and turn 10 affirms the student's own articulation.",
+          "diagnosis": "Turn 2 opens with a targeted question about what the first sentence establishes, and turns 4 and 6 probe the student's reasoning about direction of implication and possible causes, confirming the misconception (converse/affirming the consequent) before drawing the conclusion.",
+          "student_agency": "The student independently generates the alternative causes (turn 5), the negative conclusion (turn 7), and the articulation of the implication-versus-converse distinction (turn 9); the tutor supplies no key reasoning step.",
+          "progression": "The student moves from uncertainty in turn 1 to a correct rejection of the argument in turn 7 and a general principle stated in their own words in turn 9, demonstrating understanding beyond the single problem.",
+          "coherence": "Each turn follows logically from the prior one, with no contradictions, repetition, or ignored questions across the six exchanges.",
+          "premature_answer": "The tutor never states the answer; the invalidity of the argument and the distinction between implication and converse are both produced by the student in turns 7 and 9.",
+          "hallucination": "No fabricated or unsupported information appears; the terms used ('sufficient condition') and the causal examples are standard and appropriate."
+        }
+      }
+    },
+    "judge_1": {
+      "model": {
+        "provider": "ar",
+        "model_name": "reflection/beam-1.0"
+      },
+      "total_tokens": 4708,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor correctly identifies the logical flaw in the student's initial conclusion regarding implication versus equivalence.",
+          "socratic_guidance": "The tutor primarily uses questions like in Turn 2 and Turn 4 to prompt student reasoning rather than stating conclusions.",
+          "scaffolding": "The tutor uses minimal nudges, such as asking what other causes might exist in Turn 4, allowing the student to generate the crucial counterexamples.",
+          "state_adaptation": "The tutor specifically addresses the student's initial uncertainty in Turn 2 and builds upon the student's identification of sufficient conditions in Turn 4.",
+          "diagnosis": "The tutor accurately diagnoses the need to distinguish implication from equivalence by asking targeted questions in Turns 2 and 6.",
+          "student_agency": "The student generates the counterexamples in Turn 5 and articulates the difference between implication and equivalence in Turn 9, performing the central reasoning.",
+          "progression": "The student moves from initial uncertainty in Turn 1 to correctly synthesizing the logical rule in Turn 9, demonstrating full understanding.",
+          "coherence": "Every tutor response logically follows the student's input, moving the discussion directly from the problem to its logical structure.",
+          "premature_answer": "The tutor does not reveal the final correct conclusion or a substantially complete solution before the student's reasoning process, as seen up to Turn 8.",
+          "hallucination": "The tutor provides no fabricated or factually false information in any turn."
+        }
+      }
+    }
+  },
+  {
+    "source_file": "ft_qwen-ft/asn-set[0].json",
+    "conversation_index": 5,
+    "judge_3": {
+      "model": {
+        "provider": "NVIDIA",
+        "model_name": "minimaxai/minimax-m3.1-flash"
+      },
+      "total_tokens": 8018,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 2,
+        "scaffolding": 3,
+        "state_adaptation": 2,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 2,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's physics content is accurate: work is F·d·cos θ with θ the angle between force and displacement, so the upward supporting force at 90° does zero work on the bag.",
+          "socratic_guidance": "Turns 2, 4, and 6 pose genuine open questions (components of work, how the angle factors in, explain the rule in your own words), but the closing turn 8 states the rule and the conclusion that the work is zero rather than questioning.",
+          "scaffolding": "The tutor's interventions are minimal nudges — turn 4 redirects attention to the angle the student had already raised and turn 6 asks the student to articulate the rule, leaving derivation and application to the student.",
+          "state_adaptation": "Each reply builds on the student's specific words (e.g., turn 4 cites the angle the student mentioned), but the tutor never responds to the student's explicit turn 7 questions about why cosine and about the horizontal force needed to overcome friction.",
+          "diagnosis": "Turns 2 and 4 probe the student's understanding with targeted questions about work's components and the angle factor, and turn 6 asks the student to state the rule in their own words, confirming correct understanding before closing.",
+          "student_agency": "The student, not the tutor, derives W = F·d·cos θ (turn 5), identifies θ as the angle between force and displacement, applies it to conclude zero work, distinguishes the upward support force from any horizontal force, and offers the component rationale for cosine (turn 7).",
+          "progression": "By turn 7 the student independently reaches the correct answer (no work since cos 90° = 0) and explains the reasoning, including why the perpendicular upward force contributes nothing.",
+          "coherence": "The dialogue is logically sequenced, but turn 8 closes without answering the student's turn 7 questions ('why cosine specifically?' and the horizontal-force concern), leaving one explicit question unanswered.",
+          "premature_answer": "The tutor does not supply the answer before the student reasons it out in turns 5–7; the closing turn only confirms the conclusion the student had already articulated.",
+          "hallucination": "No fabricated or unsupported claims appear; the tutor's statements about mechanical work and the cosine factor are standard and consistent with the problem."
+        }
+      }
+    },
+    "judge_1": {
+      "model": {
+        "provider": "ar",
+        "model_name": "reflection/beam-1.0"
+      },
+      "total_tokens": 5611,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's explanations regarding the work formula W = Fd cos(theta) and its application to the perpendicular force (90 degrees) are physically correct.",
+          "socratic_guidance": "The tutor guides the student primarily through questions such as 'what do you think are the two main components that need to be present for work to be done?' (Turn 2).",
+          "scaffolding": "The tutor uses minimal nudges, such as asking 'How does that angle factor into the work calculation?' (Turn 4), leaving the synthesis to the student.",
+          "state_adaptation": "The tutor acknowledges the student's correct steps (e.g., 'That's a great start!' in Turn 2) while immediately probing the specific uncertainty about the angle (Turn 4).",
+          "diagnosis": "The tutor accurately identified the need to diagnose the relationship between force and distance in Turn 2 by asking what components are required for work.",
+          "student_agency": "The student articulates the full rule and applies it to the problem in Turn 7, demonstrating the central reasoning independently.",
+          "progression": "The student reaches the correct conceptual answer (zero work for the upward force) and articulates the underlying principle in Turn 7.",
+          "coherence": "Every tutor response logically follows the student's specific query, such as the prompt about the angle in Turn 4 following the student's confusion in Turn 3.",
+          "premature_answer": "The tutor does not reveal the final answer until the student has synthesized and confirmed the logic in Turn 7, leading to the final conclusion in Turn 8.",
+          "hallucination": "The tutor introduces no fabricated or factually false information in any turn."
+        }
+      }
+    }
+  },
+  {
+    "source_file": "ft_qwen-ft/asn-set[0].json",
+    "conversation_index": 6,
+    "judge_3": {
+      "model": {
+        "provider": "NVIDIA",
+        "model_name": "minimaxai/minimax-m3.1-flash"
+      },
+      "total_tokens": 7034,
+      "evaluation": {
+        "correctness": false,
+        "socratic_guidance": 2,
+        "scaffolding": 3,
+        "state_adaptation": 1,
+        "diagnosis": 2,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 2,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "In turn 6 the tutor says \"Exactly! You've hit the nail on the head,\" endorsing the student's erroneous claim that betting tails on the sixth flip is a 63/64 outcome and that \"the smart money is on tails,\" which is factually wrong for a single independent flip.",
+          "socratic_guidance": "Turns 2, 4, and 6 pose genuine questions (about the coin \"remembering,\" how the probability changes, and how to explain the rule), but turns 4, 6, and 8 also deliver conclusions and praise (\"excellent way to frame it,\" \"hit the nail on the head\") rather than only eliciting the student's reasoning.",
+          "scaffolding": "The tutor never supplies the answer or a solution step; turns 2–6 only point the student at the relevant issue (independence, single-flip probability, generalizing the rule) and leave the reasoning to the student.",
+          "state_adaptation": "Although turns 2 and 4 respond to the student's specific framing, the tutor misses the central error in turn 5 (that betting on tails is a 63/64 outcome) and instead validates it in turn 6, so responses are mostly generic praise rather than targeted correction.",
+          "diagnosis": "Turn 2 shows an accurate initial diagnosis of the gambler's-faller-y misconception and the student's answers confirm it, but the tutor never probes or corrects the separate confusion between the probability of a streak and the probability of the next single flip.",
+          "student_agency": "The student, not the tutor, articulates independence, the law of large numbers, and the correct single-flip versus aggregate distinction across turns 3, 5, and 7, while the tutor only asks questions and praises.",
+          "progression": "By turn 7 the student explains in their own words that the next flip is still 1/2 and that only the long-run proportion corrects itself, showing the corrected understanding despite the tutor's earlier misvalidation.",
+          "coherence": "Turn 4 frames the student's streak reasoning as merely the intuition others might feel, yet turn 6 declares it \"Exactly\" right, an inconsistency that is never clarified before the closing in turn 8.",
+          "premature_answer": "The tutor never states the answer or a completed solution; it relies on the student's own reasoning throughout turns 2–7.",
+          "hallucination": "The tutor introduces no fabricated content; its only error is the false endorsement of the student's own claim in turn 6 rather than invented information."
+        }
+      }
+    },
+    "judge_1": {
+      "model": {
+        "provider": "ar",
+        "model_name": "reflection/beam-1.0"
+      },
+      "total_tokens": 5468,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor correctly guides the student to the concept of independent events and the law of large numbers.",
+          "socratic_guidance": "The tutor consistently uses questions, such as in Turn 2 (\"what do you think about the idea of a coin 'remembering' its previous flips?\"), to elicit student reasoning rather than stating conclusions.",
+          "scaffolding": "The tutor uses minimal nudges, such as asking in Turn 4 \"how does that probability change,\" leaving the core explanation of independence to the student.",
+          "state_adaptation": "The tutor directly addresses the student's evolving understanding, moving from the initial intuition (Turn 1) to conditional probability concepts (Turn 5) and finally to synthesizing the law of large numbers (Turn 7).",
+          "diagnosis": "In Turn 2, the tutor accurately diagnoses the misconception (the coin 'remembering') and prompts the student to explore this understanding rather than simply correcting the belief.",
+          "student_agency": "The student takes ownership by articulating the difference between single-flip independence and aggregate law of large numbers in Turn 7, which is the central reasoning.",
+          "progression": "The student progresses from an intuitive misconception (Turn 1) to articulating the nuanced distinction between independence and long-term balance (Turn 7).",
+          "coherence": "Every turn directly follows the previous dialogue, with the tutor responding appropriately to the student's articulation of probability concepts.",
+          "premature_answer": "The tutor never reveals the final correct answer or a substantially complete solution before the student's detailed explanation in Turn 7.",
+          "hallucination": "The tutor does not introduce any fabricated or factually false information in its responses."
+        }
+      }
+    }
+  },
+  {
+    "source_file": "ft_qwen-ft/asn-set[0].json",
+    "conversation_index": 7,
+    "judge_3": {
+      "model": {
+        "provider": "NVIDIA",
+        "model_name": "minimaxai/minimax-m3.1-flash"
+      },
+      "total_tokens": 9118,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 2,
+        "scaffolding": 2,
+        "state_adaptation": 2,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 2,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's substantive claims about the instruction pointer remaining on the faulting instruction and the OS restarting it after loading the page are accurate and consistent with the student's correct description in turn 7.",
+          "socratic_guidance": "Turns 2, 4, 6, and 8 all pose genuine questions, but in turn 4 the tutor states the key conclusion ('the instruction pointer is pointing to the very instruction that triggered the fault') and in turn 6 restates the mechanism before asking, so not every turn is purely student-generated reasoning.",
+          "scaffolding": "Turn 4 supplies the very fact the student was probing (IP points to the faulting instruction) before posing a leading 'hint' question about the same thing, providing more help than the smallest nudge, though the student still produced the overall process explanation in turn 7.",
+          "state_adaptation": "Turns 4 and 6 respond precisely to the student's stated IP hypothesis, but turn 8 ignores the student's explicit questions in turn 7 about TLB invalidation necessity and whether restart is guaranteed against races.",
+          "diagnosis": "Turn 2 asks a targeted question about the CPU's pre-fault view, turn 4 probes the specific restart mechanism the student said was fuzzy, and the tutor confirms the diagnosis ('That is exactly right', 'Spot on') before moving on.",
+          "student_agency": "The student generated the full walkthrough in turn 7—MMU lookup, valid bit, exception, handler, frame allocation, page table update, and re-execution—while the tutor mainly asked questions and affirmed.",
+          "progression": "By turn 7 the student explains the whole mechanism in their own words, including why the instruction re-executes successfully, showing understanding beyond the memorized steps they described in turn 1.",
+          "coherence": "The dialogue follows a clear diagnose-hint-synthesize-close arc, but the final turn leaves the student's two explicit turn-7 questions (TLB invalidation necessity, restart race) unanswered.",
+          "premature_answer": "The tutor never gave the complete explanation before the student worked it out; in turn 7 the student produced the full process themselves.",
+          "hallucination": "The tutor introduces no fabricated or false technical content; its statements about the instruction pointer and instruction restart are standard and supported by the student's correct account."
+        }
+      }
+    },
+    "judge_1": {
+      "model": {
+        "provider": "ar",
+        "model_name": "reflection/beam-1.0"
+      },
+      "total_tokens": 6976,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 2,
+        "scaffolding": 2,
+        "state_adaptation": 3,
+        "diagnosis": 2,
+        "student_agency": 2,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "Turns 4 and 6 contain factually correct statements about the instruction pointer and page-fault restart mechanism.",
+          "socratic_guidance": "Turns 4 and 6 state key facts ('instruction pointer is pointing to the very instruction', 'leaving the instruction pointer pointing to the same instruction lets the OS restart it') rather than eliciting them purely through questions.",
+          "scaffolding": "Turn 4 gives a direct hint naming the instruction pointer's role, and turn 6 confirms the key insight before asking for synthesis.",
+          "state_adaptation": "Turns 4, 6, and 8 each respond specifically to the student's immediately preceding reasoning and questions.",
+          "diagnosis": "Turn 2 asks a diagnostic question, but the tutor largely accepts the student's self-identified difficulty without deeper targeted probing.",
+          "student_agency": "The student generates the central inference in turn 5 and the full explanation in turn 7, though the tutor supplies key framing in turns 4 and 6.",
+          "progression": "By turn 7 the student produces a complete, correct explanation of the page-fault restart mechanism.",
+          "coherence": "Each tutor turn follows logically from the student's prior response with no contradictions or ignored questions.",
+          "premature_answer": "The tutor does not reveal a complete solution before the student develops the reasoning.",
+          "hallucination": "No fabricated or unsupported information appears in the tutor's responses."
+        }
+      }
+    }
+  },
+  {
+    "source_file": "ft_qwen-ft/asn-set[0].json",
+    "conversation_index": 8,
+    "judge_3": {
+      "model": {
+        "provider": "NVIDIA",
+        "model_name": "minimaxai/minimax-m3.1-flash"
+      },
+      "total_tokens": 6624,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's content is consistent with chemistry: increasing nuclear charge across a period, same principal shell, shielding increasing less than nuclear charge, and increasing effective nuclear charge shrinking the atom.",
+          "socratic_guidance": "Turns 2, 4, and 6 each pose substantive questions (about nuclear differences, the effect of increasing pull, and summarizing the trend in the student's own words) without supplying the solution steps.",
+          "scaffolding": "The tutor only offers small prompts and affirmations (e.g., turn 4's 'the nucleus is pulling harder'), leaving the student to construct the shielding/effective-nuclear-charge reasoning entirely in turns 3, 5, and 7.",
+          "state_adaptation": "Each reply responds to the student's specific wording—turn 2 targets the 'more electrons means bigger' misconception, turn 4 builds on the student's nuclear-charge and same-shell points, and turn 6 builds on the student's shielding balance explanation.",
+          "diagnosis": "Turn 2 asks a targeted diagnostic question about what differs in the nuclei, correctly identifies the confusion as ignoring nuclear pull, and confirms the student's grasp ('Exactly, you've nailed the core idea', 'Spot on!').",
+          "student_agency": "The student, not the tutor, produces the key reasoning: increased protons and same shell (turn 3), the shielding-versus-nuclear-charge balance (turn 5), and the full explanation of the radius trend (turn 7).",
+          "progression": "The student progresses from a misconception to a complete, accurate explanation in their own words in turn 7, including the roles of nuclear charge, shielding, effective nuclear charge, and the absence of new shells.",
+          "coherence": "Each turn follows from the previous one; the tutor's turns 2, 4, and 6 build on the student's latest statements, and turn 4's 'the nucleus is pulling harder' implicitly answers the student's question about whether nuclear charge wins out over shielding.",
+          "premature_answer": "The tutor never states the final explanation or conclusion itself; the student derives the shrinking-radius explanation across turns 3–7.",
+          "hallucination": "No fabricated or factually false claims appear; the tutor's statements about nuclei, shells, and shielding are standard and accurate."
+        }
+      }
+    },
+    "judge_1": {
+      "model": {
+        "provider": "ar",
+        "model_name": "reflection/beam-1.0"
+      },
+      "total_tokens": 4953,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's explanations regarding increased nuclear charge overpowering limited shielding across a period are scientifically accurate.",
+          "socratic_guidance": "The tutor consistently uses questions, such as in Turn 2 ('what is the core difference in their nuclei?'), to guide student reasoning rather than providing direct answers.",
+          "scaffolding": "The tutor provides minimal directional nudges, like in Turn 4 ('what does that mean for the overall size of the atom?'), allowing the student to synthesize the conclusion independently.",
+          "state_adaptation": "The tutor explicitly addresses the student's confusion about shielding in Turn 2 and validates their intuition in Turn 2, then focuses on their specific point of confusion in Turn 4.",
+          "diagnosis": "In Turn 2, the tutor correctly identifies the student's need to understand nuclear charge influence rather than just electron count, prompting investigation into the nucleus.",
+          "student_agency": "The student successfully constructs the complete explanation in Turn 5 and synthesizes the final rule in Turn 7 without the tutor providing the key mechanism.",
+          "progression": "The student moves from initial confusion to a full, self-articulated explanation of the trend in Turn 7, demonstrating complete understanding.",
+          "coherence": "Every tutor response logically builds upon the preceding student input, leading clearly to the final understanding.",
+          "premature_answer": "The tutor never reveals the final conclusion before the student has developed their own reasoning in Turn 5.",
+          "hallucination": "The tutor does not introduce any fabricated or factually false information in the conversation."
+        }
+      }
+    }
+  },
+  {
+    "source_file": "ft_qwen-ft/asn-set[0].json",
+    "conversation_index": 9,
+    "judge_3": {
+      "model": {
+        "provider": "NVIDIA",
+        "model_name": "minimaxai/minimax-m3.1-flash"
+      },
+      "total_tokens": 5374,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's guidance accurately reflects De Morgan's law, and the final confirmed rule 'negate an AND, change it to an OR and negate both parts' is mathematically correct.",
+          "socratic_guidance": "Turns 2, 4, 6, and 8 are all genuine questions requiring the student to reason, including turn 8 asking the student to state the rule in their own words; no step or conclusion is supplied.",
+          "scaffolding": "The tutor provides only minimal nudges, e.g., turn 4's single question about individual truth values, leaving the entire inference from 'at least one false' to 'NOT A OR NOT B' to the student.",
+          "state_adaptation": "Each reply targets the student's specific words — turn 4 addresses their 'one of them is false? Or both?' uncertainty, turn 6 builds on their 'at least one must be false', and turn 8 requests synthesis after they derive the expression.",
+          "diagnosis": "Turn 2 probes what the student thinks negation does, turn 4 checks whether they understand that a false conjunction implies at least one false operand, and turn 5 confirms the cause of the confusion before building on it.",
+          "student_agency": "The student independently produced 'at least one must be false' (turn 5), derived 'NOT A OR NOT B' (turn 7), and articulated the general rule (turn 9); the tutor contributed no key reasoning step.",
+          "progression": "The student moved from an incorrect guess (NOT A AND NOT B) to correctly stating the negation rule and explaining why, satisfying understanding rather than mere answer matching.",
+          "coherence": "Each turn follows directly from the previous student response, with no contradictions, repetition, or ignored questions across the five tutor turns.",
+          "premature_answer": "The tutor never states the negated expression or the rule before the student derives it in turns 7 and 9.",
+          "hallucination": "No fabricated or factually false content appears; the tutor's statements about AND negation and truth values are accurate."
+        }
+      }
+    },
+    "judge_1": {
+      "model": {
+        "provider": "ar",
+        "model_name": "reflection/beam-1.0"
+      },
+      "total_tokens": 4865,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor correctly guides the student to De Morgan's Law, concluding that NOT (A AND B) is equivalent to NOT A OR NOT B.",
+          "socratic_guidance": "The tutor primarily uses questions like in Turn 2 (\"What do you think happens when we negate a statement like A AND B?\") to elicit reasoning rather than stating conclusions.",
+          "scaffolding": "The tutor uses minimal nudges, such as asking what a false conjunction implies about individual truth values in Turn 4, allowing the student to make the inference themselves.",
+          "state_adaptation": "The tutor precisely addresses the student's uncertainty in Turn 2 and follows up specifically on the student's tentative understanding in Turn 5 and Turn 7.",
+          "diagnosis": "In Turn 2, the tutor asks targeted questions to diagnose the student's understanding of how negation interacts with AND, rather than assuming the initial guess is wrong.",
+          "student_agency": "The student progresses from initial uncertainty in Turn 1 to correctly synthesizing the rule in Turn 9, performing the central reasoning throughout.",
+          "progression": "The student successfully arrives at the correct logical expression and articulates the rule in their own words by Turn 9, achieving a complete understanding in Turn 10.",
+          "coherence": "Every tutor response logically follows the student's preceding input, leading consistently towards resolving the logical concept.",
+          "premature_answer": "The tutor never reveals the final correct answer or substantially complete solution before the student's reasoning process, which culminates in Turn 9.",
+          "hallucination": "The tutor provides no fabricated or factually false information in any turn."
+        }
+      }
+    }
+  },
+  {
+    "source_file": "ft_qwen-ft/asn-set[0].json",
+    "conversation_index": 10,
+    "judge_3": {
+      "model": {
+        "provider": "NVIDIA",
+        "model_name": "minimaxai/minimax-m3.1-flash"
+      },
+      "total_tokens": 8152,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 2,
+        "scaffolding": 2,
+        "state_adaptation": 2,
+        "diagnosis": 2,
+        "student_agency": 2,
+        "progression": 3,
+        "coherence": 1,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's physics content (equal/opposite contact forces, a = F/m so the lighter car accelerates more, and damage depending on mass and structural integrity) is scientifically sound, with no factual errors.",
+          "socratic_guidance": "Turns 2, 4, and 6 pose genuine questions that elicit reasoning, but turns 2 and 4 also state key conclusions for the student (the Third Law statement, and that 'we've established the forces are equal'), so the guidance is not purely question-based.",
+          "scaffolding": "The tutor supplies the Third Law formulation and the conclusion that the forces are equal (turns 2 and 4) and a closing summary (turn 8), but leaves the acceleration and structural-inertia reasoning to the student, making the help moderate rather than minimal.",
+          "state_adaptation": "Turns 6 and 8 respond specifically to the student's acceleration and structural-integrity points, but turn 4 opens with 'Exactly' and treats the forces as already established even though the student in turn 3 explicitly denied their equality, leaving the student's persistent objection unaddressed.",
+          "diagnosis": "Turn 2 correctly targets the misconception and asks the student to articulate the force pair, which exposes the persistence of the misconception in turn 3, but the tutor never confirms or probes the cause of that persistence and misjudges it in turn 4.",
+          "student_agency": "The student independently derives a = F/m and the greater acceleration of the car (turn 5) and constructs the stress/energy/structural-strength explanation in their own words (turn 7), though the key fact that the forces are equal was supplied by the tutor in turns 2 and 4.",
+          "progression": "By turn 7 the student explains in their own words why the car crumples (equal forces, larger acceleration, weaker structure absorbing the energy) and the tutor confirms the reasoning in turn 8, showing genuine understanding.",
+          "coherence": "Turn 4 asserts 'Exactly... we've established the forces are equal' directly after the student's turn 3 insistence that 'No way the forces are the same magnitude,' creating a visible contradiction that the dialogue never resolves.",
+          "premature_answer": "The tutor never delivers the full explanation before the student; the damage/structural-inertia reasoning in turn 8 comes after the student produced it in turn 7.",
+          "hallucination": "No fabricated or unsupported facts appear; all tutor claims (Third Law, a = F/m, structural integrity) are standard physics consistent with the problem."
+        }
+      }
+    },
+    "judge_1": {
+      "model": {
+        "provider": "ar",
+        "model_name": "reflection/beam-1.0"
+      },
+      "total_tokens": 5784,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor correctly guides the student to the concept that force is equal but acceleration and resulting damage depend on mass and structural integrity.",
+          "socratic_guidance": "The tutor repeatedly guides the student using questions such as 'what force is the truck exerting on the car, and what force is the car exerting on the truck?' (Turn 2).",
+          "scaffolding": "The tutor uses minimal nudges, such as asking about acceleration difference (Turn 4) rather than providing the relationship between force, mass, and acceleration directly.",
+          "state_adaptation": "The tutor specifically addresses the student's assertion in Turn 1 and guides them from the initial misconception (Turn 2) to the correct synthesis (Turn 7).",
+          "diagnosis": "In Turn 2, the tutor correctly identifies the student's misconception about Newton's Third Law and probes for reasoning instead of just correcting the error.",
+          "student_agency": "The student successfully connects force to acceleration (Turn 5) and independently synthesizes that structural integrity and energy dissipation explain the damage (Turn 7).",
+          "progression": "The student moves from an incorrect understanding of force equality (Turn 1) to correctly identifying that structural integrity governs damage (Turn 7), achieving deep understanding.",
+          "coherence": "Every tutor response logically builds upon the student's previous points, moving sequentially from force equality to acceleration differences to structural failure.",
+          "premature_answer": "The tutor never states the final conclusion about structural integrity before the student synthesizes it in Turn 7.",
+          "hallucination": "The tutor presents only established physics concepts without introducing any fabricated information."
+        }
+      }
+    }
+  },
+  {
+    "source_file": "ft_qwen-ft/asn-set[0].json",
+    "conversation_index": 11,
+    "judge_3": {
+      "model": {
+        "provider": "NVIDIA",
+        "model_name": "minimaxai/minimax-m3.1-flash"
+      },
+      "total_tokens": 6657,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 2,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's math is sound throughout: squaring ±3 gives 9, √9 denotes the principal (positive) root, and solving x² = 9 requires listing both 3 and -3 (turns 4–8).",
+          "socratic_guidance": "Turns 2, 4, and the closing prompt in turn 6 elicit student reasoning, but turns 6 and 8 state the conclusion (principal root vs. all solutions) that the student could have derived, so guidance is not exclusively question-based.",
+          "scaffolding": "The tutor's interventions are minimal nudges — asking what taking the square root gives (turn 2) and asking what squaring 3 and -3 yields (turn 4) — leaving the actual verification and explanation to the student (turns 5 and 7).",
+          "state_adaptation": "Each reply responds to the student's specific concern: the general square-root rule (turn 2), the calculator observation (turn 4), the 'why is √ defined as positive' question (turn 6), and the lingering unease about the function (turn 8).",
+          "diagnosis": "The tutor probes the student's understanding in turn 2, identifies the calculator/± confusion from turn 3, and confirms the underlying misconception (squaring removes sign) through the student's own computation in turn 5 before synthesizing in turn 6.",
+          "student_agency": "The student performs the key reasoning — computing (-3)² = 9, distinguishing the symbol from solving an equation, and explaining the concept in their own words in turns 5 and 7 — while the tutor mostly prompts.",
+          "progression": "The student moves from uncertainty in turn 1 to a complete, accurate explanation in turn 7 (√9 = 3, but x = ±3, two numbers work) and applies the rule going forward.",
+          "coherence": "Each turn follows logically from the prior one, with no contradictions, repetition, or ignored questions across turns 2–8.",
+          "premature_answer": "The tutor never states the answer before the student reasons it out; the student already proposes x = ±3 in turn 3 and the tutor only probes and confirms afterward.",
+          "hallucination": "All tutor claims about square roots, principal roots, and solving equations are accurate and grounded in the student's stated confusion."
+        }
+      }
+    },
+    "judge_1": {
+      "model": {
+        "provider": "ar",
+        "model_name": "reflection/beam-1.0"
+      },
+      "total_tokens": 6881,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 2,
+        "scaffolding": 2,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 2,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "Turns 4–8 contain mathematically correct statements about squaring ±3 and the principal square root.",
+          "socratic_guidance": "Turns 2 and 4 use genuine questions, but turns 6 and 8 state facts and conclusions rather than eliciting all of them.",
+          "scaffolding": "Turns 4 and 6 give useful partial direction, including the principal-root fact, rather than only the smallest nudge.",
+          "state_adaptation": "Turns 4, 6, and 8 directly address the student's calculator observation and remaining confusion about the square root symbol.",
+          "diagnosis": "Turns 2 and 4 ask targeted questions that reveal the student's ± knowledge and confusion, then turn 6 asks for synthesis.",
+          "student_agency": "The student supplies the ± solutions and the final explanation, while the tutor states the principal-root concept in turn 6.",
+          "progression": "By turn 7 the student correctly explains x = ±3 and why the square root symbol gives only the positive root.",
+          "coherence": "Each tutor reply follows directly from the student's previous statement without contradictions or ignored questions.",
+          "premature_answer": "The tutor does not reveal a complete solution before the student has reasoned through the ± possibility.",
+          "hallucination": "The tutor does not introduce fabricated or unsupported mathematical claims."
+        }
+      }
+    }
+  },
+  {
+    "source_file": "ft_qwen-ft/asn-set[0].json",
+    "conversation_index": 12,
+    "judge_3": {
+      "model": {
+        "provider": "NVIDIA",
+        "model_name": "minimaxai/minimax-m3.1-flash"
+      },
+      "total_tokens": 7192,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 2,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 2,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's substantive content is accurate — affirming that nested loops are not automatically O(n²) and treating the student's summation framework (Σ f(i)) as the correct general rule — with no mathematical or conceptual errors.",
+          "socratic_guidance": "Turns 2, 4, and 6 each pose open questions (walk me through your thought process, how would you describe the relationship, summarize the rule in your own words) that require the student to generate the reasoning, with the tutor supplying no solution steps.",
+          "scaffolding": "The tutor's interventions consist only of minimal prompts and affirmations (e.g., turn 4's request to define a general rule), leaving the student to construct the entire summation framework themselves.",
+          "state_adaptation": "Replies are tailored to the student's words (turn 4 names 'exactly the gap you've identified'), but turn 6 ignores the student's explicit question in turn 5 about interdependencies where the inner loop modifies a variable the outer loop depends on.",
+          "diagnosis": "Turn 2 asks the student to walk through their thought process and what factors they would examine, and the tutor correctly identifies and confirms the missing piece (a systematic method rather than pattern matching) before supporting generalization.",
+          "student_agency": "The student, not the tutor, produces the case analysis (turn 3), the summation-based general rule with worked cases (turn 5), and the synthesized framework (turn 7); the tutor's contributions are only questions and praise.",
+          "progression": "By turn 7 the student articulates a correct general rule in their own words — write the sum of inner-loop counts, simplify, drop constants and lower-order terms — and applies it to independent, dependent, and logarithmic cases.",
+          "coherence": "The dialogue follows a consistent diagnostic-to-synthesis arc with no contradictions, though the student's interdependency question in turn 5 is never answered.",
+          "premature_answer": "The tutor never states the general rule or any complexity calculation for the student, only questions prompting the student to produce it.",
+          "hallucination": "No fabricated or unsupported facts are introduced; all tutor statements concern the student's own articulated reasoning."
+        }
+      }
+    },
+    "judge_1": {
+      "model": {
+        "provider": "ar",
+        "model_name": "reflection/beam-1.0:free"
+      },
+      "total_tokens": 7597,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 2,
+        "scaffolding": 3,
+        "state_adaptation": 2,
+        "diagnosis": 2,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 1,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's prompts and affirmations are consistent with the student's correct nested-loop complexity reasoning.",
+          "socratic_guidance": "Turns 2, 4, and 6 use genuine questions, but none asks the student to justify or test an idea.",
+          "scaffolding": "The tutor only asks broad prompting questions and never supplies the method, steps, or answer.",
+          "state_adaptation": "Turns 4 and 6 acknowledge the student's summary, but the interdependency question at the end of turn 5 is not addressed.",
+          "diagnosis": "The tutor elicits reasoning and identifies the systematic gap, but does not explicitly confirm or probe its cause before proceeding.",
+          "student_agency": "The student generates all examples, the summation framework, and the final summary while the tutor only prompts.",
+          "progression": "By turn 7 the student articulates and synthesizes a correct general method for nested-loop complexity.",
+          "coherence": "Turn 6 affirms turn 5 but does not answer the student's question about interdependencies before asking for a summary.",
+          "premature_answer": "The tutor never reveals a final answer or substantially complete solution before the student synthesizes it.",
+          "hallucination": "No fabricated or unsupported factual claims appear in the tutor's responses."
+        }
+      }
+    }
+  },
+  {
+    "source_file": "ft_qwen-ft/asn-set[0].json",
+    "conversation_index": 13,
+    "judge_3": {
+      "model": {
+        "provider": "NVIDIA",
+        "model_name": "minimaxai/minimax-m3.1-flash"
+      },
+      "total_tokens": 5632,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's guidance in turns 2, 4, 6, and 8 is chemically sound: dilution keeps the number of H+ constant, lowers concentration, reduces acidity, and raises pH, consistent with the 0–14 scale and neutral 7 that the student described.",
+          "socratic_guidance": "Every substantive tutor turn (2, 4, 6) is framed as a genuine question eliciting the student's reasoning, with only brief affirmations and no statement of the solution step.",
+          "scaffolding": "The tutor gives minimal nudges (e.g., turn 4's prompt about concentration with fixed ion number and volume increase) and never supplies the answer or the central inference, which the student produced in turns 3, 5, and 7.",
+          "state_adaptation": "Each reply responds specifically to the student's preceding words (turn 2 targets the confused dilution idea, turn 4 builds on 'number stays the same', turn 6 builds on the student's correct pH reasoning) and the pace matches the student's growing understanding.",
+          "diagnosis": "Turn 2 asks a targeted question about what happens to the number of hydrogen ions, which surfaces the student's misconception that adding water makes the solution 'more acidic'; turn 4 then probes the concentration reasoning and confirms the student's own articulation of the relationship, distinguishing the initial misconception from the corrected understanding.",
+          "student_agency": "The student generated the key reasoning across turns 3, 5, and 7—ion count stays constant, concentration = amount/volume, lower [H+] means higher pH—while the tutor only prompted and affirmed.",
+          "progression": "The student moved from an incorrect 'more acidic' belief to correctly concluding the acid becomes less acidic with increasing pH and explaining why, including the pH scale and movement toward neutrality in turn 7.",
+          "coherence": "Each turn follows logically from the prior one, the initial misconception is explicitly resolved in turn 5, and the closing turn in 8 is consistent with the student's demonstrated mastery.",
+          "premature_answer": "The tutor never states the final conclusion (less acidic, pH increases) before the student derived it in turn 5; turn 6 only affirms the student's own answer.",
+          "hallucination": "No fabricated or factually false claims appear; the tutor's mentions of hydrogen ion count, concentration, and the pH scale match the chemistry discussed in the conversation."
+        }
+      }
+    },
+    "judge_1": {
+      "model": {
+        "provider": "ar",
+        "model_name": "reflection/beam-1.0:free"
+      },
+      "total_tokens": 4990,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's guidance consistently supports the correct chemical principles regarding dilution, concentration, and pH.",
+          "socratic_guidance": "The tutor primarily uses questions like in Turn 2 (\"what happens to the actual number of hydrogen ions\") to elicit student thinking rather than providing direct answers.",
+          "scaffolding": "The tutor provides minimal directional nudges, such as in Turn 4, allowing the student to make the central inference about concentration change.",
+          "state_adaptation": "The tutor's response in Turn 4 directly builds on the student's correct observation in Turn 3, and in Turn 6, acknowledges the student's correct derivation in Turn 5.",
+          "diagnosis": "In Turn 2, the tutor asks a targeted question to understand the student's thinking about the constant number of H+ ions, accurately diagnosing the next conceptual hurdle.",
+          "student_agency": "The student correctly deduces the constant number of H+ ions in Turn 3 and correctly concludes that dilution lowers concentration and increases pH in Turn 5.",
+          "progression": "The student successfully reaches the correct conclusion—that dilution makes the acid less acidic and increases the pH—and articulates the underlying principle in Turn 7.",
+          "coherence": "Every turn logically follows the previous one, maintaining a focused discussion on the effects of dilution on acid strength and pH.",
+          "premature_answer": "The tutor never reveals the final answer before the student establishes the relationship between concentration and pH in Turn 5.",
+          "hallucination": "The tutor presents only established chemical concepts and makes no unsupported factual claims."
+        }
+      }
+    }
+  },
+  {
+    "source_file": "ft_qwen-ft/asn-set[0].json",
+    "conversation_index": 14,
+    "judge_3": {
+      "model": {
+        "provider": "NVIDIA",
+        "model_name": "minimaxai/minimax-m3.1-flash"
+      },
+      "total_tokens": 5657,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor accurately frames the argument as a conditional and correctly identifies (in turn 10) the error as affirming the consequent, matching the student's own correct reasoning about wet roads having other causes.",
+          "socratic_guidance": "Turns 2, 4, 6, and 8 all pose open questions asking the student to describe, articulate, and explain the reasoning ('how would you describe...', 'can you describe why...', 'in your own words...'), with no steps of the solution stated for the student.",
+          "scaffolding": "The tutor's interventions consist only of brief prompts and affirmations, leaving the student to supply the counterexample, the direction of the conditional, and the general principle.",
+          "state_adaptation": "Each reply responds specifically to what the student just said—turn 4 builds on the sprinkler/washing examples, turn 6 builds on 'going backwards', and turn 8 builds on 'the rule only goes one way'.",
+          "diagnosis": "Turn 2 asks the student to describe the claim and their uncertainty, and turns 4 and 6 probe their reasoning to confirm the cause of the doubt (reversing a conditional) before the student articulates it in turns 7 and 9.",
+          "student_agency": "The student independently produced the alternative causes (turn 3), the one-way direction of the conditional (turn 5 and 7), and the general articulation of the distinction (turn 9); the tutor only asked and affirmed.",
+          "progression": "The student moved from uncertainty to a correct, self-articulated explanation in turn 9 ('the mistake is acting like wet roads can only come from rain... mixing up the direction'), demonstrating the principle rather than just accepting it.",
+          "coherence": "Each turn follows directly from the previous one, with no contradictions, repetition, or ignored questions across the six-turn exchange.",
+          "premature_answer": "The tutor never asserted the conclusion or supplied the answer before the student reasoned it out; turn 6 merely asks the student to explain why the reversal fails after the student already raised it in turn 5.",
+          "hallucination": "No fabricated or factually false content appears; the only added technical label, 'affirming the consequent' in turn 10, accurately names the fallacy the student described."
+        }
+      }
+    },
+    "judge_1": {
+      "model": {
+        "provider": "ar",
+        "model_name": "reflection/beam-1.0:free"
+      },
+      "total_tokens": 5052,
+      "evaluation": {
+        "correctness": true,
+        "socratic_guidance": 3,
+        "scaffolding": 3,
+        "state_adaptation": 3,
+        "diagnosis": 3,
+        "student_agency": 3,
+        "progression": 3,
+        "coherence": 3,
+        "premature_answer": false,
+        "hallucination": false,
+        "evidence": {
+          "correctness": "The tutor's prompts and closing remarks correctly reflect conditional logic and the fallacy of affirming the consequent.",
+          "socratic_guidance": "Turns 2, 4, 6, and 8 ask questions that require the student to generate and justify reasoning rather than stating steps.",
+          "scaffolding": "Each tutor turn gives a small conceptual nudge while leaving the central inference and explanation to the student.",
+          "state_adaptation": "Turns 4 and 6 directly respond to the student's specific points about alternative causes and reversed conditionals.",
+          "diagnosis": "The tutor uses targeted questions to surface the student's reasoning and confirms their understanding before closing.",
+          "student_agency": "The student identifies the one-way conditional relationship and explains the fallacy in their own words.",
+          "progression": "By turn 9 the student reaches a correct explanation of why wet roads do not prove rain.",
+          "coherence": "Every tutor reply follows logically from the student's previous answer without contradiction or ignored questions.",
+          "premature_answer": "The tutor never reveals the final answer or a complete solution before the student develops the reasoning.",
+          "hallucination": "No fabricated or unsupported information appears in the tutor's responses."
+        }
+      }
+    }
+  }
+]
